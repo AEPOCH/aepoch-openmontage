@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Kairos flow</title>
+  <desc id="desc">Kairos represented as a moving contribution between equal humans, not as a coin.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0 0L12 6L0 12Z" fill="#8BAFD4"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="675" fill="#FAF8F5"/>
+  <text x="90" y="76" font-family="Inter, Arial, Helvetica, sans-serif" font-size="42" font-weight="800" fill="#1A1612">Kairos moves through human contribution.</text>
+  
+  <circle cx="190" cy="340" r="58" fill="#FAF8F5" stroke="#C4835A" stroke-width="3"/>
+  <circle cx="190" cy="329" r="10.4" fill="#C4835A"/>
+  <path d="M176.1 356.2V343.5C176.1 336.5 182.5 330.1 190.0 330.1C197.5 330.1 203.9 336.5 203.9 343.5V356.2" fill="#C4835A"/>
+  <text x="190" y="440" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="24" font-weight="650" fill="#4A4440">Human</text>
+  
+  <circle cx="600" cy="340" r="58" fill="#FAF8F5" stroke="#B8A9D9" stroke-width="3"/>
+  <circle cx="600" cy="329" r="10.4" fill="#C4835A"/>
+  <path d="M586.1 356.2V343.5C586.1 336.5 592.5 330.1 600.0 330.1C607.5 330.1 613.9 336.5 613.9 343.5V356.2" fill="#C4835A"/>
+  <text x="600" y="440" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="24" font-weight="650" fill="#4A4440">Human</text>
+  
+  <circle cx="1010" cy="340" r="58" fill="#FAF8F5" stroke="#8BAFD4" stroke-width="3"/>
+  <circle cx="1010" cy="329" r="10.4" fill="#C4835A"/>
+  <path d="M996.1 356.2V343.5C996.1 336.5 1002.5 330.1 1010.0 330.1C1017.5 330.1 1023.9 336.5 1023.9 343.5V356.2" fill="#C4835A"/>
+  <text x="1010" y="440" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="24" font-weight="650" fill="#4A4440">Human</text>
+  <path d="M250 340C365 250 430 250 540 340" fill="none" stroke="#8BAFD4" stroke-width="5" marker-end="url(#arrow)"/>
+  <path d="M660 340C775 430 840 430 950 340" fill="none" stroke="#8BAFD4" stroke-width="5" marker-end="url(#arrow)"/>
+  <circle cx="394" cy="285" r="11" fill="#C4835A"/>
+  <circle cx="804" cy="395" r="11" fill="#C4835A"/>
+  <text x="394" y="245" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#4A4440">Contribution</text>
+  <text x="804" y="455" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#4A4440">Circulation</text>
+
+</svg>

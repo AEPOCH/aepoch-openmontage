@@ -1,0 +1,1223 @@
+{
+  "version": 1,
+  "viewBox": [
+    0,
+    0,
+    1200,
+    675
+  ],
+  "ring": {
+    "cx": 600.0,
+    "cy": 337.5,
+    "radius": 190.0
+  },
+  "count": 150,
+  "seedPolicy": "Episode scene seed controls initial positions; final targets remain fixed.",
+  "pathPolicy": [
+    "Ease-in cubic toward pull point.",
+    "Pull point sits 28% toward ring from center.",
+    "Ease-out quint into final ring target."
+  ],
+  "targets": [
+    {
+      "index": 0,
+      "pole": "earth",
+      "angleRadians": -1.57079633,
+      "x": 600.0,
+      "y": 147.5,
+      "convergenceDelayFraction": 0.0
+    },
+    {
+      "index": 1,
+      "pole": "earth",
+      "angleRadians": -1.52890842,
+      "x": 607.9564,
+      "y": 147.6667,
+      "convergenceDelayFraction": 0.07
+    },
+    {
+      "index": 2,
+      "pole": "earth",
+      "angleRadians": -1.48702052,
+      "x": 615.8988,
+      "y": 148.1664,
+      "convergenceDelayFraction": 0.04
+    },
+    {
+      "index": 3,
+      "pole": "earth",
+      "angleRadians": -1.44513262,
+      "x": 623.8133,
+      "y": 148.9982,
+      "convergenceDelayFraction": 0.01
+    },
+    {
+      "index": 4,
+      "pole": "earth",
+      "angleRadians": -1.40324472,
+      "x": 631.6861,
+      "y": 150.1608,
+      "convergenceDelayFraction": 0.08
+    },
+    {
+      "index": 5,
+      "pole": "earth",
+      "angleRadians": -1.36135682,
+      "x": 639.5032,
+      "y": 151.652,
+      "convergenceDelayFraction": 0.05
+    },
+    {
+      "index": 6,
+      "pole": "earth",
+      "angleRadians": -1.31946891,
+      "x": 647.2511,
+      "y": 153.4692,
+      "convergenceDelayFraction": 0.02
+    },
+    {
+      "index": 7,
+      "pole": "earth",
+      "angleRadians": -1.27758101,
+      "x": 654.916,
+      "y": 155.6093,
+      "convergenceDelayFraction": 0.09
+    },
+    {
+      "index": 8,
+      "pole": "earth",
+      "angleRadians": -1.23569311,
+      "x": 662.4847,
+      "y": 158.0685,
+      "convergenceDelayFraction": 0.06
+    },
+    {
+      "index": 9,
+      "pole": "earth",
+      "angleRadians": -1.19380521,
+      "x": 669.9437,
+      "y": 160.8425,
+      "convergenceDelayFraction": 0.03
+    },
+    {
+      "index": 10,
+      "pole": "earth",
+      "angleRadians": -1.15191731,
+      "x": 677.28,
+      "y": 163.9264,
+      "convergenceDelayFraction": 0.0
+    },
+    {
+      "index": 11,
+      "pole": "earth",
+      "angleRadians": -1.1100294,
+      "x": 684.4807,
+      "y": 167.3148,
+      "convergenceDelayFraction": 0.07
+    },
+    {
+      "index": 12,
+      "pole": "earth",
+      "angleRadians": -1.0681415,
+      "x": 691.5332,
+      "y": 171.0017,
+      "convergenceDelayFraction": 0.04
+    },
+    {
+      "index": 13,
+      "pole": "earth",
+      "angleRadians": -1.0262536,
+      "x": 698.4251,
+      "y": 174.9808,
+      "convergenceDelayFraction": 0.01
+    },
+    {
+      "index": 14,
+      "pole": "earth",
+      "angleRadians": -0.9843657,
+      "x": 705.1444,
+      "y": 179.245,
+      "convergenceDelayFraction": 0.08
+    },
+    {
+      "index": 15,
+      "pole": "earth",
+      "angleRadians": -0.9424778,
+      "x": 711.6792,
+      "y": 183.7868,
+      "convergenceDelayFraction": 0.05
+    },
+    {
+      "index": 16,
+      "pole": "earth",
+      "angleRadians": -0.90058989,
+      "x": 718.0181,
+      "y": 188.5982,
+      "convergenceDelayFraction": 0.02
+    },
+    {
+      "index": 17,
+      "pole": "earth",
+      "angleRadians": -0.85870199,
+      "x": 724.1499,
+      "y": 193.6709,
+      "convergenceDelayFraction": 0.09
+    },
+    {
+      "index": 18,
+      "pole": "earth",
+      "angleRadians": -0.81681409,
+      "x": 730.064,
+      "y": 198.996,
+      "convergenceDelayFraction": 0.06
+    },
+    {
+      "index": 19,
+      "pole": "earth",
+      "angleRadians": -0.77492619,
+      "x": 735.7498,
+      "y": 204.564,
+      "convergenceDelayFraction": 0.03
+    },
+    {
+      "index": 20,
+      "pole": "earth",
+      "angleRadians": -0.73303829,
+      "x": 741.1975,
+      "y": 210.3652,
+      "convergenceDelayFraction": 0.0
+    },
+    {
+      "index": 21,
+      "pole": "earth",
+      "angleRadians": -0.69115038,
+      "x": 746.3975,
+      "y": 216.3894,
+      "convergenceDelayFraction": 0.07
+    },
+    {
+      "index": 22,
+      "pole": "earth",
+      "angleRadians": -0.64926248,
+      "x": 751.3407,
+      "y": 222.6262,
+      "convergenceDelayFraction": 0.04
+    },
+    {
+      "index": 23,
+      "pole": "earth",
+      "angleRadians": -0.60737458,
+      "x": 756.0183,
+      "y": 229.0644,
+      "convergenceDelayFraction": 0.01
+    },
+    {
+      "index": 24,
+      "pole": "earth",
+      "angleRadians": -0.56548668,
+      "x": 760.4223,
+      "y": 235.6929,
+      "convergenceDelayFraction": 0.08
+    },
+    {
+      "index": 25,
+      "pole": "earth",
+      "angleRadians": -0.52359878,
+      "x": 764.5448,
+      "y": 242.5,
+      "convergenceDelayFraction": 0.05
+    },
+    {
+      "index": 26,
+      "pole": "earth",
+      "angleRadians": -0.48171087,
+      "x": 768.3787,
+      "y": 249.4738,
+      "convergenceDelayFraction": 0.02
+    },
+    {
+      "index": 27,
+      "pole": "earth",
+      "angleRadians": -0.43982297,
+      "x": 771.9171,
+      "y": 256.6019,
+      "convergenceDelayFraction": 0.09
+    },
+    {
+      "index": 28,
+      "pole": "earth",
+      "angleRadians": -0.39793507,
+      "x": 775.154,
+      "y": 263.872,
+      "convergenceDelayFraction": 0.06
+    },
+    {
+      "index": 29,
+      "pole": "earth",
+      "angleRadians": -0.35604717,
+      "x": 778.0836,
+      "y": 271.2713,
+      "convergenceDelayFraction": 0.03
+    },
+    {
+      "index": 30,
+      "pole": "earth",
+      "angleRadians": -0.31415927,
+      "x": 780.7007,
+      "y": 278.7868,
+      "convergenceDelayFraction": 0.0
+    },
+    {
+      "index": 31,
+      "pole": "earth",
+      "angleRadians": -0.27227136,
+      "x": 783.0009,
+      "y": 286.4052,
+      "convergenceDelayFraction": 0.07
+    },
+    {
+      "index": 32,
+      "pole": "earth",
+      "angleRadians": -0.23038346,
+      "x": 784.98,
+      "y": 294.1133,
+      "convergenceDelayFraction": 0.04
+    },
+    {
+      "index": 33,
+      "pole": "earth",
+      "angleRadians": -0.18849556,
+      "x": 786.6346,
+      "y": 301.8976,
+      "convergenceDelayFraction": 0.01
+    },
+    {
+      "index": 34,
+      "pole": "earth",
+      "angleRadians": -0.14660766,
+      "x": 787.9617,
+      "y": 309.7442,
+      "convergenceDelayFraction": 0.08
+    },
+    {
+      "index": 35,
+      "pole": "earth",
+      "angleRadians": -0.10471976,
+      "x": 788.9592,
+      "y": 317.6396,
+      "convergenceDelayFraction": 0.05
+    },
+    {
+      "index": 36,
+      "pole": "earth",
+      "angleRadians": -0.06283185,
+      "x": 789.6251,
+      "y": 325.5698,
+      "convergenceDelayFraction": 0.02
+    },
+    {
+      "index": 37,
+      "pole": "earth",
+      "angleRadians": -0.02094395,
+      "x": 789.9583,
+      "y": 333.5209,
+      "convergenceDelayFraction": 0.09
+    },
+    {
+      "index": 38,
+      "pole": "earth",
+      "angleRadians": 0.02094395,
+      "x": 789.9583,
+      "y": 341.4791,
+      "convergenceDelayFraction": 0.06
+    },
+    {
+      "index": 39,
+      "pole": "earth",
+      "angleRadians": 0.06283185,
+      "x": 789.6251,
+      "y": 349.4302,
+      "convergenceDelayFraction": 0.03
+    },
+    {
+      "index": 40,
+      "pole": "earth",
+      "angleRadians": 0.10471976,
+      "x": 788.9592,
+      "y": 357.3604,
+      "convergenceDelayFraction": 0.0
+    },
+    {
+      "index": 41,
+      "pole": "earth",
+      "angleRadians": 0.14660766,
+      "x": 787.9617,
+      "y": 365.2558,
+      "convergenceDelayFraction": 0.07
+    },
+    {
+      "index": 42,
+      "pole": "earth",
+      "angleRadians": 0.18849556,
+      "x": 786.6346,
+      "y": 373.1024,
+      "convergenceDelayFraction": 0.04
+    },
+    {
+      "index": 43,
+      "pole": "earth",
+      "angleRadians": 0.23038346,
+      "x": 784.98,
+      "y": 380.8867,
+      "convergenceDelayFraction": 0.01
+    },
+    {
+      "index": 44,
+      "pole": "earth",
+      "angleRadians": 0.27227136,
+      "x": 783.0009,
+      "y": 388.5948,
+      "convergenceDelayFraction": 0.08
+    },
+    {
+      "index": 45,
+      "pole": "earth",
+      "angleRadians": 0.31415927,
+      "x": 780.7007,
+      "y": 396.2132,
+      "convergenceDelayFraction": 0.05
+    },
+    {
+      "index": 46,
+      "pole": "earth",
+      "angleRadians": 0.35604717,
+      "x": 778.0836,
+      "y": 403.7287,
+      "convergenceDelayFraction": 0.02
+    },
+    {
+      "index": 47,
+      "pole": "earth",
+      "angleRadians": 0.39793507,
+      "x": 775.154,
+      "y": 411.128,
+      "convergenceDelayFraction": 0.09
+    },
+    {
+      "index": 48,
+      "pole": "earth",
+      "angleRadians": 0.43982297,
+      "x": 771.9171,
+      "y": 418.3981,
+      "convergenceDelayFraction": 0.06
+    },
+    {
+      "index": 49,
+      "pole": "earth",
+      "angleRadians": 0.48171087,
+      "x": 768.3787,
+      "y": 425.5262,
+      "convergenceDelayFraction": 0.03
+    },
+    {
+      "index": 50,
+      "pole": "earth",
+      "angleRadians": 0.52359878,
+      "x": 764.5448,
+      "y": 432.5,
+      "convergenceDelayFraction": 0.0
+    },
+    {
+      "index": 51,
+      "pole": "earth",
+      "angleRadians": 0.56548668,
+      "x": 760.4223,
+      "y": 439.3071,
+      "convergenceDelayFraction": 0.07
+    },
+    {
+      "index": 52,
+      "pole": "earth",
+      "angleRadians": 0.60737458,
+      "x": 756.0183,
+      "y": 445.9356,
+      "convergenceDelayFraction": 0.04
+    },
+    {
+      "index": 53,
+      "pole": "earth",
+      "angleRadians": 0.64926248,
+      "x": 751.3407,
+      "y": 452.3738,
+      "convergenceDelayFraction": 0.01
+    },
+    {
+      "index": 54,
+      "pole": "earth",
+      "angleRadians": 0.69115038,
+      "x": 746.3975,
+      "y": 458.6106,
+      "convergenceDelayFraction": 0.08
+    },
+    {
+      "index": 55,
+      "pole": "earth",
+      "angleRadians": 0.73303829,
+      "x": 741.1975,
+      "y": 464.6348,
+      "convergenceDelayFraction": 0.05
+    },
+    {
+      "index": 56,
+      "pole": "earth",
+      "angleRadians": 0.77492619,
+      "x": 735.7498,
+      "y": 470.436,
+      "convergenceDelayFraction": 0.02
+    },
+    {
+      "index": 57,
+      "pole": "earth",
+      "angleRadians": 0.81681409,
+      "x": 730.064,
+      "y": 476.004,
+      "convergenceDelayFraction": 0.09
+    },
+    {
+      "index": 58,
+      "pole": "earth",
+      "angleRadians": 0.85870199,
+      "x": 724.1499,
+      "y": 481.3291,
+      "convergenceDelayFraction": 0.06
+    },
+    {
+      "index": 59,
+      "pole": "earth",
+      "angleRadians": 0.90058989,
+      "x": 718.0181,
+      "y": 486.4018,
+      "convergenceDelayFraction": 0.03
+    },
+    {
+      "index": 60,
+      "pole": "earth",
+      "angleRadians": 0.9424778,
+      "x": 711.6792,
+      "y": 491.2132,
+      "convergenceDelayFraction": 0.0
+    },
+    {
+      "index": 61,
+      "pole": "earth",
+      "angleRadians": 0.9843657,
+      "x": 705.1444,
+      "y": 495.755,
+      "convergenceDelayFraction": 0.07
+    },
+    {
+      "index": 62,
+      "pole": "earth",
+      "angleRadians": 1.0262536,
+      "x": 698.4251,
+      "y": 500.0192,
+      "convergenceDelayFraction": 0.04
+    },
+    {
+      "index": 63,
+      "pole": "earth",
+      "angleRadians": 1.0681415,
+      "x": 691.5332,
+      "y": 503.9983,
+      "convergenceDelayFraction": 0.01
+    },
+    {
+      "index": 64,
+      "pole": "earth",
+      "angleRadians": 1.1100294,
+      "x": 684.4807,
+      "y": 507.6852,
+      "convergenceDelayFraction": 0.08
+    },
+    {
+      "index": 65,
+      "pole": "earth",
+      "angleRadians": 1.15191731,
+      "x": 677.28,
+      "y": 511.0736,
+      "convergenceDelayFraction": 0.05
+    },
+    {
+      "index": 66,
+      "pole": "earth",
+      "angleRadians": 1.19380521,
+      "x": 669.9437,
+      "y": 514.1575,
+      "convergenceDelayFraction": 0.02
+    },
+    {
+      "index": 67,
+      "pole": "earth",
+      "angleRadians": 1.23569311,
+      "x": 662.4847,
+      "y": 516.9315,
+      "convergenceDelayFraction": 0.09
+    },
+    {
+      "index": 68,
+      "pole": "earth",
+      "angleRadians": 1.27758101,
+      "x": 654.916,
+      "y": 519.3907,
+      "convergenceDelayFraction": 0.06
+    },
+    {
+      "index": 69,
+      "pole": "earth",
+      "angleRadians": 1.31946891,
+      "x": 647.2511,
+      "y": 521.5308,
+      "convergenceDelayFraction": 0.03
+    },
+    {
+      "index": 70,
+      "pole": "earth",
+      "angleRadians": 1.36135682,
+      "x": 639.5032,
+      "y": 523.348,
+      "convergenceDelayFraction": 0.0
+    },
+    {
+      "index": 71,
+      "pole": "earth",
+      "angleRadians": 1.40324472,
+      "x": 631.6861,
+      "y": 524.8392,
+      "convergenceDelayFraction": 0.07
+    },
+    {
+      "index": 72,
+      "pole": "earth",
+      "angleRadians": 1.44513262,
+      "x": 623.8133,
+      "y": 526.0018,
+      "convergenceDelayFraction": 0.04
+    },
+    {
+      "index": 73,
+      "pole": "earth",
+      "angleRadians": 1.48702052,
+      "x": 615.8988,
+      "y": 526.8336,
+      "convergenceDelayFraction": 0.01
+    },
+    {
+      "index": 74,
+      "pole": "earth",
+      "angleRadians": 1.52890842,
+      "x": 607.9564,
+      "y": 527.3333,
+      "convergenceDelayFraction": 0.08
+    },
+    {
+      "index": 75,
+      "pole": "cosmos",
+      "angleRadians": 1.57079633,
+      "x": 600.0,
+      "y": 527.5,
+      "convergenceDelayFraction": 0.05
+    },
+    {
+      "index": 76,
+      "pole": "cosmos",
+      "angleRadians": 1.61268423,
+      "x": 592.0436,
+      "y": 527.3333,
+      "convergenceDelayFraction": 0.02
+    },
+    {
+      "index": 77,
+      "pole": "cosmos",
+      "angleRadians": 1.65457213,
+      "x": 584.1012,
+      "y": 526.8336,
+      "convergenceDelayFraction": 0.09
+    },
+    {
+      "index": 78,
+      "pole": "cosmos",
+      "angleRadians": 1.69646003,
+      "x": 576.1867,
+      "y": 526.0018,
+      "convergenceDelayFraction": 0.06
+    },
+    {
+      "index": 79,
+      "pole": "cosmos",
+      "angleRadians": 1.73834793,
+      "x": 568.3139,
+      "y": 524.8392,
+      "convergenceDelayFraction": 0.03
+    },
+    {
+      "index": 80,
+      "pole": "cosmos",
+      "angleRadians": 1.78023584,
+      "x": 560.4968,
+      "y": 523.348,
+      "convergenceDelayFraction": 0.0
+    },
+    {
+      "index": 81,
+      "pole": "cosmos",
+      "angleRadians": 1.82212374,
+      "x": 552.7489,
+      "y": 521.5308,
+      "convergenceDelayFraction": 0.07
+    },
+    {
+      "index": 82,
+      "pole": "cosmos",
+      "angleRadians": 1.86401164,
+      "x": 545.084,
+      "y": 519.3907,
+      "convergenceDelayFraction": 0.04
+    },
+    {
+      "index": 83,
+      "pole": "cosmos",
+      "angleRadians": 1.90589954,
+      "x": 537.5153,
+      "y": 516.9315,
+      "convergenceDelayFraction": 0.01
+    },
+    {
+      "index": 84,
+      "pole": "cosmos",
+      "angleRadians": 1.94778745,
+      "x": 530.0563,
+      "y": 514.1575,
+      "convergenceDelayFraction": 0.08
+    },
+    {
+      "index": 85,
+      "pole": "cosmos",
+      "angleRadians": 1.98967535,
+      "x": 522.72,
+      "y": 511.0736,
+      "convergenceDelayFraction": 0.05
+    },
+    {
+      "index": 86,
+      "pole": "cosmos",
+      "angleRadians": 2.03156325,
+      "x": 515.5193,
+      "y": 507.6852,
+      "convergenceDelayFraction": 0.02
+    },
+    {
+      "index": 87,
+      "pole": "cosmos",
+      "angleRadians": 2.07345115,
+      "x": 508.4668,
+      "y": 503.9983,
+      "convergenceDelayFraction": 0.09
+    },
+    {
+      "index": 88,
+      "pole": "cosmos",
+      "angleRadians": 2.11533905,
+      "x": 501.5749,
+      "y": 500.0192,
+      "convergenceDelayFraction": 0.06
+    },
+    {
+      "index": 89,
+      "pole": "cosmos",
+      "angleRadians": 2.15722696,
+      "x": 494.8556,
+      "y": 495.755,
+      "convergenceDelayFraction": 0.03
+    },
+    {
+      "index": 90,
+      "pole": "cosmos",
+      "angleRadians": 2.19911486,
+      "x": 488.3208,
+      "y": 491.2132,
+      "convergenceDelayFraction": 0.0
+    },
+    {
+      "index": 91,
+      "pole": "cosmos",
+      "angleRadians": 2.24100276,
+      "x": 481.9819,
+      "y": 486.4018,
+      "convergenceDelayFraction": 0.07
+    },
+    {
+      "index": 92,
+      "pole": "cosmos",
+      "angleRadians": 2.28289066,
+      "x": 475.8501,
+      "y": 481.3291,
+      "convergenceDelayFraction": 0.04
+    },
+    {
+      "index": 93,
+      "pole": "cosmos",
+      "angleRadians": 2.32477856,
+      "x": 469.936,
+      "y": 476.004,
+      "convergenceDelayFraction": 0.01
+    },
+    {
+      "index": 94,
+      "pole": "cosmos",
+      "angleRadians": 2.36666647,
+      "x": 464.2502,
+      "y": 470.436,
+      "convergenceDelayFraction": 0.08
+    },
+    {
+      "index": 95,
+      "pole": "cosmos",
+      "angleRadians": 2.40855437,
+      "x": 458.8025,
+      "y": 464.6348,
+      "convergenceDelayFraction": 0.05
+    },
+    {
+      "index": 96,
+      "pole": "cosmos",
+      "angleRadians": 2.45044227,
+      "x": 453.6025,
+      "y": 458.6106,
+      "convergenceDelayFraction": 0.02
+    },
+    {
+      "index": 97,
+      "pole": "cosmos",
+      "angleRadians": 2.49233017,
+      "x": 448.6593,
+      "y": 452.3738,
+      "convergenceDelayFraction": 0.09
+    },
+    {
+      "index": 98,
+      "pole": "cosmos",
+      "angleRadians": 2.53421807,
+      "x": 443.9817,
+      "y": 445.9356,
+      "convergenceDelayFraction": 0.06
+    },
+    {
+      "index": 99,
+      "pole": "cosmos",
+      "angleRadians": 2.57610598,
+      "x": 439.5777,
+      "y": 439.3071,
+      "convergenceDelayFraction": 0.03
+    },
+    {
+      "index": 100,
+      "pole": "cosmos",
+      "angleRadians": 2.61799388,
+      "x": 435.4552,
+      "y": 432.5,
+      "convergenceDelayFraction": 0.0
+    },
+    {
+      "index": 101,
+      "pole": "cosmos",
+      "angleRadians": 2.65988178,
+      "x": 431.6213,
+      "y": 425.5262,
+      "convergenceDelayFraction": 0.07
+    },
+    {
+      "index": 102,
+      "pole": "cosmos",
+      "angleRadians": 2.70176968,
+      "x": 428.0829,
+      "y": 418.3981,
+      "convergenceDelayFraction": 0.04
+    },
+    {
+      "index": 103,
+      "pole": "cosmos",
+      "angleRadians": 2.74365758,
+      "x": 424.846,
+      "y": 411.128,
+      "convergenceDelayFraction": 0.01
+    },
+    {
+      "index": 104,
+      "pole": "cosmos",
+      "angleRadians": 2.78554549,
+      "x": 421.9164,
+      "y": 403.7287,
+      "convergenceDelayFraction": 0.08
+    },
+    {
+      "index": 105,
+      "pole": "cosmos",
+      "angleRadians": 2.82743339,
+      "x": 419.2993,
+      "y": 396.2132,
+      "convergenceDelayFraction": 0.05
+    },
+    {
+      "index": 106,
+      "pole": "cosmos",
+      "angleRadians": 2.86932129,
+      "x": 416.9991,
+      "y": 388.5948,
+      "convergenceDelayFraction": 0.02
+    },
+    {
+      "index": 107,
+      "pole": "cosmos",
+      "angleRadians": 2.91120919,
+      "x": 415.02,
+      "y": 380.8867,
+      "convergenceDelayFraction": 0.09
+    },
+    {
+      "index": 108,
+      "pole": "cosmos",
+      "angleRadians": 2.95309709,
+      "x": 413.3654,
+      "y": 373.1024,
+      "convergenceDelayFraction": 0.06
+    },
+    {
+      "index": 109,
+      "pole": "cosmos",
+      "angleRadians": 2.994985,
+      "x": 412.0383,
+      "y": 365.2558,
+      "convergenceDelayFraction": 0.03
+    },
+    {
+      "index": 110,
+      "pole": "cosmos",
+      "angleRadians": 3.0368729,
+      "x": 411.0408,
+      "y": 357.3604,
+      "convergenceDelayFraction": 0.0
+    },
+    {
+      "index": 111,
+      "pole": "cosmos",
+      "angleRadians": 3.0787608,
+      "x": 410.3749,
+      "y": 349.4302,
+      "convergenceDelayFraction": 0.07
+    },
+    {
+      "index": 112,
+      "pole": "cosmos",
+      "angleRadians": 3.1206487,
+      "x": 410.0417,
+      "y": 341.4791,
+      "convergenceDelayFraction": 0.04
+    },
+    {
+      "index": 113,
+      "pole": "cosmos",
+      "angleRadians": 3.1625366,
+      "x": 410.0417,
+      "y": 333.5209,
+      "convergenceDelayFraction": 0.01
+    },
+    {
+      "index": 114,
+      "pole": "cosmos",
+      "angleRadians": 3.20442451,
+      "x": 410.3749,
+      "y": 325.5698,
+      "convergenceDelayFraction": 0.08
+    },
+    {
+      "index": 115,
+      "pole": "cosmos",
+      "angleRadians": 3.24631241,
+      "x": 411.0408,
+      "y": 317.6396,
+      "convergenceDelayFraction": 0.05
+    },
+    {
+      "index": 116,
+      "pole": "cosmos",
+      "angleRadians": 3.28820031,
+      "x": 412.0383,
+      "y": 309.7442,
+      "convergenceDelayFraction": 0.02
+    },
+    {
+      "index": 117,
+      "pole": "cosmos",
+      "angleRadians": 3.33008821,
+      "x": 413.3654,
+      "y": 301.8976,
+      "convergenceDelayFraction": 0.09
+    },
+    {
+      "index": 118,
+      "pole": "cosmos",
+      "angleRadians": 3.37197611,
+      "x": 415.02,
+      "y": 294.1133,
+      "convergenceDelayFraction": 0.06
+    },
+    {
+      "index": 119,
+      "pole": "cosmos",
+      "angleRadians": 3.41386402,
+      "x": 416.9991,
+      "y": 286.4052,
+      "convergenceDelayFraction": 0.03
+    },
+    {
+      "index": 120,
+      "pole": "cosmos",
+      "angleRadians": 3.45575192,
+      "x": 419.2993,
+      "y": 278.7868,
+      "convergenceDelayFraction": 0.0
+    },
+    {
+      "index": 121,
+      "pole": "cosmos",
+      "angleRadians": 3.49763982,
+      "x": 421.9164,
+      "y": 271.2713,
+      "convergenceDelayFraction": 0.07
+    },
+    {
+      "index": 122,
+      "pole": "cosmos",
+      "angleRadians": 3.53952772,
+      "x": 424.846,
+      "y": 263.872,
+      "convergenceDelayFraction": 0.04
+    },
+    {
+      "index": 123,
+      "pole": "cosmos",
+      "angleRadians": 3.58141563,
+      "x": 428.0829,
+      "y": 256.6019,
+      "convergenceDelayFraction": 0.01
+    },
+    {
+      "index": 124,
+      "pole": "cosmos",
+      "angleRadians": 3.62330353,
+      "x": 431.6213,
+      "y": 249.4738,
+      "convergenceDelayFraction": 0.08
+    },
+    {
+      "index": 125,
+      "pole": "cosmos",
+      "angleRadians": 3.66519143,
+      "x": 435.4552,
+      "y": 242.5,
+      "convergenceDelayFraction": 0.05
+    },
+    {
+      "index": 126,
+      "pole": "cosmos",
+      "angleRadians": 3.70707933,
+      "x": 439.5777,
+      "y": 235.6929,
+      "convergenceDelayFraction": 0.02
+    },
+    {
+      "index": 127,
+      "pole": "cosmos",
+      "angleRadians": 3.74896723,
+      "x": 443.9817,
+      "y": 229.0644,
+      "convergenceDelayFraction": 0.09
+    },
+    {
+      "index": 128,
+      "pole": "cosmos",
+      "angleRadians": 3.79085514,
+      "x": 448.6593,
+      "y": 222.6262,
+      "convergenceDelayFraction": 0.06
+    },
+    {
+      "index": 129,
+      "pole": "cosmos",
+      "angleRadians": 3.83274304,
+      "x": 453.6025,
+      "y": 216.3894,
+      "convergenceDelayFraction": 0.03
+    },
+    {
+      "index": 130,
+      "pole": "cosmos",
+      "angleRadians": 3.87463094,
+      "x": 458.8025,
+      "y": 210.3652,
+      "convergenceDelayFraction": 0.0
+    },
+    {
+      "index": 131,
+      "pole": "cosmos",
+      "angleRadians": 3.91651884,
+      "x": 464.2502,
+      "y": 204.564,
+      "convergenceDelayFraction": 0.07
+    },
+    {
+      "index": 132,
+      "pole": "cosmos",
+      "angleRadians": 3.95840674,
+      "x": 469.936,
+      "y": 198.996,
+      "convergenceDelayFraction": 0.04
+    },
+    {
+      "index": 133,
+      "pole": "cosmos",
+      "angleRadians": 4.00029465,
+      "x": 475.8501,
+      "y": 193.6709,
+      "convergenceDelayFraction": 0.01
+    },
+    {
+      "index": 134,
+      "pole": "cosmos",
+      "angleRadians": 4.04218255,
+      "x": 481.9819,
+      "y": 188.5982,
+      "convergenceDelayFraction": 0.08
+    },
+    {
+      "index": 135,
+      "pole": "cosmos",
+      "angleRadians": 4.08407045,
+      "x": 488.3208,
+      "y": 183.7868,
+      "convergenceDelayFraction": 0.05
+    },
+    {
+      "index": 136,
+      "pole": "cosmos",
+      "angleRadians": 4.12595835,
+      "x": 494.8556,
+      "y": 179.245,
+      "convergenceDelayFraction": 0.02
+    },
+    {
+      "index": 137,
+      "pole": "cosmos",
+      "angleRadians": 4.16784625,
+      "x": 501.5749,
+      "y": 174.9808,
+      "convergenceDelayFraction": 0.09
+    },
+    {
+      "index": 138,
+      "pole": "cosmos",
+      "angleRadians": 4.20973416,
+      "x": 508.4668,
+      "y": 171.0017,
+      "convergenceDelayFraction": 0.06
+    },
+    {
+      "index": 139,
+      "pole": "cosmos",
+      "angleRadians": 4.25162206,
+      "x": 515.5193,
+      "y": 167.3148,
+      "convergenceDelayFraction": 0.03
+    },
+    {
+      "index": 140,
+      "pole": "cosmos",
+      "angleRadians": 4.29350996,
+      "x": 522.72,
+      "y": 163.9264,
+      "convergenceDelayFraction": 0.0
+    },
+    {
+      "index": 141,
+      "pole": "cosmos",
+      "angleRadians": 4.33539786,
+      "x": 530.0563,
+      "y": 160.8425,
+      "convergenceDelayFraction": 0.07
+    },
+    {
+      "index": 142,
+      "pole": "cosmos",
+      "angleRadians": 4.37728576,
+      "x": 537.5153,
+      "y": 158.0685,
+      "convergenceDelayFraction": 0.04
+    },
+    {
+      "index": 143,
+      "pole": "cosmos",
+      "angleRadians": 4.41917367,
+      "x": 545.084,
+      "y": 155.6093,
+      "convergenceDelayFraction": 0.01
+    },
+    {
+      "index": 144,
+      "pole": "cosmos",
+      "angleRadians": 4.46106157,
+      "x": 552.7489,
+      "y": 153.4692,
+      "convergenceDelayFraction": 0.08
+    },
+    {
+      "index": 145,
+      "pole": "cosmos",
+      "angleRadians": 4.50294947,
+      "x": 560.4968,
+      "y": 151.652,
+      "convergenceDelayFraction": 0.05
+    },
+    {
+      "index": 146,
+      "pole": "cosmos",
+      "angleRadians": 4.54483737,
+      "x": 568.3139,
+      "y": 150.1608,
+      "convergenceDelayFraction": 0.02
+    },
+    {
+      "index": 147,
+      "pole": "cosmos",
+      "angleRadians": 4.58672527,
+      "x": 576.1867,
+      "y": 148.9982,
+      "convergenceDelayFraction": 0.09
+    },
+    {
+      "index": 148,
+      "pole": "cosmos",
+      "angleRadians": 4.62861318,
+      "x": 584.1012,
+      "y": 148.1664,
+      "convergenceDelayFraction": 0.06
+    },
+    {
+      "index": 149,
+      "pole": "cosmos",
+      "angleRadians": 4.67050108,
+      "x": 592.0436,
+      "y": 147.6667,
+      "convergenceDelayFraction": 0.03
+    }
+  ]
+}

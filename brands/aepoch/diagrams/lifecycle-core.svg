@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">ÆPOCH core lifecycle</title>
+  <desc id="desc">The canonical four-stage lifecycle: show up, activate, circulate, become permanent.</desc>
+<rect width="1200" height="675" fill="#FAF8F5"/>
+  <text x="90" y="76" font-family="Inter, Arial, Helvetica, sans-serif" font-size="42" font-weight="800" fill="#1A1612">Activation → circulation → permanence</text>
+  <circle cx="165" cy="340" r="78" fill="#FAF8F5" stroke="#C4835A" stroke-width="4"/>
+  <circle cx="165" cy="322" r="13" fill="#C4835A"/><path d="M141 374V345C141 330 152 319 165 319C178 319 189 330 189 345V374" fill="#C4835A"/>
+  <text x="165" y="462" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="25" font-weight="750" fill="#1A1612">Show up</text>
+  <path d="M247 340H363" stroke="#E0D8D0" stroke-width="4"/><path d="M351 330L363 340L351 350" fill="none" stroke="#8A8480" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="455" cy="340" r="78" fill="#FAF8F5" stroke="#B8A9D9" stroke-width="4"/>
+  <circle cx="455" cy="340" r="18" fill="none" stroke="#B8A9D9" stroke-width="4"/><path d="M455 296V311M455 369V384M411 340H426M484 340H499" stroke="#B8A9D9" stroke-width="4" stroke-linecap="round"/>
+  <text x="455" y="462" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="25" font-weight="750" fill="#1A1612">Activate</text>
+  <path d="M537 340H653" stroke="#E0D8D0" stroke-width="4"/><path d="M641 330L653 340L641 350" fill="none" stroke="#8A8480" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="745" cy="340" r="78" fill="#FAF8F5" stroke="#8BAFD4" stroke-width="4"/>
+  <path d="M709 332A40 40 0 0 1 773 312" fill="none" stroke="#8BAFD4" stroke-width="4" stroke-linecap="round"/><path d="M767 298L776 314L759 320" fill="none" stroke="#8BAFD4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M781 348A40 40 0 0 1 717 368" fill="none" stroke="#8BAFD4" stroke-width="4" stroke-linecap="round"/>
+  <text x="745" y="462" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="25" font-weight="750" fill="#1A1612">Circulate</text>
+  <path d="M827 340H943" stroke="#E0D8D0" stroke-width="4"/><path d="M931 330L943 340L931 350" fill="none" stroke="#8A8480" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="1035" cy="340" r="78" fill="#FAF8F5" stroke="#4A4440" stroke-width="4"/>
+  <circle cx="1035" cy="340" r="43" fill="none" stroke="#4A4440" stroke-width="4"/><path d="M1015 340L1029 355L1059 322" fill="none" stroke="#4A4440" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1035" y="462" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="25" font-weight="750" fill="#1A1612">Become permanent</text>
+</svg>

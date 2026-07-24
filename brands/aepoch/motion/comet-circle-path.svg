@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Comet circle path</title>
+  <desc id="desc">Reusable circular path for Comet Arc motion.</desc>
+  <rect width="1200" height="675" fill="none"/>
+  <circle id="comet-path" cx="600" cy="337.5" r="220" fill="none" stroke="#B8A9D9" stroke-width="3" stroke-dasharray="12 10"/>
+  <circle cx="600" cy="117.5" r="8" fill="#FFFFFF" stroke="#B8A9D9" stroke-width="3"/>
+</svg>

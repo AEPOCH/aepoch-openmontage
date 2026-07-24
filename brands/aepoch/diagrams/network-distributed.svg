@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Distributed network</title>
+  <desc id="desc">Equal human nodes connected without a single central gate.</desc>
+  <rect width="1200" height="675" fill="#FAF8F5"/>
+  <text x="90" y="76" font-family="Inter, Arial, Helvetica, sans-serif" font-size="42" font-weight="800" fill="#1A1612">Distributed</text>
+  <path d="M215 150 Q322.5 111.0 430 120" fill="none" stroke="#8BAFD4" stroke-width="3" opacity="0.72"/><path d="M430 120 Q545.0 108.5 660 145" fill="none" stroke="#8BAFD4" stroke-width="3" opacity="0.72"/><path d="M660 145 Q785.0 133.5 910 170" fill="none" stroke="#8BAFD4" stroke-width="3" opacity="0.72"/><path d="M215 150 Q237.5 246.0 260 390" fill="none" stroke="#8BAFD4" stroke-width="3" opacity="0.72"/><path d="M430 120 Q465.0 216.0 500 360" fill="none" stroke="#8BAFD4" stroke-width="3" opacity="0.72"/><path d="M660 145 Q580.0 228.5 500 360" fill="none" stroke="#8BAFD4" stroke-width="3" opacity="0.72"/><path d="M660 145 Q702.5 243.5 745 390" fill="none" stroke="#8BAFD4" stroke-width="3" opacity="0.72"/><path d="M910 170 Q937.5 271.0 965 420" fill="none" stroke="#8BAFD4" stroke-width="3" opacity="0.72"/><path d="M260 390 Q380.0 351.0 500 360" fill="none" stroke="#8BAFD4" stroke-width="3" opacity="0.72"/><path d="M500 360 Q622.5 351.0 745 390" fill="none" stroke="#8BAFD4" stroke-width="3" opacity="0.72"/><path d="M745 390 Q855.0 381.0 965 420" fill="none" stroke="#8BAFD4" stroke-width="3" opacity="0.72"/><path d="M430 120 Q345.0 231.0 260 390" fill="none" stroke="#8BAFD4" stroke-width="3" opacity="0.72"/><path d="M910 170 Q827.5 256.0 745 390" fill="none" stroke="#8BAFD4" stroke-width="3" opacity="0.72"/>
+  
+  <circle cx="215" cy="150" r="39" fill="#FAF8F5" stroke="#8BAFD4" stroke-width="3"/>
+  <circle cx="215" cy="139" r="7.0" fill="#C4835A"/>
+  <path d="M205.6 160.9V152.3C205.6 147.7 209.9 143.4 215.0 143.4C220.1 143.4 224.4 147.7 224.4 152.3V160.9" fill="#C4835A"/>
+  
+  <circle cx="430" cy="120" r="39" fill="#FAF8F5" stroke="#B8A9D9" stroke-width="3"/>
+  <circle cx="430" cy="109" r="7.0" fill="#C4835A"/>
+  <path d="M420.6 130.9V122.3C420.6 117.7 424.9 113.4 430.0 113.4C435.1 113.4 439.4 117.7 439.4 122.3V130.9" fill="#C4835A"/>
+  
+  <circle cx="660" cy="145" r="39" fill="#FAF8F5" stroke="#8BAFD4" stroke-width="3"/>
+  <circle cx="660" cy="134" r="7.0" fill="#C4835A"/>
+  <path d="M650.6 155.9V147.3C650.6 142.7 654.9 138.4 660.0 138.4C665.1 138.4 669.4 142.7 669.4 147.3V155.9" fill="#C4835A"/>
+  
+  <circle cx="910" cy="170" r="39" fill="#FAF8F5" stroke="#B8A9D9" stroke-width="3"/>
+  <circle cx="910" cy="159" r="7.0" fill="#C4835A"/>
+  <path d="M900.6 180.9V172.3C900.6 167.7 904.9 163.4 910.0 163.4C915.1 163.4 919.4 167.7 919.4 172.3V180.9" fill="#C4835A"/>
+  
+  <circle cx="260" cy="390" r="39" fill="#FAF8F5" stroke="#8BAFD4" stroke-width="3"/>
+  <circle cx="260" cy="379" r="7.0" fill="#C4835A"/>
+  <path d="M250.6 400.9V392.3C250.6 387.7 254.9 383.4 260.0 383.4C265.1 383.4 269.4 387.7 269.4 392.3V400.9" fill="#C4835A"/>
+  
+  <circle cx="500" cy="360" r="39" fill="#FAF8F5" stroke="#B8A9D9" stroke-width="3"/>
+  <circle cx="500" cy="349" r="7.0" fill="#C4835A"/>
+  <path d="M490.6 370.9V362.3C490.6 357.7 494.9 353.4 500.0 353.4C505.1 353.4 509.4 357.7 509.4 362.3V370.9" fill="#C4835A"/>
+  
+  <circle cx="745" cy="390" r="39" fill="#FAF8F5" stroke="#8BAFD4" stroke-width="3"/>
+  <circle cx="745" cy="379" r="7.0" fill="#C4835A"/>
+  <path d="M735.6 400.9V392.3C735.6 387.7 739.9 383.4 745.0 383.4C750.1 383.4 754.4 387.7 754.4 392.3V400.9" fill="#C4835A"/>
+  
+  <circle cx="965" cy="420" r="39" fill="#FAF8F5" stroke="#B8A9D9" stroke-width="3"/>
+  <circle cx="965" cy="409" r="7.0" fill="#C4835A"/>
+  <path d="M955.6 430.9V422.3C955.6 417.7 959.9 413.4 965.0 413.4C970.1 413.4 974.4 417.7 974.4 422.3V430.9" fill="#C4835A"/>
+  
+
+</svg>

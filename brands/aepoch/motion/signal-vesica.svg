@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">The Signal vesica geometry</title>
+  <desc id="desc">Canonical convergence geometry with Earth circle, Cosmos circle, and central human ring.</desc>
+  <rect width="1200" height="675" fill="none"/>
+  <circle id="earth-circle" cx="500" cy="337.5" r="190" fill="none" stroke="#C4835A" stroke-opacity="0.52" stroke-width="3"/>
+  <circle id="cosmos-circle" cx="700" cy="337.5" r="190" fill="none" stroke="#B8A9D9" stroke-opacity="0.52" stroke-width="3"/>
+  <circle id="human-ring" cx="600" cy="337.5" r="82" fill="none" stroke="#FFFFFF" stroke-width="5"/>
+  <circle id="forge-start" cx="600" cy="255.5" r="6" fill="#6B5FED"/>
+</svg>

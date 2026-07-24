@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">ÆPOCH convergence paths</title>
+  <desc id="desc">Deterministic entry and pull paths for Earth and Cosmos convergence.</desc>
+  <defs>
+    <marker id="arrowEarth" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0 0L12 6L0 12Z" fill="#C4835A"/>
+    </marker>
+    <marker id="arrowCosmos" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0 0L12 6L0 12Z" fill="#B8A9D9"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="675" fill="none"/>
+  <path id="earth-entry" d="M-220 337.5C80 337.5 270 337.5 500 337.5" fill="none" stroke="#C4835A" stroke-width="4" marker-end="url(#arrowEarth)"/>
+  <path id="cosmos-entry" d="M1420 337.5C1120 337.5 930 337.5 700 337.5" fill="none" stroke="#B8A9D9" stroke-width="4" marker-end="url(#arrowCosmos)"/>
+  <path id="earth-pull" d="M150 560C320 520 460 430 545 355" fill="none" stroke="#C4835A" stroke-opacity="0.55" stroke-width="3" stroke-dasharray="10 10"/>
+  <path id="cosmos-pull" d="M1050 115C880 155 740 245 655 320" fill="none" stroke="#B8A9D9" stroke-opacity="0.55" stroke-width="3" stroke-dasharray="10 10"/>
+</svg>

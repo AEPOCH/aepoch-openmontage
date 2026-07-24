@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">ÆPOCH Foundation service node</title>
+  <desc id="desc">Rounded service node for temporary Foundation-operated infrastructure.</desc>
+  <rect width="1200" height="675" fill="none"/>
+
+  <rect x="385.0" y="230.0" width="430" height="180" rx="24" fill="#FAF8F5" stroke="#B8A9D9" stroke-width="3"/>
+  <circle cx="522" cy="320" r="18" fill="#D6E4F0" stroke="#B8A9D9" stroke-width="3"/>
+  <path d="M514 320H530M522 312V328" stroke="#B8A9D9" stroke-width="3" stroke-linecap="round"/>
+  <text x="628" y="328" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1A1612">Foundation service</text>
+</svg>

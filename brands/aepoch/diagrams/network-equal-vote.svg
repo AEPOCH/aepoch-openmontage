@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">One human, one vote network</title>
+  <desc id="desc">Five equal human nodes each contributing one equal vote.</desc>
+  <rect width="1200" height="675" fill="#FAF8F5"/>
+  <text x="90" y="76" font-family="Inter, Arial, Helvetica, sans-serif" font-size="42" font-weight="800" fill="#1A1612">One human. One vote.</text>
+  <path d="M160 430H1040" stroke="#E0D8D0" stroke-width="3"/>
+  
+  <circle cx="190" cy="260" r="46" fill="#FAF8F5" stroke="#B8A9D9" stroke-width="3"/>
+  <circle cx="190" cy="249" r="8.3" fill="#C4835A"/>
+  <path d="M179.0 272.9V262.8C179.0 257.2 184.0 252.2 190.0 252.2C196.0 252.2 201.0 257.2 201.0 262.8V272.9" fill="#C4835A"/>
+  
+  <circle cx="395" cy="260" r="46" fill="#FAF8F5" stroke="#B8A9D9" stroke-width="3"/>
+  <circle cx="395" cy="249" r="8.3" fill="#C4835A"/>
+  <path d="M384.0 272.9V262.8C384.0 257.2 389.0 252.2 395.0 252.2C401.0 252.2 406.0 257.2 406.0 262.8V272.9" fill="#C4835A"/>
+  
+  <circle cx="600" cy="260" r="46" fill="#FAF8F5" stroke="#B8A9D9" stroke-width="3"/>
+  <circle cx="600" cy="249" r="8.3" fill="#C4835A"/>
+  <path d="M589.0 272.9V262.8C589.0 257.2 594.0 252.2 600.0 252.2C606.0 252.2 611.0 257.2 611.0 262.8V272.9" fill="#C4835A"/>
+  
+  <circle cx="805" cy="260" r="46" fill="#FAF8F5" stroke="#B8A9D9" stroke-width="3"/>
+  <circle cx="805" cy="249" r="8.3" fill="#C4835A"/>
+  <path d="M794.0 272.9V262.8C794.0 257.2 799.0 252.2 805.0 252.2C811.0 252.2 816.0 257.2 816.0 262.8V272.9" fill="#C4835A"/>
+  
+  <circle cx="1010" cy="260" r="46" fill="#FAF8F5" stroke="#B8A9D9" stroke-width="3"/>
+  <circle cx="1010" cy="249" r="8.3" fill="#C4835A"/>
+  <path d="M999.0 272.9V262.8C999.0 257.2 1004.0 252.2 1010.0 252.2C1016.0 252.2 1021.0 257.2 1021.0 262.8V272.9" fill="#C4835A"/>
+  
+  <circle cx="190" cy="430" r="14" fill="#6B5FED"/><text x="190" y="482" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#4A4440">1 vote</text><circle cx="395" cy="430" r="14" fill="#6B5FED"/><text x="395" y="482" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#4A4440">1 vote</text><circle cx="600" cy="430" r="14" fill="#6B5FED"/><text x="600" y="482" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#4A4440">1 vote</text><circle cx="805" cy="430" r="14" fill="#6B5FED"/><text x="805" y="482" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#4A4440">1 vote</text><circle cx="1010" cy="430" r="14" fill="#6B5FED"/><text x="1010" y="482" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#4A4440">1 vote</text>
+
+</svg>

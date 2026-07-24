@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Centralized network</title>
+  <desc id="desc">Multiple equal human nodes routed through one sharp system gate.</desc>
+  <rect width="1200" height="675" fill="#FAF8F5"/>
+  <text x="90" y="76" font-family="Inter, Arial, Helvetica, sans-serif" font-size="42" font-weight="800" fill="#1A1612">Centralized</text>
+  <path d="M170 150 C350 150, 455 337, 520 337" fill="none" stroke="#8A8480" stroke-width="3"/><path d="M170 337 C350 337, 455 337, 520 337" fill="none" stroke="#8A8480" stroke-width="3"/><path d="M170 525 C350 525, 455 337, 520 337" fill="none" stroke="#8A8480" stroke-width="3"/><path d="M1030 150 C850 150, 745 337, 520 337" fill="none" stroke="#8A8480" stroke-width="3"/><path d="M1030 337 C850 337, 745 337, 520 337" fill="none" stroke="#8A8480" stroke-width="3"/><path d="M1030 525 C850 525, 745 337, 520 337" fill="none" stroke="#8A8480" stroke-width="3"/>
+  
+  <rect x="505.0" y="262.0" width="190" height="150" rx="4" fill="#FAF8F5" stroke="#4A4440" stroke-width="3"/>
+  <text x="600" y="345" text-anchor="middle" font-family="Inter, Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#1A1612">Gate</text>
+  
+  <circle cx="170" cy="150" r="39" fill="#FAF8F5" stroke="#8BAFD4" stroke-width="3"/>
+  <circle cx="170" cy="139" r="7.0" fill="#C4835A"/>
+  <path d="M160.6 160.9V152.3C160.6 147.7 164.9 143.4 170.0 143.4C175.1 143.4 179.4 147.7 179.4 152.3V160.9" fill="#C4835A"/>
+  
+  <circle cx="170" cy="337" r="39" fill="#FAF8F5" stroke="#8BAFD4" stroke-width="3"/>
+  <circle cx="170" cy="326" r="7.0" fill="#C4835A"/>
+  <path d="M160.6 347.9V339.3C160.6 334.7 164.9 330.4 170.0 330.4C175.1 330.4 179.4 334.7 179.4 339.3V347.9" fill="#C4835A"/>
+  
+  <circle cx="170" cy="525" r="39" fill="#FAF8F5" stroke="#8BAFD4" stroke-width="3"/>
+  <circle cx="170" cy="514" r="7.0" fill="#C4835A"/>
+  <path d="M160.6 535.9V527.3C160.6 522.7 164.9 518.4 170.0 518.4C175.1 518.4 179.4 522.7 179.4 527.3V535.9" fill="#C4835A"/>
+  
+  <circle cx="1030" cy="150" r="39" fill="#FAF8F5" stroke="#8BAFD4" stroke-width="3"/>
+  <circle cx="1030" cy="139" r="7.0" fill="#C4835A"/>
+  <path d="M1020.6 160.9V152.3C1020.6 147.7 1024.9 143.4 1030.0 143.4C1035.1 143.4 1039.4 147.7 1039.4 152.3V160.9" fill="#C4835A"/>
+  
+  <circle cx="1030" cy="337" r="39" fill="#FAF8F5" stroke="#8BAFD4" stroke-width="3"/>
+  <circle cx="1030" cy="326" r="7.0" fill="#C4835A"/>
+  <path d="M1020.6 347.9V339.3C1020.6 334.7 1024.9 330.4 1030.0 330.4C1035.1 330.4 1039.4 334.7 1039.4 339.3V347.9" fill="#C4835A"/>
+  
+  <circle cx="1030" cy="525" r="39" fill="#FAF8F5" stroke="#8BAFD4" stroke-width="3"/>
+  <circle cx="1030" cy="514" r="7.0" fill="#C4835A"/>
+  <path d="M1020.6 535.9V527.3C1020.6 522.7 1024.9 518.4 1030.0 518.4C1035.1 518.4 1039.4 522.7 1039.4 527.3V535.9" fill="#C4835A"/>
+  
+
+</svg>
