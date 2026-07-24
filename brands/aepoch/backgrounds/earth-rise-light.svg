@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">ÆPOCH Earth Rise — light</title>
+  <desc id="desc">Canonical light video background with fixed Earth lower-left and Cosmos upper-right ambient pools.</desc>
+  <defs>
+    <radialGradient id="earthWarm" gradientUnits="userSpaceOnUse" cx="153.6" cy="810" r="1440">
+      <stop offset="0" stop-color="#C4835A" stop-opacity="0.15"/>
+      <stop offset="1" stop-color="#C4835A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="earthSand" gradientUnits="userSpaceOnUse" cx="345.6" cy="993.6" r="1056">
+      <stop offset="0" stop-color="#E8C9A0" stop-opacity="0.11"/>
+      <stop offset="1" stop-color="#E8C9A0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cosmosPearl" gradientUnits="userSpaceOnUse" cx="1766.4" cy="43.2" r="1113.6">
+      <stop offset="0" stop-color="#D6E4F0" stop-opacity="0.13"/>
+      <stop offset="1" stop-color="#D6E4F0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cosmosPrism" gradientUnits="userSpaceOnUse" cx="1881.6" cy="194.4" r="806.4">
+      <stop offset="0" stop-color="#B8A9D9" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#B8A9D9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="#FEFCF9"/>
+  <rect width="1920" height="1080" fill="url(#earthWarm)"/>
+  <rect width="1920" height="1080" fill="url(#earthSand)"/>
+  <rect width="1920" height="1080" fill="url(#cosmosPearl)"/>
+  <rect width="1920" height="1080" fill="url(#cosmosPrism)"/>
+</svg>

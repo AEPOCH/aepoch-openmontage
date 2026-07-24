@@ -53,17 +53,15 @@ The full brand system has thirty-some tokens built for a product interface with 
 
 Void and Depth exist so the hook of an episode can look and feel colder than the reframe that follows it. A script that opens on the current internet's failure to recognize presence can open in Void. The moment ÆPOCH's mechanism enters, the palette warms back toward Paper and Clay. That shift is doing narrative work — don't use the dark palette decoratively, and don't use it in more than the hook and setup stages.
 
-**Reserved, conditionally.** Moss may appear only when a scene directly depicts successful Proof of Life biometric verification. It must not be used as a general positive, growth, receipt, confirmation, network, or success color anywhere else in the series.
-
-**Reserved, not used in video, ever.** Hearth and Ember are error and warning states from the UI; the series doesn't have UI errors, so they don't appear. Deep Ink is a button background, not a video color.
+**Reserved semantic use.** Moss may appear only when a scene directly depicts successful Proof of Life biometric verification. It must not be used as a general positive, growth, receipt, confirmation, network, or success color anywhere else in the series. Hearth and Ember remain error and warning states from the UI and do not appear unless an episode directly explains those states. Deep Ink is a button background, not a default video color.
 
 ### Line, corner, and shadow
 
-The baseline stroke is 3px at 1920×1080. Primary hero shapes and full-screen diagrams may use 4–5px where required for mobile readability. Stroke weight must remain consistent within each asset family and scene — no mixing weights within a single shape or shot for decorative reason, and no sketchy or hand-drawn line quality. Consistency within a family and scene is what makes limited animation read as a system rather than a set of disconnected drawings.
+The baseline stroke is 3px at 1920×1080, scaled proportionally for other export sizes. Primary hero shapes and full-screen diagrams may use 4–5px where required for mobile readability. Stroke weight must remain consistent within each asset family and scene. No sketchy or hand-drawn line quality. Consistency across shots is what makes limited animation read as a system rather than a set of disconnected drawings.
 
 Corner treatment carries meaning. Human and presence-related shapes (people, hands, the Clay/Sand register) get soft, rounded corners. System and platform shapes — anything representing an existing tech platform, a data broker, an algorithm, the thing being critiqued — get sharp, geometric corners. That contrast is a visual argument the series is already making in narration: human things are organic, extractive systems are rigid. The shapes should say it too.
 
-No drop shadows anywhere. Flat color fields by default. Gradients are permitted only for the canonical Earth Rise ambient pools, the Comet Arc, and the single Signal reveal glow. No generic decorative gradients, metallic gradients, or depth-simulating gradient effects.
+No drop shadows. Flat color fields are the default. Gradients are permitted only for the canonical Earth Rise ambient pools, the Comet Arc, and the single Signal reveal glow. No generic decorative gradients, metallic gradients, stacked shadows, or depth-simulating gradient effects.
 
 No texture. No paper grain, no noise overlay, no halftone. Flat and clean throughout. Texture reads as an aesthetic choice borrowed from somewhere else; this series doesn't need one.
 
@@ -95,7 +93,7 @@ Every generated asset prompt includes the constraints below. Treat this as the n
 
 ```
 flat vector editorial illustration
-consistent 3px line weight (4–5px for hero shapes and full-screen diagrams only)
+consistent 3px baseline line weight, 4–5px only for approved hero-scale readability
 ÆPOCH palette only: Clay #C4835A, Ochre #A0673A, Sand #E8C9A0, Pearl #D6E4F0, Iris #8BAFD4, Prism #B8A9D9, Paper #FAF8F5, Ink #1A1612
 clean geometric shapes
 human-centered technology
@@ -103,11 +101,8 @@ symbolic rather than photorealistic
 simple readable silhouettes
 no facial detail beyond basic expression
 designed for animation at 1920x1080
-flat color fields
-gradients only for canonical Earth Rise ambient pools, Comet Arc,
-or one restrained Signal reveal glow
-no generic decorative gradients
-no drop shadows
+flat color fields by default; gradients only for canonical Earth Rise ambient pools, Comet Arc, or one restrained Signal reveal glow; no generic decorative gradients
+no drop shadow
 ```
 
 **Always exclude:**
@@ -140,7 +135,7 @@ The coin, chart, and hacker exclusions aren't generic AI-art hygiene — they're
 1. Would this frame read as ÆPOCH-specific if the logo were removed, or does it read as generic explainer video?
 2. Is every color used one from the locked palette above, with Signal appearing at most once per episode?
 3. Do human shapes have soft corners and system/platform shapes have sharp corners, consistently?
-4. Is texture, shadow, or gradient use fully accounted for by the exceptions above, with nothing extra sneaking in? If Moss appears, is the scene actually depicting a Proof of Life biometric success moment, and nowhere else?
+4. Is texture, shadow, or gradient use fully accounted for by the exceptions above, with nothing extra sneaking in?
 5. Does the character silhouette match the one reused style, with no new face or personality drifting in?
 6. If this is a diagram, does it belong to the build or climax stage, not the hook?
 7. Does anything in frame resemble a coin, a price chart, a hacker, or a cyberpunk cityscape? If so, cut it.

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">ÆPOCH dual-pole field</title>
+  <desc id="desc">Balanced Earth and Cosmos field for comparisons and convergence scenes.</desc>
+  <defs>
+    <radialGradient id="earth" gradientUnits="userSpaceOnUse" cx="390" cy="650" r="980">
+      <stop offset="0" stop-color="#C4835A" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#C4835A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cosmos" gradientUnits="userSpaceOnUse" cx="1530" cy="430" r="980">
+      <stop offset="0" stop-color="#B8A9D9" stop-opacity="0.16"/>
+      <stop offset="0.36" stop-color="#D6E4F0" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#D6E4F0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="#FAF8F5"/>
+  <rect width="1920" height="1080" fill="url(#earth)"/>
+  <rect width="1920" height="1080" fill="url(#cosmos)"/>
+</svg>

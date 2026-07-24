@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">ÆPOCH Cosmos field</title>
+  <desc id="desc">Protocol-mechanism background emphasizing the cool Cosmos pole.</desc>
+  <defs>
+    <radialGradient id="pearl" gradientUnits="userSpaceOnUse" cx="1610" cy="210" r="1280">
+      <stop offset="0" stop-color="#D6E4F0" stop-opacity="0.20"/>
+      <stop offset="0.48" stop-color="#B8A9D9" stop-opacity="0.09"/>
+      <stop offset="1" stop-color="#B8A9D9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="#FAF8F5"/>
+  <rect width="1920" height="1080" fill="url(#pearl)"/>
+</svg>
