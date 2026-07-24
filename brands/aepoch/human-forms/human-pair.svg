@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">ÆPOCH human pair</title>
+  <desc id="desc">Two equal human silhouettes connected by a restrained relationship arc.</desc>
+  <g color="#C4835A" transform="translate(-42 18) scale(0.78)">
+  <circle cx="128" cy="56" r="25" fill="currentColor"/>
+  <path d="M82 118C82 91.5 103.5 70 130 70H126C152.5 70 174 91.5 174 118V215C174 226.6 164.6 236 153 236H103C91.4 236 82 226.6 82 215V118Z" fill="currentColor"/>
+</g>
+  <g color="#B8A9D9" transform="translate(42 18) scale(0.78)">
+  <circle cx="128" cy="56" r="25" fill="currentColor"/>
+  <path d="M82 118C82 91.5 103.5 70 130 70H126C152.5 70 174 91.5 174 118V215C174 226.6 164.6 236 153 236H103C91.4 236 82 226.6 82 215V118Z" fill="currentColor"/>
+</g>
+  <path d="M102 178C116 166 140 166 154 178" fill="none" stroke="#8BAFD4" stroke-width="5" stroke-linecap="round"/>
+</svg>

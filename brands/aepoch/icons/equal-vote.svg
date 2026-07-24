@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Equal vote</title>
+  <desc id="desc">Three humans represented at equal scale.</desc>
+  <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="6.2" cy="8" r="1.7"/>
+    <circle cx="12" cy="8" r="1.7"/>
+    <circle cx="17.8" cy="8" r="1.7"/>
+    <path d="M3.8 16.8V14.9C3.8 13.5 4.9 12.4 6.3 12.4C7.7 12.4 8.8 13.5 8.8 14.9V16.8"/>
+    <path d="M9.5 16.8V14.9C9.5 13.5 10.6 12.4 12 12.4C13.4 12.4 14.5 13.5 14.5 14.9V16.8"/>
+    <path d="M15.2 16.8V14.9C15.2 13.5 16.3 12.4 17.7 12.4C19.1 12.4 20.2 13.5 20.2 14.9V16.8"/>
+    <path d="M3 19.2H21"/>
+  </g>
+</svg>

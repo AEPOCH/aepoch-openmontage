@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">ÆPOCH human community</title>
+  <desc id="desc">Three equal symbolic humans forming a community.</desc>
+  <g color="#C4835A" transform="translate(-58 26) scale(0.58)">
+  <circle cx="128" cy="56" r="25" fill="currentColor"/>
+  <path d="M82 118C82 91.5 103.5 70 130 70H126C152.5 70 174 91.5 174 118V215C174 226.6 164.6 236 153 236H103C91.4 236 82 226.6 82 215V118Z" fill="currentColor"/>
+</g>
+  <g color="#B8A9D9" transform="translate(58 26) scale(0.58)">
+  <circle cx="128" cy="56" r="25" fill="currentColor"/>
+  <path d="M82 118C82 91.5 103.5 70 130 70H126C152.5 70 174 91.5 174 118V215C174 226.6 164.6 236 153 236H103C91.4 236 82 226.6 82 215V118Z" fill="currentColor"/>
+</g>
+  <g color="#8BAFD4" transform="translate(0 -6) scale(0.70)">
+  <circle cx="128" cy="56" r="25" fill="currentColor"/>
+  <path d="M82 118C82 91.5 103.5 70 130 70H126C152.5 70 174 91.5 174 118V215C174 226.6 164.6 236 153 236H103C91.4 236 82 226.6 82 215V118Z" fill="currentColor"/>
+</g>
+  <path d="M56 198C92 174 164 174 200 198" fill="none" stroke="#4A4440" stroke-width="4" stroke-linecap="round"/>
+</svg>

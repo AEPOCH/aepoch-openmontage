@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">ÆPOCH human — verified</title>
+  <desc id="desc">Direct successful Proof of Life verification state. Moss is restricted to this semantic use.</desc>
+  <circle cx="128" cy="128" r="112" fill="#4CAF82" fill-opacity="0.10"/>
+  <circle cx="128" cy="128" r="102" fill="none" stroke="#4CAF82" stroke-width="5"/>
+  <path d="M84 131L113 160L176 97" fill="none" stroke="#4CAF82" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <g color="#C4835A" opacity="0.92">
+  <circle cx="128" cy="56" r="25" fill="currentColor"/>
+  <path d="M82 118C82 91.5 103.5 70 130 70H126C152.5 70 174 91.5 174 118V215C174 226.6 164.6 236 153 236H103C91.4 236 82 226.6 82 215V118Z" fill="currentColor"/>
+</g>
+</svg>

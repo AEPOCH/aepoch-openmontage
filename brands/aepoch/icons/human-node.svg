@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Human node</title>
+  <desc id="desc">A human represented as a node in the ÆPOCH network.</desc>
+  <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="7.2" r="2.1"/>
+    <path d="M8.4 17.8V13.9C8.4 11.9 10 10.3 12 10.3C14 10.3 15.6 11.9 15.6 13.9V17.8"/>
+    <circle cx="12" cy="12" r="9.2"/>
+  </g>
+</svg>

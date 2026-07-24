@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Contribution</title>
+  <desc id="desc">A human contribution added to the collective.</desc>
+  <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 20.2C8.2 17.4 4.4 14.7 4.4 10.1C4.4 7.5 6.2 5.8 8.5 5.8C10 5.8 11.2 6.6 12 7.8C12.8 6.6 14 5.8 15.5 5.8C17.8 5.8 19.6 7.5 19.6 10.1C19.6 14.7 15.8 17.4 12 20.2Z"/>
+    <path d="M12 9.4V15M9.2 12.2H14.8"/>
+  </g>
+</svg>

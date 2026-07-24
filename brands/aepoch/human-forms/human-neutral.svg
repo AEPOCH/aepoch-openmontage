@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">ÆPOCH human — neutral</title>
+  <desc id="desc">Canonical gender-neutral human silhouette in the Earth register.</desc>
+  <g color="#C4835A">
+  <circle cx="128" cy="56" r="25" fill="currentColor"/>
+  <path d="M82 118C82 91.5 103.5 70 130 70H126C152.5 70 174 91.5 174 118V215C174 226.6 164.6 236 153 236H103C91.4 236 82 226.6 82 215V118Z" fill="currentColor"/>
+</g>
+</svg>

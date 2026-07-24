@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">ÆPOCH human — active</title>
+  <desc id="desc">Active human state using Clay for the person and Cosmos accents for participation.</desc>
+  <circle cx="128" cy="128" r="112" fill="#D6E4F0" fill-opacity="0.28"/>
+  <circle cx="128" cy="128" r="102" fill="none" stroke="#B8A9D9" stroke-width="3"/>
+  <path d="M128 10A118 118 0 0 1 230 69" fill="none" stroke="#8BAFD4" stroke-width="7" stroke-linecap="round"/>
+  <g color="#C4835A">
+  <circle cx="128" cy="56" r="25" fill="currentColor"/>
+  <path d="M82 118C82 91.5 103.5 70 130 70H126C152.5 70 174 91.5 174 118V215C174 226.6 164.6 236 153 236H103C91.4 236 82 226.6 82 215V118Z" fill="currentColor"/>
+</g>
+</svg>

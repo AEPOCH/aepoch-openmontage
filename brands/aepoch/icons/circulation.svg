@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Circulation</title>
+  <desc id="desc">Value circulating through an open cycle.</desc>
+  <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5.2 8.4A7.5 7.5 0 0 1 18.1 6.8"/>
+    <path d="M17.9 3.9L18.4 7.2L15.1 7.6"/>
+    <path d="M18.8 15.6A7.5 7.5 0 0 1 5.9 17.2"/>
+    <path d="M6.1 20.1L5.6 16.8L8.9 16.4"/>
+  </g>
+</svg>

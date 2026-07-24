@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Collective</title>
+  <desc id="desc">A small group of equal human participants.</desc>
+  <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="8" cy="8.2" r="1.8"/>
+    <circle cx="16" cy="8.2" r="1.8"/>
+    <circle cx="12" cy="6.2" r="2"/>
+    <path d="M5.5 17.8V15C5.5 13.5 6.7 12.3 8.2 12.3"/>
+    <path d="M18.5 17.8V15C18.5 13.5 17.3 12.3 15.8 12.3"/>
+    <path d="M8.5 18.2V14.2C8.5 12.3 10 10.8 12 10.8C14 10.8 15.5 12.3 15.5 14.2V18.2"/>
+    <path d="M4.2 20H19.8"/>
+  </g>
+</svg>
