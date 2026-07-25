@@ -1,8 +1,9 @@
 export * from "./components";
 export * from "./modules";
+export * from "./motion";
 export * from "./previews";
+export * from "./reel";
 export * from "./random";
 export * from "./runtime";
 export * from "./tokens";
 export * from "./types";
-

@@ -134,3 +134,48 @@ export const CircularValueFieldPreview: React.FC<CircularValueFieldProps> = (pro
 export const FlowLifecyclePreview: React.FC<FlowLifecycleProps> = (props) => <FlowLifecycle {...props} />;
 export const HumanNetworkPreview: React.FC<HumanNetworkProps> = (props) => <HumanNetwork {...props} />;
 export const SystemComparisonPreview: React.FC<SystemComparisonProps> = (props) => <SystemComparison {...props} />;
+
+export const animatedDeclarativeHookProps: DeclarativeHookProps = {
+  ...declarativeHookPreviewProps,
+  durationFrames: 150,
+  reducedMotion: false,
+  camera: "pushInSmall",
+};
+
+export const animatedKeyStatementProps: KeyStatementProps = {
+  ...keyStatementPreviewProps,
+  durationFrames: 120,
+  reducedMotion: false,
+};
+
+export const animatedCircularValueFieldProps: CircularValueFieldProps = {
+  ...circularValueFieldPreviewProps,
+  durationFrames: 180,
+  reducedMotion: false,
+};
+
+export const animatedFlowLifecycleProps: FlowLifecycleProps = {
+  ...flowLifecyclePreviewProps,
+  durationFrames: 210,
+  reducedMotion: false,
+};
+
+export const animatedHumanNetworkProps: HumanNetworkProps = {
+  ...humanNetworkPreviewProps,
+  durationFrames: 210,
+  reducedMotion: false,
+  camera: "pullBackCollective",
+};
+
+export const animatedSystemComparisonProps: SystemComparisonProps = {
+  ...systemComparisonPreviewProps,
+  durationFrames: 210,
+  reducedMotion: false,
+};
+
+export const reducedDeclarativeHookProps: DeclarativeHookProps = { ...animatedDeclarativeHookProps, reducedMotion: true };
+export const reducedKeyStatementProps: KeyStatementProps = { ...animatedKeyStatementProps, reducedMotion: true };
+export const reducedCircularValueFieldProps: CircularValueFieldProps = { ...animatedCircularValueFieldProps, reducedMotion: true };
+export const reducedFlowLifecycleProps: FlowLifecycleProps = { ...animatedFlowLifecycleProps, reducedMotion: true };
+export const reducedHumanNetworkProps: HumanNetworkProps = { ...animatedHumanNetworkProps, reducedMotion: true };
+export const reducedSystemComparisonProps: SystemComparisonProps = { ...animatedSystemComparisonProps, reducedMotion: true };

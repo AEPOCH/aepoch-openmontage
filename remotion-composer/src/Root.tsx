@@ -29,8 +29,21 @@ import {
   keyStatementPreviewProps,
   SystemComparisonPreview,
   systemComparisonPreviewProps,
+  animatedCircularValueFieldProps,
+  animatedDeclarativeHookProps,
+  animatedFlowLifecycleProps,
+  animatedHumanNetworkProps,
+  animatedKeyStatementProps,
+  animatedSystemComparisonProps,
+  reducedCircularValueFieldProps,
+  reducedDeclarativeHookProps,
+  reducedFlowLifecycleProps,
+  reducedHumanNetworkProps,
+  reducedKeyStatementProps,
+  reducedSystemComparisonProps,
 } from "./aepoch/previews";
 import { AEPOCH_VIDEO } from "./aepoch/tokens";
+import { AepochTier1TestReel, TEST_REEL_TIMING } from "./aepoch/reel";
 
 // ---------------------------------------------------------------------------
 // Theme System — prevents every video from looking like dark fintech
@@ -203,6 +216,141 @@ export const Root: React.FC = () => {
         width={AEPOCH_VIDEO.width}
         height={AEPOCH_VIDEO.height}
         defaultProps={systemComparisonPreviewProps}
+      />
+      <Composition
+        id="AepochTier1DeclarativeHookAnimated"
+        component={DeclarativeHookPreview}
+        durationInFrames={animatedDeclarativeHookProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={animatedDeclarativeHookProps}
+      />
+      <Composition
+        id="AepochTier1KeyStatementAnimated"
+        component={KeyStatementPreview}
+        durationInFrames={animatedKeyStatementProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={animatedKeyStatementProps}
+      />
+      <Composition
+        id="AepochTier1CircularValueFieldAnimated"
+        component={CircularValueFieldPreview}
+        durationInFrames={animatedCircularValueFieldProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={animatedCircularValueFieldProps}
+      />
+      <Composition
+        id="AepochTier1FlowLifecycleAnimated"
+        component={FlowLifecyclePreview}
+        durationInFrames={animatedFlowLifecycleProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={animatedFlowLifecycleProps}
+      />
+      <Composition
+        id="AepochTier1HumanNetworkAnimated"
+        component={HumanNetworkPreview}
+        durationInFrames={animatedHumanNetworkProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={animatedHumanNetworkProps}
+      />
+      <Composition
+        id="AepochTier1SystemComparisonAnimated"
+        component={SystemComparisonPreview}
+        durationInFrames={animatedSystemComparisonProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={animatedSystemComparisonProps}
+      />
+      <Composition
+        id="AepochTier1DeclarativeHookReduced"
+        component={DeclarativeHookPreview}
+        durationInFrames={reducedDeclarativeHookProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={reducedDeclarativeHookProps}
+      />
+      <Composition
+        id="AepochTier1KeyStatementReduced"
+        component={KeyStatementPreview}
+        durationInFrames={reducedKeyStatementProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={reducedKeyStatementProps}
+      />
+      <Composition
+        id="AepochTier1CircularValueFieldReduced"
+        component={CircularValueFieldPreview}
+        durationInFrames={reducedCircularValueFieldProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={reducedCircularValueFieldProps}
+      />
+      <Composition
+        id="AepochTier1FlowLifecycleReduced"
+        component={FlowLifecyclePreview}
+        durationInFrames={reducedFlowLifecycleProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={reducedFlowLifecycleProps}
+      />
+      <Composition
+        id="AepochTier1HumanNetworkReduced"
+        component={HumanNetworkPreview}
+        durationInFrames={reducedHumanNetworkProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={reducedHumanNetworkProps}
+      />
+      <Composition
+        id="AepochTier1SystemComparisonReduced"
+        component={SystemComparisonPreview}
+        durationInFrames={reducedSystemComparisonProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={reducedSystemComparisonProps}
+      />
+      <Composition
+        id="AepochTier1TestReelCaptioned"
+        component={AepochTier1TestReel}
+        durationInFrames={TEST_REEL_TIMING.total}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={{ showCaptions: true, reducedMotion: false }}
+      />
+      <Composition
+        id="AepochTier1TestReelClean"
+        component={AepochTier1TestReel}
+        durationInFrames={TEST_REEL_TIMING.total}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={{ showCaptions: false, reducedMotion: false }}
+      />
+      <Composition
+        id="AepochTier1TestReelReduced"
+        component={AepochTier1TestReel}
+        durationInFrames={TEST_REEL_TIMING.total}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={{ showCaptions: true, reducedMotion: true }}
       />
       <Composition
         id="Explainer"

@@ -1,4 +1,5 @@
 import React from "react";
+import { useCurrentFrame } from "remotion";
 import {
   AepochMark,
   AepochScene,
@@ -16,6 +17,23 @@ import {
   validateSystemComparison,
 } from "./runtime";
 import { AEPOCH_COLORS, AEPOCH_LAYOUT, AEPOCH_TYPE } from "./tokens";
+import {
+  cameraScale,
+  cameraStyle,
+  convergenceOffset,
+  deterministicStagger,
+  edgeDraw,
+  frameProgress,
+  lifecycleEmphasis,
+  lifecycleStepStart,
+  nodeEnter,
+  pathFlow,
+  reveal,
+  revealStyle,
+  strokeDash,
+  strokeProgress,
+} from "./motion";
+import { AEPOCH_DURATIONS, AEPOCH_EASING } from "./tokens";
 import type {
   CircularValueFieldProps,
   DeclarativeHookProps,
@@ -47,17 +65,37 @@ const SceneChrome: React.FC<{
 );
 
 export const DeclarativeHook: React.FC<DeclarativeHookProps> = (props) => {
+  const frame = useCurrentFrame();
+  const reduced = props.reducedMotion === true;
   validateAepochSceneBase(props);
   if (props.lines.length < 1 || props.lines.length > 3) {
     throw new Error("DeclarativeHook requires one to three lines");
   }
   const words = props.lines.join(" ").trim().split(/\s+/).length;
   if (words > 18) throw new Error("DeclarativeHook supports no more than 18 words");
+  const camera = cameraScale({
+    frame,
+    move: props.camera ?? "pushInSmall",
+    durationFrames: 105,
+    reducedMotion: reduced,
+  });
+  const eyebrowReveal = reveal({ frame, startFrame: 0, durationFrames: 18, reducedMotion: reduced });
+  const humanReveal = reveal({ frame, startFrame: 42, durationFrames: 20, fromY: 36, fromScale: 0.96, reducedMotion: reduced });
+  const systemReveal = reveal({
+    frame,
+    startFrame: 50,
+    durationFrames: 22,
+    fromX: 36,
+    fromY: 0,
+    easing: AEPOCH_EASING.sharpSystem,
+    reducedMotion: reduced,
+  });
   return (
     <AepochScene theme={props.theme} captionReservePx={captionReserve(props)}>
+      <div style={{ position: "absolute", inset: 0, ...cameraStyle(camera) }}>
       <div style={{ position: "absolute", left: 0, top: 155, width: 1160 }}>
         {props.eyebrow ? (
-          <div style={{ fontSize: AEPOCH_TYPE.size.eyebrow, marginBottom: 30, color: AEPOCH_COLORS.inkMid }}>
+          <div style={{ fontSize: AEPOCH_TYPE.size.eyebrow, marginBottom: 30, color: AEPOCH_COLORS.inkMid, ...revealStyle(eyebrowReveal) }}>
             {props.eyebrow}
           </div>
         ) : null}
@@ -69,28 +107,34 @@ export const DeclarativeHook: React.FC<DeclarativeHookProps> = (props) => {
             lineHeight: AEPOCH_TYPE.lineHeight.hero,
           }}
         >
-          {props.lines.map((line) => (
-            <div key={line}>{line}</div>
+          {props.lines.map((line, index) => (
+            <div key={line} style={revealStyle(reveal({ frame, startFrame: 12 + index * 14, durationFrames: 22, reducedMotion: reduced }))}>{line}</div>
           ))}
         </div>
       </div>
-      <svg viewBox="0 0 1680 900" style={{ position: "absolute", inset: 0 }} aria-hidden>
+      <svg viewBox="0 0 1680 900" style={{ position: "absolute", inset: 0, ...revealStyle(systemReveal) }} aria-hidden>
         <circle cx="1435" cy="280" r="330" fill="rgba(214,228,240,0.20)" stroke="rgba(184,169,217,0.24)" strokeWidth="3" />
         <rect x="1240" y="180" width="330" height="420" fill="rgba(74,68,64,0.13)" stroke="rgba(74,68,64,0.52)" strokeWidth="10" />
         <rect x="1135" y="315" width="205" height="285" fill="rgba(224,216,208,0.42)" stroke="rgba(74,68,64,0.45)" strokeWidth="8" />
         <path d="M1105 670H1600" stroke="rgba(74,68,64,0.58)" strokeWidth="18" />
         <path d="M1190 670V735M1370 670V735M1535 670V735" stroke="rgba(74,68,64,0.40)" strokeWidth="12" />
       </svg>
-      <div style={{ position: "absolute", left: 820, top: 625 }}><HumanNode size={115} state="present" /></div>
+      <div style={{ position: "absolute", left: 820, top: 625, ...revealStyle(humanReveal) }}><HumanNode size={115} state="present" /></div>
+      </div>
       <SceneChrome number={1} label="Declarative hook" showDebugLabel={props.showDebugLabel} showCornerMark={props.showCornerMark} />
     </AepochScene>
   );
 };
 
 export const KeyStatement: React.FC<KeyStatementProps> = (props) => {
+  const frame = useCurrentFrame();
+  const reduced = props.reducedMotion === true;
   validateAepochSceneBase(props);
   const words = props.statement.trim().split(/\s+/).length;
   if (words > 14) throw new Error("KeyStatement supports no more than 14 words");
+  const statementLines = props.statement.split(/(?<=activates) /);
+  const humanReveal = reveal({ frame, startFrame: 30, durationFrames: 20, fromY: 34, fromScale: 0.96, reducedMotion: reduced });
+  const arcProgress = strokeProgress({ frame, startFrame: 34, durationFrames: 36, reducedMotion: reduced });
   return (
     <AepochScene theme={props.theme} captionReservePx={captionReserve(props)}>
       <div style={{ position: "absolute", left: 0, top: 210, width: 920 }}>
@@ -102,7 +146,9 @@ export const KeyStatement: React.FC<KeyStatementProps> = (props) => {
             lineHeight: AEPOCH_TYPE.lineHeight.hero,
           }}
         >
-          {props.statement}
+          {statementLines.map((line, index) => (
+            <div key={line} style={revealStyle(reveal({ frame, startFrame: index * 14, durationFrames: 22, reducedMotion: reduced }))}>{line}</div>
+          ))}
         </div>
         {props.supportingLine ? (
           <div style={{ marginTop: 30, fontSize: AEPOCH_TYPE.size.body, color: AEPOCH_COLORS.inkMid }}>
@@ -112,9 +158,9 @@ export const KeyStatement: React.FC<KeyStatementProps> = (props) => {
       </div>
       <svg viewBox="0 0 1680 900" style={{ position: "absolute", inset: 0 }} aria-hidden>
         <circle cx="1380" cy="245" r="310" fill="rgba(214,228,240,0.18)" stroke="rgba(184,169,217,0.28)" strokeWidth="3" />
-        <path d="M960 760 Q1280 365 1645 380" fill="none" stroke="rgba(139,175,212,0.62)" strokeWidth="36" />
+        <path d="M960 760 Q1280 365 1645 380" pathLength={1} fill="none" stroke="rgba(139,175,212,0.62)" strokeWidth="36" style={strokeDash(arcProgress)} />
       </svg>
-      <div style={{ position: "absolute", left: 1080, top: 590 }}><HumanNode size={104} state="present" /></div>
+      <div style={{ position: "absolute", left: 1080, top: 590, ...revealStyle(humanReveal) }}><HumanNode size={104} state="present" /></div>
       <SceneChrome number={2} label="Key statement" showDebugLabel={props.showDebugLabel} showCornerMark={props.showCornerMark} />
     </AepochScene>
   );
@@ -152,22 +198,34 @@ const CircularSubject: React.FC<{ pole: "earth" | "cosmos" | "neutral"; subject?
 );
 
 export const CircularValueField: React.FC<CircularValueFieldProps> = (props) => {
+  const frame = useCurrentFrame();
+  const reduced = props.reducedMotion === true;
   validateCircularValueField(props);
   return (
     <AepochScene theme={props.theme} captionReservePx={captionReserve(props)}>
       <div style={{ position: "absolute", top: 85, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 150 }}>
-        {props.fields.map((field) => (
-          <div key={field.id} style={{ textAlign: "center" }}>
+        {props.fields.map((field, index) => {
+          const start = index === 0 ? 0 : 24;
+          const offset = convergenceOffset({
+            frame,
+            startFrame: 36,
+            durationFrames: 30,
+            distance: 34,
+            direction: index === 0 ? "left" : "right",
+            reducedMotion: reduced,
+          });
+          return (
+          <div key={field.id} style={{ textAlign: "center", ...revealStyle(reveal({ frame, startFrame: start, durationFrames: 22, fromX: index === 0 ? -34 : 34, fromY: 0, reducedMotion: reduced })), transform: `translateX(${offset}px)` }}>
             <CircularSubject pole={field.pole} subject={field.subject} />
             <div style={{ marginTop: 30, fontSize: AEPOCH_TYPE.size.diagram, letterSpacing: 1.2, color: AEPOCH_COLORS.inkMid }}>
               {field.label}
             </div>
             {field.sublabel ? <div style={{ marginTop: 10, fontSize: AEPOCH_TYPE.size.footnote }}>{field.sublabel}</div> : null}
           </div>
-        ))}
+        )})}
       </div>
       {props.footer ? (
-        <div style={{ position: "absolute", left: 0, right: 0, bottom: 52, textAlign: "center", fontSize: 34, fontStyle: "italic", color: AEPOCH_COLORS.inkMid }}>
+        <div style={{ position: "absolute", left: 0, right: 0, bottom: 52, textAlign: "center", fontSize: 34, fontStyle: "italic", color: AEPOCH_COLORS.inkMid, ...revealStyle(reveal({ frame, startFrame: 62, durationFrames: 22, reducedMotion: reduced })) }}>
           {props.footer}
         </div>
       ) : null}
@@ -177,10 +235,12 @@ export const CircularValueField: React.FC<CircularValueFieldProps> = (props) => 
 };
 
 export const FlowLifecycle: React.FC<FlowLifecycleProps> = (props) => {
+  const frame = useCurrentFrame();
+  const reduced = props.reducedMotion === true;
   validateFlowLifecycle(props);
   return (
     <AepochScene theme={props.theme} captionReservePx={captionReserve(props)}>
-      <div style={{ position: "absolute", left: 0, top: 60, fontSize: 66, fontWeight: AEPOCH_TYPE.weight.heavy, letterSpacing: -2.4 }}>
+      <div style={{ position: "absolute", left: 0, top: 60, fontSize: 66, fontWeight: AEPOCH_TYPE.weight.heavy, letterSpacing: -2.4, ...revealStyle(reveal({ frame, startFrame: 0, durationFrames: 22, reducedMotion: reduced })) }}>
         {props.headline}
       </div>
       <div style={{ position: "absolute", left: 0, right: 0, top: 220, display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1.12fr", alignItems: "center", gap: 18 }}>
@@ -188,7 +248,7 @@ export const FlowLifecycle: React.FC<FlowLifecycleProps> = (props) => {
           const color = step.pole === "earth" ? AEPOCH_COLORS.clay : step.pole === "cosmos" ? AEPOCH_COLORS.iris : AEPOCH_COLORS.prism;
           return (
             <React.Fragment key={step.id}>
-              <EditorialCard style={{ width: "100%", height: 390, padding: 38, textAlign: "center", position: "relative" }}>
+              <EditorialCard style={{ width: "100%", height: 390, padding: 38, textAlign: "center", position: "relative", opacity: lifecycleEmphasis({ frame, index, count: props.steps.length, reducedMotion: reduced }), ...revealStyle(nodeEnter(frame, lifecycleStepStart(index), reduced)) }}>
                 <div style={{ margin: "4px auto 24px", width: 132, height: 132, borderRadius: "50%", background: `${color}18`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <DiagramIcon type={step.icon ?? "presence"} size={88} color={color} />
                 </div>
@@ -199,7 +259,7 @@ export const FlowLifecycle: React.FC<FlowLifecycleProps> = (props) => {
           );
         })}
         {[25.3, 49.9, 73.7].map((left, index) => (
-          <div key={left} style={{ position: "absolute", left: `${left}%`, top: 163, zIndex: 2, color: index === 0 ? AEPOCH_COLORS.clay : AEPOCH_COLORS.iris, fontSize: 42 }}>→</div>
+          <div key={left} style={{ position: "absolute", left: `${left}%`, top: 163, zIndex: 2, color: index === 0 ? AEPOCH_COLORS.clay : AEPOCH_COLORS.iris, fontSize: 42, ...revealStyle(reveal({ frame, startFrame: lifecycleStepStart(index) + 14, durationFrames: 18, fromX: -18, fromY: 0, reducedMotion: reduced })) }}>→</div>
         ))}
       </div>
       <SceneChrome number={4} label="Flow lifecycle" showDebugLabel={props.showDebugLabel} showCornerMark={props.showCornerMark} />
@@ -208,35 +268,65 @@ export const FlowLifecycle: React.FC<FlowLifecycleProps> = (props) => {
 };
 
 export const HumanNetwork: React.FC<HumanNetworkProps> = (props) => {
+  const frame = useCurrentFrame();
+  const reduced = props.reducedMotion === true;
   validateHumanNetwork(props);
   const nodes = props.nodes.map((node, index) => ({
     ...node,
     position: node.position ?? { x: 930 + (index % 4) * 180, y: 190 + Math.floor(index / 4) * 200 },
   }));
   const byId = new Map(nodes.map((node) => [node.id, node]));
+  const nodeStarts = new Map(nodes.map((node, index) => [
+    node.id,
+    deterministicStagger({ index, startFrame: 18, gapFrames: 6, seed: props.seed ?? 1 }),
+  ]));
+  const networkScale = cameraScale({ frame, move: "pullBackCollective", startFrame: 30, durationFrames: 120, reducedMotion: reduced });
   return (
     <AepochScene theme={props.theme} captionReservePx={captionReserve(props)}>
-      <div style={{ position: "absolute", left: 0, top: 250, width: 650 }}>
+      <div style={{ position: "absolute", left: 0, top: 250, width: 650, ...revealStyle(reveal({ frame, startFrame: 0, durationFrames: 22, reducedMotion: reduced })) }}>
         {props.eyebrow ? <div style={{ fontSize: AEPOCH_TYPE.size.eyebrow, color: AEPOCH_COLORS.inkMid, marginBottom: 26 }}>{props.eyebrow}</div> : null}
         <div style={{ fontSize: 84, fontWeight: AEPOCH_TYPE.weight.heavy, lineHeight: 1.02, letterSpacing: -3 }}>
           {(props.headline ?? "").split("\n").map((line) => <div key={line}>{line}</div>)}
         </div>
         {props.supportingLine ? <div style={{ fontSize: 31, color: AEPOCH_COLORS.muted, marginTop: 26 }}>{props.supportingLine}</div> : null}
       </div>
+      <div style={{ position: "absolute", inset: 0, ...cameraStyle(networkScale) }}>
       <svg viewBox="0 0 1680 900" style={{ position: "absolute", inset: 0 }} aria-hidden>
         <circle cx="1375" cy="350" r="360" fill="rgba(214,228,240,0.18)" />
         {(props.edges ?? []).map((edge, index) => {
           const from = byId.get(edge.from)?.position;
           const to = byId.get(edge.to)?.position;
           if (!from || !to) return null;
-          return <FlowEdge key={`${edge.from}-${edge.to}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} bend={index % 2 ? 38 : -32} color={index % 3 === 0 ? AEPOCH_COLORS.prism : AEPOCH_COLORS.iris} />;
+          const start = Math.max(nodeStarts.get(edge.from) ?? 0, nodeStarts.get(edge.to) ?? 0) + 14;
+          return <FlowEdge key={`${edge.from}-${edge.to}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} bend={index % 2 ? 38 : -32} color={index % 3 === 0 ? AEPOCH_COLORS.prism : AEPOCH_COLORS.iris} progress={edgeDraw(frame, start, 22, reduced)} />;
+        })}
+        {(props.edges ?? []).slice(2, 4).map((edge, index) => {
+          const from = byId.get(edge.from)?.position;
+          const to = byId.get(edge.to)?.position;
+          if (!from || !to) return null;
+          const flow = pathFlow({ frame, startFrame: 96 + index * 18, durationFrames: 30, reducedMotion: reduced });
+          return (
+            <path
+              key={`flow-${edge.from}-${edge.to}`}
+              d={`M${from.x} ${from.y} Q${(from.x + to.x) / 2} ${(from.y + to.y) / 2 + (index ? 38 : -32)} ${to.x} ${to.y}`}
+              pathLength={1}
+              fill="none"
+              stroke={index ? AEPOCH_COLORS.iris : AEPOCH_COLORS.clay}
+              strokeWidth={7}
+              strokeLinecap="round"
+              strokeDasharray={flow.dasharray}
+              strokeDashoffset={flow.dashoffset}
+              opacity={flow.opacity}
+            />
+          );
         })}
       </svg>
       {nodes.map((node) => (
-        <div key={node.id} style={{ position: "absolute", left: node.position.x - 48, top: node.position.y - 48 }}>
+        <div key={node.id} style={{ position: "absolute", left: node.position.x - 48, top: node.position.y - 48, ...revealStyle(nodeEnter(frame, nodeStarts.get(node.id) ?? 18, reduced)) }}>
           <HumanNode size={96} state={node.state} />
         </div>
       ))}
+      </div>
       <SceneChrome number={5} label="Human network" showDebugLabel={props.showDebugLabel} showCornerMark={props.showCornerMark} />
     </AepochScene>
   );
@@ -249,17 +339,19 @@ const comparisonIcon = (index: number, side: "left" | "right"): React.ReactNode 
 };
 
 export const SystemComparison: React.FC<SystemComparisonProps> = (props) => {
+  const frame = useCurrentFrame();
+  const reduced = props.reducedMotion === true;
   validateSystemComparison(props);
   return (
     <AepochScene theme={props.theme} captionReservePx={captionReserve(props)}>
-      <div style={{ position: "absolute", left: 0, top: 12, fontSize: 62, fontWeight: AEPOCH_TYPE.weight.heavy, letterSpacing: -2.4 }}>
+      <div style={{ position: "absolute", left: 0, top: 12, fontSize: 62, fontWeight: AEPOCH_TYPE.weight.heavy, letterSpacing: -2.4, ...revealStyle(reveal({ frame, startFrame: 0, durationFrames: 22, reducedMotion: reduced })) }}>
         {props.headline}
       </div>
       <div style={{ position: "absolute", left: 0, right: 0, top: 135 }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 110px 1fr", alignItems: "center", padding: "0 36px 22px", fontSize: 39, fontWeight: AEPOCH_TYPE.weight.bold }}>
-          <div>{props.left.title}</div>
+          <div style={revealStyle(reveal({ frame, startFrame: 16, durationFrames: 14, fromX: -24, fromY: 0, easing: AEPOCH_EASING.sharpSystem, reducedMotion: reduced }))}>{props.left.title}</div>
           <div />
-          <div style={{ display: "flex", alignItems: "center", gap: 18 }}><AepochMark width={42} color={AEPOCH_COLORS.clay} />{props.right.title}</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 18, ...revealStyle(reveal({ frame, startFrame: 44, durationFrames: 22, fromX: 24, fromY: 0, reducedMotion: reduced })) }}><AepochMark width={42} color={AEPOCH_COLORS.clay} />{props.right.title}</div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           {props.left.items.map((leftItem, index) => (
@@ -276,14 +368,15 @@ export const SystemComparison: React.FC<SystemComparisonProps> = (props) => {
                 borderBottom: `1px solid rgba(224,216,208,0.62)`,
                 fontSize: 31,
                 fontWeight: AEPOCH_TYPE.weight.semibold,
+                opacity: frameProgress(frame, 34 + index * 23, 14, AEPOCH_EASING.sharpSystem, reduced),
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 22, ...revealStyle(reveal({ frame, startFrame: 34 + index * 23, durationFrames: 14, fromX: -26, fromY: 0, easing: AEPOCH_EASING.sharpSystem, reducedMotion: reduced })) }}>
                 <div style={{ opacity: 0.68 }}>{comparisonIcon(index, "left")}</div>
                 {leftItem}
               </div>
-              <div style={{ textAlign: "center", color: AEPOCH_COLORS.muted, fontSize: 31 }}>→</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
+              <div style={{ textAlign: "center", color: AEPOCH_COLORS.muted, fontSize: 31, ...revealStyle(reveal({ frame, startFrame: 42 + index * 23, durationFrames: 14, fromX: -10, fromY: 0, reducedMotion: reduced })) }}>→</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 22, ...revealStyle(reveal({ frame, startFrame: 48 + index * 23, durationFrames: 22, fromX: 26, fromY: 0, reducedMotion: reduced })) }}>
                 <div style={{ opacity: 0.82 }}>{comparisonIcon(index, "right")}</div>
                 {props.right.items[index]}
               </div>

@@ -174,7 +174,9 @@ export const FlowEdge: React.FC<{
   color?: string;
   bend?: number;
   markerId?: string;
-}> = ({ x1, y1, x2, y2, color = AEPOCH_COLORS.iris, bend = 0, markerId }) => {
+  progress?: number;
+  opacity?: number;
+}> = ({ x1, y1, x2, y2, color = AEPOCH_COLORS.iris, bend = 0, markerId, progress = 1, opacity = 0.72 }) => {
   const midX = (x1 + x2) / 2;
   const midY = (y1 + y2) / 2 + bend;
   return (
@@ -184,7 +186,10 @@ export const FlowEdge: React.FC<{
       stroke={color}
       strokeWidth={AEPOCH_LAYOUT.baselineStroke}
       strokeLinecap="round"
-      opacity={0.72}
+      pathLength={1}
+      strokeDasharray={1}
+      strokeDashoffset={1 - progress}
+      opacity={opacity}
       markerEnd={markerId ? `url(#${markerId})` : undefined}
     />
   );
@@ -257,4 +262,3 @@ export const ModuleFooter: React.FC<{ number: number; label: string }> = ({ numb
     Module {number}: <span style={{ color: AEPOCH_COLORS.inkMid }}>{label}</span>
   </div>
 );
-
