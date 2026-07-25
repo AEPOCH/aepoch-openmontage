@@ -16,6 +16,21 @@ import { ProductReveal, ProductRevealProps } from "./components/ProductReveal";
 import { CaptionOverlay, WordCaption } from "./components/CaptionOverlay";
 import { CollageBurst, CollageBurstProps } from "./CollageBurst";
 import { LyricOverlay, LyricOverlayProps } from "./LyricOverlay";
+import {
+  CircularValueFieldPreview,
+  circularValueFieldPreviewProps,
+  DeclarativeHookPreview,
+  declarativeHookPreviewProps,
+  FlowLifecyclePreview,
+  flowLifecyclePreviewProps,
+  HumanNetworkPreview,
+  humanNetworkPreviewProps,
+  KeyStatementPreview,
+  keyStatementPreviewProps,
+  SystemComparisonPreview,
+  systemComparisonPreviewProps,
+} from "./aepoch/previews";
+import { AEPOCH_VIDEO } from "./aepoch/tokens";
 
 // ---------------------------------------------------------------------------
 // Theme System — prevents every video from looking like dark fintech
@@ -135,6 +150,60 @@ const calculateMetadata: CalculateMetadataFunction<ExplainerProps> = async ({
 export const Root: React.FC = () => {
   return (
     <>
+      <Composition
+        id="AepochTier1DeclarativeHook"
+        component={DeclarativeHookPreview}
+        durationInFrames={declarativeHookPreviewProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={declarativeHookPreviewProps}
+      />
+      <Composition
+        id="AepochTier1KeyStatement"
+        component={KeyStatementPreview}
+        durationInFrames={keyStatementPreviewProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={keyStatementPreviewProps}
+      />
+      <Composition
+        id="AepochTier1CircularValueField"
+        component={CircularValueFieldPreview}
+        durationInFrames={circularValueFieldPreviewProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={circularValueFieldPreviewProps}
+      />
+      <Composition
+        id="AepochTier1FlowLifecycle"
+        component={FlowLifecyclePreview}
+        durationInFrames={flowLifecyclePreviewProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={flowLifecyclePreviewProps}
+      />
+      <Composition
+        id="AepochTier1HumanNetwork"
+        component={HumanNetworkPreview}
+        durationInFrames={humanNetworkPreviewProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={humanNetworkPreviewProps}
+      />
+      <Composition
+        id="AepochTier1SystemComparison"
+        component={SystemComparisonPreview}
+        durationInFrames={systemComparisonPreviewProps.durationFrames}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={systemComparisonPreviewProps}
+      />
       <Composition
         id="Explainer"
         component={Explainer}
