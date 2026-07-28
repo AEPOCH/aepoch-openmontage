@@ -1,0 +1,742 @@
+# Phase 13C.1 -- Lee-reference scene timing map for Episode 001.
+# Does NOT overwrite or supersede inputs/scene-plan.yaml (the approved scene order,
+# content, and script-based timing remain locked there). This file adds a SECOND,
+# reference-recording-grounded timing column alongside the approved-script column,
+# per this phase's explicit instruction not to collapse the two into one.
+#
+# See reference/lee/lee-performance-map.md for the full per-beat analysis and
+# precision statement, and qa/phase-13c1-performance-review.md for the full QA review.
+
+episodeId: ep001
+workingTitle: What is AEPOCH?
+referenceRecording: reference/lee/lees-recording-review.mp4
+referenceRecordingDurationSeconds: 314.665
+referenceRecordingNote: Lee's recording is a pacing/performance benchmark only, per Phase 13C.1's instructions
+  -- not an authoritative edit structure, B-roll reference, or final soundtrack.
+timingPrecisionNote: referenceStartSeconds/referenceEndSeconds/referenceDurationSeconds below are phrase-level
+  (beat-level) estimates -- silence-gap-anchored, not word-level forced alignment (none was available;
+  see lee-performance-map.md's precision statement). approvedScriptStartSeconds/approvedScriptDurationSeconds
+  are the original scene-plan.yaml estimates at 135wpm, kept as a separate column per this phase's instructions
+  -- the two are NOT collapsed into one.
+scenes:
+- sceneId: ep001-sc01
+  sceneName: Welcome
+  narrationBeatIds:
+  - N01
+  - N02
+  approvedScriptStartSeconds: 0.0
+  approvedScriptDurationSeconds: 24.89
+  referenceStartSeconds: 0.0
+  referenceEndSeconds: 21.17
+  referenceDurationSeconds: 21.17
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.85
+  emphasisMoments:
+  - '"yes" (N01)'
+  - '"grateful" (N01)'
+  - '"AEPOCH" first spoken use (N02)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - Full scene — Lee's combined pace (21.17s) is well under the approved 24.89s window; hold the settled
+    Welcome composition throughout, no internal development needed.
+  visualRefreshMoments: []
+  recommendedMotionDensity: low
+  recommendedTransitionIn: instant
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - Hi. If you're watching this, you've said yes to being one of the first humans to try something new
+    —
+  - and we're grateful to be here with you.
+  - Most people who've signed up for this might not fully grasp what AEPOCH is yet.
+  - And that's fair — it's a new idea and it's a new category.
+  narrationDeviationNotes: None suspected. Lee's combined N01+N02 duration (~21.17s) runs faster than
+    the approved 24.89s estimate; no wording deviation expected for an opening line.
+  productionNotes: Reference-recording pace confirms this scene has slack, not a squeeze — do not compress
+    the settled Welcome composition to match Lee's faster read; the approved duration remains the planning
+    basis per this phase's instructions.
+- sceneId: ep001-sc02
+  sceneName: August 9 Continuation
+  narrationBeatIds:
+  - N03
+  approvedScriptStartSeconds: 24.89
+  approvedScriptDurationSeconds: 11.56
+  referenceStartSeconds: 21.17
+  referenceEndSeconds: 35.03
+  referenceDurationSeconds: 13.86
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.81
+  emphasisMoments:
+  - '"August 9" (N03, first date mention)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - Full scene — single settled composition (partial Comet Arc + date label).
+  visualRefreshMoments: []
+  recommendedMotionDensity: low
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - Over the next few days we'll walk through the fundamentals in a few short videos,
+  - so you'll have the basic understanding you need by August 9.
+  narrationDeviationNotes: Lee's delivery (~13.86s) runs longer and slower (~113wpm) than the approved
+    11.56s/135wpm estimate — a real, moderate timing deviation, not a wording one.
+  productionNotes: Consider whether the approved 11.56s window is slightly tight if the final narrator
+    reads at a similarly deliberate, orienting pace; not urgent, but worth a timing-only watch.
+- sceneId: ep001-sc03
+  sceneName: Mission
+  narrationBeatIds:
+  - N04
+  approvedScriptStartSeconds: 36.44
+  approvedScriptDurationSeconds: 5.33
+  referenceStartSeconds: 35.03
+  referenceEndSeconds: 41.78
+  referenceDurationSeconds: 6.75
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.52
+  emphasisMoments:
+  - '"mission" (N04)'
+  - '"human again" (N04)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - Full scene — Lee's slow, weighted delivery (~107wpm) supports a full, unhurried hold on the statement.
+  visualRefreshMoments: []
+  recommendedMotionDensity: low
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - Our mission is to make the economy and internet more human again.
+  narrationDeviationNotes: Lee's delivery (~6.75s) runs longer than the approved 5.33s estimate; this
+    is the slowest wpm of any single-clause beat in the recording (~107wpm), consistent with deliberate
+    weight on a mission statement.
+  productionNotes: A short scene either way; even at Lee's slower pace this remains comfortably brief.
+    No boundary-shift recommendation.
+- sceneId: ep001-sc04
+  sceneName: Built for Humans
+  narrationBeatIds:
+  - N05
+  approvedScriptStartSeconds: 41.78
+  approvedScriptDurationSeconds: 12.0
+  referenceStartSeconds: 41.78
+  referenceEndSeconds: 52.95
+  referenceDurationSeconds: 11.17
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.86
+  emphasisMoments:
+  - '"built for humans" (N05)'
+  - '"bots and AI" (N05)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - Full scene — single settled contrast composition.
+  visualRefreshMoments:
+  - Scene-opening darkCut — independently confirmed by Lee's own hard visual break landing at this exact
+    beat boundary (see performance map, N05).
+  recommendedMotionDensity: low
+  recommendedTransitionIn: darkCut
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - When the internet was invented, it was built for humans.
+  - Its inventors didn't imagine a time when bots and AI would be acting as humans on it.
+  narrationDeviationNotes: None suspected; duration (~11.17s) closely matches the approved 12.0s estimate.
+  productionNotes: 'Lee''s own edit placing a hard cut exactly here is a strong independent confirmation
+    of the approved transitionIn: darkCut — a genuine cross-check, not something copied from Lee''s specific
+    visual choice.'
+- sceneId: ep001-sc05
+  sceneName: Symptom List (Mimicry)
+  narrationBeatIds:
+  - N06
+  - N07
+  approvedScriptStartSeconds: 53.78
+  approvedScriptDurationSeconds: 31.11
+  referenceStartSeconds: 52.95
+  referenceEndSeconds: 85.1
+  referenceDurationSeconds: 32.15
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.62
+  emphasisMoments:
+  - '"something''s off" (N06)'
+  - '"lips don''t quite sync" (N07)'
+  - '"catfished" (N07)'
+  - '"familiar?" (N07, direct question)'
+  internalMotionBeats:
+  - '~75.3s into the recording (~21.5s into this scene): a detected 1.14s internal pause inside N07, between
+    the catfished clause and the closing direct question — candidate point for the Mimicry echo cluster
+    to shift or for a second symptom motif to appear.'
+  stillnessMoments: []
+  visualRefreshMoments:
+  - Approximately every 6-8s through the symptom list, per Lee's own cutaway cadence (imagery content
+    not to be copied — see QA review) — a legitimate refresh-rate benchmark even though the specific images
+    are not.
+  recommendedMotionDensity: moderate
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - If you've been connected to the internet lately, you might have felt something's off.
+  - Comments that sound human but aren't.
+  - Responses get written faster than humans can type.
+  - Videos where the face looks right, but the lips don't quite sync.
+  - Phone calls where you're not fully sure the person on the other end is even real.
+  - Dating apps where you suspect you're being catfished.
+  - Does any of this sound familiar?
+  narrationDeviationNotes: N07's duration (~18.95s) is the closest word-for-word match to its approved
+    estimate (18.7s) of any beat in the episode — no deviation suspected. N06 alone runs close to plan
+    as well.
+  productionNotes: This is the longest combined-beat scene by word count; the internal pause in N07 is
+    real, detected data and a good anchor for exactly one internal development, not more.
+- sceneId: ep001-sc06
+  sceneName: Multiplication
+  narrationBeatIds:
+  - N08
+  approvedScriptStartSeconds: 84.89
+  approvedScriptDurationSeconds: 12.89
+  referenceStartSeconds: 85.1
+  referenceEndSeconds: 99.9
+  referenceDurationSeconds: 14.8
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 1.08
+  emphasisMoments:
+  - '"lightning speed" (N08)'
+  - '"never sleep" (N08)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - Full scene — one settled Multiplication grid composition.
+  visualRefreshMoments: []
+  recommendedMotionDensity: low
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - Today, bots can create accounts at lightning speed, and AI can generate voice clones, live video clones,
+    images and more.
+  - These systems communicate faster than humans and never sleep.
+  narrationDeviationNotes: Lee runs slightly longer (~14.80s) than the approved 12.89s estimate; no wording
+    deviation suspected.
+  productionNotes: No internal development needed; the grid's own density already implies acceleration
+    without motion cuts.
+- sceneId: ep001-sc07
+  sceneName: Manufactured Consensus
+  narrationBeatIds:
+  - N09
+  approvedScriptStartSeconds: 97.78
+  approvedScriptDurationSeconds: 11.11
+  referenceStartSeconds: 99.9
+  referenceEndSeconds: 107.42
+  referenceDurationSeconds: 7.52
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.94
+  emphasisMoments:
+  - '"billions" (N09)'
+  - '"manufacturing consensus" (N09)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - Full scene — single settled Manufactured Consensus composition.
+  visualRefreshMoments: []
+  recommendedMotionDensity: low
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: darkCut
+  captionPhraseGroups:
+  - They hide behind billions of fake accounts.
+  - And organizations set up server farms — running around the clock, manufacturing consensus, attempting
+    to program human minds.
+  narrationDeviationNotes: 'FLAGGED: this beat''s estimated rate (~200wpm) is the fastest in the recording
+    and may reflect a boundary-snap artifact rather than genuinely rapid delivery — recommend a manual
+    listen before locking this scene''s internal timing. Approved-script estimate (11.11s) is the safer
+    planning basis until verified.'
+  productionNotes: Do not shrink this scene's duration based on the ~7.5s Lee-reference estimate alone,
+    given the flagged uncertainty above.
+- sceneId: ep001-sc08
+  sceneName: Traffic Data
+  narrationBeatIds:
+  - N10
+  approvedScriptStartSeconds: 108.89
+  approvedScriptDurationSeconds: 19.56
+  referenceStartSeconds: 107.42
+  referenceEndSeconds: 130.1
+  referenceDurationSeconds: 22.68
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.82
+  emphasisMoments:
+  - '"dead internet theory" (N10)'
+  - '"53%" (N10)'
+  - '"90%" (N10)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - Full scene — the numbers are the content; no motion needed.
+  visualRefreshMoments: []
+  recommendedMotionDensity: low
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - Some people call this the dead internet theory.
+  - 'What used to sound like conspiracy is now backed by data:'
+  - 53% automated.
+  - Could climb past 90%.
+  narrationDeviationNotes: Lee runs longer (~22.68s) than the approved 19.56s estimate — landing two sourced
+    statistics appears to take real speakers longer than the flat 135wpm plan assumes. Recommend protecting
+    (not shrinking) this scene's duration in any future timing revision.
+  productionNotes: Strongest single case in the episode for the approved duration being, if anything,
+    slightly short rather than generous.
+- sceneId: ep001-sc09
+  sceneName: Uncertain Reflection
+  narrationBeatIds:
+  - N11
+  approvedScriptStartSeconds: 128.44
+  approvedScriptDurationSeconds: 15.56
+  referenceStartSeconds: 130.1
+  referenceEndSeconds: 142.06
+  referenceDurationSeconds: 11.96
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.77
+  emphasisMoments:
+  - '"isn''t always real" (N11)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - Full scene — the point is that the reflection does not resolve; no internal development should force
+    a resolution.
+  visualRefreshMoments: []
+  recommendedMotionDensity: low
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - This causes confusion, disorientation and distrust online —
+  - because the reflection we see isn't always real.
+  - Some of us feel this intuitively, but can't quite explain it —
+  - it's genuinely hard to know for certain.
+  narrationDeviationNotes: Lee runs faster (~11.96s) than the approved 15.56s estimate, leaving slack
+    in the approved window.
+  productionNotes: Consider a held final frame rather than compressing to match Lee's faster read.
+- sceneId: ep001-sc10
+  sceneName: Extraction
+  narrationBeatIds:
+  - N12
+  approvedScriptStartSeconds: 144.0
+  approvedScriptDurationSeconds: 17.78
+  referenceStartSeconds: 142.06
+  referenceEndSeconds: 158.17
+  referenceDurationSeconds: 16.11
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.83
+  emphasisMoments:
+  - '"extracts" (N12)'
+  - '"life force" (N12)'
+  - '"our presence" (N12, final word of the closing triad)'
+  internalMotionBeats:
+  - '~154.1s into the recording (~12.1s into this scene): a detected 1.12s internal pause late in N12,
+    just before the closing "our time and energy — our presence" triad — candidate point for the ExtractionStrands
+    to fully resolve, landing on "our presence."'
+  stillnessMoments: []
+  visualRefreshMoments: []
+  recommendedMotionDensity: moderate
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - And it has knock-on effects on real-life relationships and mental health.
+  - It fuels fights that wouldn't otherwise happen.
+  - It extracts our data without our knowledge.
+  - And it feeds off our life force — our time and energy — our presence.
+  narrationDeviationNotes: Lee's duration (~16.11s) closely matches the approved 17.78s estimate; no deviation
+    suspected.
+  productionNotes: The internal pause here is real, detected data — a well-grounded anchor for exactly
+    one internal development.
+- sceneId: ep001-sc11
+  sceneName: Built for Another World
+  narrationBeatIds:
+  - N13
+  approvedScriptStartSeconds: 161.78
+  approvedScriptDurationSeconds: 13.33
+  referenceStartSeconds: 158.17
+  referenceEndSeconds: 170.25
+  referenceDurationSeconds: 12.08
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.71
+  emphasisMoments:
+  - '"bigger shift" (N13)'
+  - '"debt, artificial scarcity, and extraction" (N13, closing triad)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - Full scene — single settled legacy-structure composition, no human node.
+  visualRefreshMoments: []
+  recommendedMotionDensity: low
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - Under all of that, there's a bigger shift.
+  - Our economic system evolved to serve a world before this.
+  - It's morphed into something that runs on debt, artificial scarcity, and extraction.
+  narrationDeviationNotes: Lee's duration (~12.08s) closely matches the approved 13.33s estimate; no deviation
+    suspected.
+  productionNotes: No boundary-shift recommendation.
+- sceneId: ep001-sc12
+  sceneName: Does Not Recognize Presence
+  narrationBeatIds:
+  - N14
+  approvedScriptStartSeconds: 175.11
+  approvedScriptDurationSeconds: 17.33
+  referenceStartSeconds: 170.25
+  referenceEndSeconds: 191.52
+  referenceDurationSeconds: 21.27
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.54
+  emphasisMoments:
+  - '"uniquely human" (N14)'
+  - '"attention, care and creativity" (N14, closing triad)'
+  internalMotionBeats:
+  - '~181.6-183.8s into the recording (~11.3-13.5s into this scene): the longest internal pause found
+    anywhere in the recording (2.19s), falling between "...do most of the labor and the thinking." and
+    "And it doesn''t recognize..." — strong, well-grounded anchor for the quiet human node''s entrance,
+    timed to land before "attention, care and creativity."'
+  stillnessMoments:
+  - 'Before the internal pause: hold the empty legacy-structure composition with the boundary gap, unresolved.'
+  visualRefreshMoments:
+  - The human node's entrance, timed to the detected 2.19s internal pause.
+  recommendedMotionDensity: moderate
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: darkCut
+  captionPhraseGroups:
+  - It doesn't know what to do with a world where machines can do most of the labor and the thinking.
+  - 'And it doesn''t recognize the one thing that stays uniquely human:'
+  - our presence, expressed as attention, care and creativity.
+  narrationDeviationNotes: Lee runs noticeably longer (~21.27s) than the approved 17.33s estimate for
+    this pivot line, with the longest internal pause in the recording embedded inside it — real evidence
+    this line is being given deliberate extra weight in performance, not that it's being paraphrased.
+  productionNotes: Strongest single case in the episode for a scene needing more time than approved, if
+    the final narrator delivers with similar weight. This scene's exit timing (into the Signal scene)
+    also carries the lowest confidence in this whole map — see narrationDeviationNotes for ep001-sc13.
+- sceneId: ep001-sc13
+  sceneName: Signal — AEPOCH Is Our Response
+  narrationBeatIds:
+  - N15
+  approvedScriptStartSeconds: 192.44
+  approvedScriptDurationSeconds: 14.67
+  referenceStartSeconds: 191.52
+  referenceEndSeconds: 203.94
+  referenceDurationSeconds: 12.42
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: null
+  emphasisMoments:
+  - '"AEPOCH is our response" (N15, the reveal line itself)'
+  internalMotionBeats:
+  - '~195.8s into the recording (~4.3s into this scene, LOW confidence): a plausible internal pause between
+    "AEPOCH is our response to that." and "Because the various expressions of presence..." — candidate
+    for when the vesica fully resolves, ahead of the supporting clause.'
+  stillnessMoments:
+  - 'After the vesica resolves: hold on the resolved Signal composition, no further development.'
+  visualRefreshMoments:
+  - The vesica's own resolve — the episode's single Signal reveal.
+  recommendedMotionDensity: low
+  recommendedTransitionIn: signalReveal
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - AEPOCH is our response to that.
+  - Because the various expressions of presence - such as attention, care, and creativity —
+  - are what any economy of the future will need to serve us well.
+  narrationDeviationNotes: 'LOWEST-CONFIDENCE ENTRY IN THIS DOCUMENT: this beat''s start did not snap
+    to any detected silence gap within tolerance. Notable qualitative finding regardless of exact timing:
+    Lee''s estimated pace here (~159wpm) is brisk, not hushed — closer to a warm forward-moving declaration
+    than a suspended dramatic pause. Recommend a manual listen/transcript check before locking any frame-level
+    Signal-reveal animation timing.'
+  productionNotes: Do not treat this scene's Lee-reference timing as reliable without a manual verification
+    pass. The approved-script estimate (14.67s) remains the safer planning basis for this specific scene
+    until confirmed.
+- sceneId: ep001-sc14
+  sceneName: Ancient Idea / Modern Tools
+  narrationBeatIds:
+  - N16
+  approvedScriptStartSeconds: 207.11
+  approvedScriptDurationSeconds: 6.67
+  referenceStartSeconds: 203.94
+  referenceEndSeconds: 210.02
+  referenceDurationSeconds: 6.08
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.8
+  emphasisMoments:
+  - '"ancient idea" (N16)'
+  - '"modern tools" (N16)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - Full scene — single settled connected-poles composition.
+  visualRefreshMoments: []
+  recommendedMotionDensity: low
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - AEPOCH provides a new kind of currency,
+  - built on one ancient idea using modern tools.
+  narrationDeviationNotes: Lee's duration (~6.08s) closely matches the approved 6.67s estimate; this beat's
+    entry inherits ep001-sc13's boundary uncertainty (see above).
+  productionNotes: No boundary-shift recommendation beyond the inherited uncertainty already flagged for
+    the preceding scene.
+- sceneId: ep001-sc15
+  sceneName: Already a Contribution
+  narrationBeatIds:
+  - N17
+  approvedScriptStartSeconds: 213.78
+  approvedScriptDurationSeconds: 15.11
+  referenceStartSeconds: 210.02
+  referenceEndSeconds: 225.55
+  referenceDurationSeconds: 15.53
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.55
+  emphasisMoments:
+  - the repeated "Not something..." / "Something..." anaphora (N17)
+  - '"celebrated" (N17, closing word)'
+  internalMotionBeats:
+  - '~219.8-221.1s into the recording (~9.8-11.1s into this scene): a detected 1.33s internal pause mid-anaphora,
+    plausibly between "Not something you have to buy from someone else." and "Something you already are."
+    — a restrained candidate for the presence ring to brighten slightly, not for a visual cut.'
+  stillnessMoments:
+  - Overall — per the approved script's own editorial note ("the repetition is the point"), restraint
+    matters more here than added motion.
+  visualRefreshMoments: []
+  recommendedMotionDensity: low
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - That you being here, unique, alive and present, is already a contribution.
+  - Not something you earn.
+  - Not something you have to buy from someone else.
+  - Something you already are.
+  - Something that should be celebrated.
+  narrationDeviationNotes: Lee's duration (~15.53s) is the closest match to its approved estimate (15.11s)
+    of any multi-clause beat in the episode; no deviation suspected.
+  productionNotes: Warmest passage in the episode — do not fragment its rhythm with visual cuts even though
+    an internal pause was detected.
+- sceneId: ep001-sc16
+  sceneName: A Layer for the Internet
+  narrationBeatIds:
+  - N18
+  approvedScriptStartSeconds: 228.89
+  approvedScriptDurationSeconds: 7.11
+  referenceStartSeconds: 225.55
+  referenceEndSeconds: 234.96
+  referenceDurationSeconds: 9.41
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.74
+  emphasisMoments:
+  - '"eventually" (N18, the required hedge word)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - Full scene — let the shared ring settle fully.
+  visualRefreshMoments: []
+  recommendedMotionDensity: low
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - We're building a layer for the internet that can recognise that,
+  - and eventually pay for it.
+  narrationDeviationNotes: Lee runs longer (~9.41s) and markedly slower (~102wpm, tied for slowest single-clause
+    beat) than the approved 7.11s estimate — a real, deliberate-seeming timing deviation consistent with
+    careful delivery of a hedged claim.
+  productionNotes: Consider whether the approved 7.11s window is tight if the final narrator delivers
+    this line with similar deliberate care.
+- sceneId: ep001-sc17
+  sceneName: One Idea
+  narrationBeatIds:
+  - N19
+  approvedScriptStartSeconds: 236.0
+  approvedScriptDurationSeconds: 8.44
+  referenceStartSeconds: 234.96
+  referenceEndSeconds: 242.01
+  referenceDurationSeconds: 7.05
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 1.27
+  emphasisMoments:
+  - '"whole thesis" (N19)'
+  - '"one idea" (N19)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - Full scene — the sparsest composition in the episode; the long exit pause (1.27s) supports a genuine
+    settled hold before moving on.
+  visualRefreshMoments: []
+  recommendedMotionDensity: low
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - That's the whole thesis.
+  - Everything else we walk through in the days ahead is downstream of that one idea.
+  narrationDeviationNotes: Lee's duration (~7.05s) closely matches the approved 8.44s estimate; no deviation
+    suspected. The 1.27s exit pause is one of the longer pauses detected and plausibly marks a genuine
+    return to direct address in Lee's own recording.
+  productionNotes: Pause data supports, not contradicts, this scene's deliberately minimal design.
+- sceneId: ep001-sc18
+  sceneName: 42-Day Test
+  narrationBeatIds:
+  - N20
+  - N21
+  approvedScriptStartSeconds: 244.44
+  approvedScriptDurationSeconds: 21.33
+  referenceStartSeconds: 242.01
+  referenceEndSeconds: 262.03
+  referenceDurationSeconds: 20.02
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.56
+  emphasisMoments:
+  - '"42 days" (N20)'
+  - '"August 9" (N20)'
+  - '"You''ll be first." (N20)'
+  - '"That''s normal." (N21, closing reassurance)'
+  internalMotionBeats:
+  - Boundary between N20 and N21 (~254.2s into the recording, ~12.2s into this scene) — natural point
+    for the path to advance from waypoint 1 ("Start August 9") toward waypoints 2-3.
+  stillnessMoments: []
+  visualRefreshMoments:
+  - Each of the four waypoints advancing roughly in step with N20's energized delivery, then N21's slower,
+    reassuring pace for the remaining steps.
+  recommendedMotionDensity: moderate
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - For 42 days starting on August 9, you're going to help us test the foundational systems we've built.
+  - You'll be first.
+  - You'll be inside this earlier than almost anyone else will ever be.
+  - Things will break.
+  - That's what first tests are for.
+  - You'll get confused sometimes.
+  - That's normal.
+  narrationDeviationNotes: Combined N20+N21 duration (~20.02s) is close to the approved 21.33s estimate;
+    no deviation suspected. N20 is energized/accelerating, N21 is slower and reassuring — a real, useful
+    register shift within this one scene.
+  productionNotes: This scene's internal register shift (energized invitation -> slower reassurance) is
+    well-grounded and should inform the path animation's pacing once implemented, without adding a fifth
+    waypoint or cards.
+- sceneId: ep001-sc19
+  sceneName: Participant Cohort
+  narrationBeatIds:
+  - N22
+  approvedScriptStartSeconds: 265.78
+  approvedScriptDurationSeconds: 16.89
+  referenceStartSeconds: 262.03
+  referenceEndSeconds: 279.45
+  referenceDurationSeconds: 17.42
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.82
+  emphasisMoments:
+  - '"co-create" (N22)'
+  - '"notice things we can''t see" (N22)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - Full scene — single settled cohort composition.
+  visualRefreshMoments: []
+  recommendedMotionDensity: low
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - And you'll notice things we can't see from where we sit —
+  - the moments, the patterns, the questions that shape what we build next.
+  - Either way, you'll help co-create what comes next and how we launch this properly.
+  narrationDeviationNotes: Lee's duration (~17.42s) closely matches the approved 16.89s estimate; no deviation
+    suspected.
+  productionNotes: No boundary-shift recommendation.
+- sceneId: ep001-sc20
+  sceneName: Final Thesis
+  narrationBeatIds:
+  - N23
+  - N24
+  approvedScriptStartSeconds: 282.67
+  approvedScriptDurationSeconds: 20.0
+  referenceStartSeconds: 279.45
+  referenceEndSeconds: 299.34
+  referenceDurationSeconds: 19.89
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 2.23
+  emphasisMoments:
+  - '"one sentence" (N23, cue)'
+  - '"alive and present" (N24)'
+  - '"the foundation of value" (N24, matches approved on-screen text exactly)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - N23 (the cue line) should carry no visual development at all — a held breath before the thesis.
+  - 'After N24''s final words: a genuine, substantial hold — see the 2.23s exit pause below.'
+  visualRefreshMoments:
+  - The thesis composition (human + presence field) settling once, fully, timed to N24's delivery.
+  recommendedMotionDensity: low
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - 'So — here''s the whole thing in one sentence:'
+  - We're making the economy and internet more human again,
+  - starting with a new kind of currency built on the idea that you being here, alive and present, is
+    enough.
+  - Because it's the foundation of value itself.
+  narrationDeviationNotes: Combined N23+N24 duration (~19.89s) closely matches the approved 20.0s estimate;
+    no wording deviation suspected. The exit pause after this scene (2.23s, between N24 and N25) is the
+    second-longest pause in the entire recording — strong, well-grounded evidence of a deliberate structural/emotional
+    pause marking the shift from the intellectual thesis into intimate personal reflection.
+  productionNotes: The approved script's own note that this is "a landing restatement, not a second climax"
+    appears to be honored in performance — no re-acceleration or second Signal-like energy spike was detected
+    here.
+- sceneId: ep001-sc21
+  sceneName: Biological Transformer
+  narrationBeatIds:
+  - N25
+  approvedScriptStartSeconds: 302.67
+  approvedScriptDurationSeconds: 15.56
+  referenceStartSeconds: 299.34
+  referenceEndSeconds: 313.59
+  referenceDurationSeconds: 14.25
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: 0.56
+  emphasisMoments:
+  - '"magnificent biological transformer" (N25, the protected line)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - Scene opening — settle into the breath-rings composition calmly, honoring the 2.23s entry pause rather
+    than snapping in immediately.
+  visualRefreshMoments: []
+  recommendedMotionDensity: low
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: crossfade
+  captionPhraseGroups:
+  - Say that back to yourself.
+  - Try it on for the rest of the day and see how it feels.
+  - And don't forget to take a moment to appreciate the magnificent biological transformer that you are.
+  narrationDeviationNotes: Lee's duration (~14.25s) closely matches the approved 15.56s estimate; no deviation
+    suspected.
+  productionNotes: The long entry pause (inherited from ep001-sc20's exit) is the scene's most important
+    timing feature — protect it rather than trimming toward the previous scene.
+- sceneId: ep001-sc22
+  sceneName: See You Tomorrow
+  narrationBeatIds:
+  - N26
+  approvedScriptStartSeconds: 318.22
+  approvedScriptDurationSeconds: 4.5
+  referenceStartSeconds: 313.59
+  referenceEndSeconds: 314.67
+  referenceDurationSeconds: 1.08
+  timingConfidence: LOW
+  entryPauseSeconds: null
+  exitPauseSeconds: null
+  emphasisMoments:
+  - '"tomorrow" (N26)'
+  internalMotionBeats: []
+  stillnessMoments:
+  - Full scene — the approved 4.5s canonical hold already exceeds Lee's spoken duration (~1.08s) by design;
+    no change needed.
+  visualRefreshMoments: []
+  recommendedMotionDensity: low
+  recommendedTransitionIn: crossfade
+  recommendedTransitionOut: instant
+  captionPhraseGroups:
+  - See you tomorrow.
+  narrationDeviationNotes: Lee's spoken duration (~1.08s) is brief, as expected for a three-word sign-off;
+    the approved 4.5s hold is doing the sign-off's emotional work, not the words themselves.
+  productionNotes: No boundary-shift recommendation. This scene's reference end is fixed to the recording's
+    measured total duration (314.665s), not a detected pause, since it is the final beat.

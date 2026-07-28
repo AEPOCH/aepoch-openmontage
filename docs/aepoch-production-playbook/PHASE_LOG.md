@@ -120,3 +120,100 @@ narration were not modified.
 Full detail: `projects/aepoch-episodes/001-what-is-aepoch/qa/phase-13b-static-review.md`.
 
 **Next phase:** Phase 13C — not yet scoped.
+
+---
+
+## Phase 13B.1 — Static creative correction
+
+**Status:** Complete
+
+Creative-review correction pass on the Phase 13B stills:
+
+- Rebuilt `SymbolicFigure` on correct 8-head-unit adult proportions (fixed a
+  leg-overlap bug caught mid-pass that made the figure read as one leg).
+- Rescaled Mimicry/Multiplication/Manufactured-Consensus/HumanConsequence
+  ~30% larger for phone-scale clarity.
+- Replaced Manufactured Consensus (no more bordered panel/arrows), Uncertain
+  Reflection (no more Wi-Fi-like arcs), and Extraction's destination/strand
+  count with brand-compliant designs.
+- Corrected traffic-data (90%+, current-vs-projected distinction, removed a
+  duplicate caption) and rebuilt the 42-day test as a Comet-Arc-family path
+  (no cards).
+- Enlarged the series-outro mark/identifier for phone legibility.
+- Regenerated all 5 contact sheets, including a new full 22-scene storyboard
+  sheet.
+
+Full detail: `projects/aepoch-episodes/001-what-is-aepoch/qa/phase-13b-static-review.md`'s Phase 13B.1 section.
+
+**Next phase:** Phase 13B.2 — KeyStatement differentiation.
+
+---
+
+## Phase 13B.2 — KeyStatement differentiation and final static storyboard lock
+
+**Status:** Complete
+
+The full storyboard sheet showed Scenes 3, 13, 15, 17, 20, and 21 all
+rendering as near-identical frozen-`KeyStatement` compositions (left text /
+pale Cosmos circle / Comet Arc / small human). Built five distinct
+episode-specific replacements (Scene 3 kept as the reference baseline):
+
+- Scene 13 (Signal) — new `SignalStatement` component + `SignalVesica`
+  primitive (exact vesica intersection via SVG clip-path), dead-center and
+  formal — the one Signal moment in the episode.
+- Scene 15 (Contribution) — human + warm ring, horizontal relationship to
+  the text.
+- Scene 17 (One idea) — a single point and line against vast negative space.
+- Scene 20 (Final thesis) — human integrated in a large warm field, text
+  left, no arc.
+- Scene 21 (Biological transformer) — new `BreathRings` primitive around an
+  off-center human figure.
+
+Also fixed Scene 18's label size/spacing (two clearance bugs). Caught and
+fixed a wiring bug where Root.tsx still pointed the five new scenes at the
+old shared frozen-KeyStatement preview (would have type-checked but
+silently rendered the wrong component).
+
+Full detail: `projects/aepoch-episodes/001-what-is-aepoch/qa/phase-13b-static-review.md`'s Phase 13B.2 section.
+
+**Next phase:** Phase 13C — not yet scoped.
+
+---
+
+## Phase 13C.1 — Performance analysis and timing lock
+
+**Status:** Complete
+
+Analyzed a reference recording (`reference/lee/lees-recording-review.mp4`,
+314.665s, 1280×720 @29.97fps) as a pacing/performance benchmark only — not
+an authoritative edit structure, B-roll reference, or final soundtrack.
+
+- No word-level alignment tool was available (`faster-whisper`/`whisperx`
+  not installed, no cached model found); per the phase's instructions, none
+  was installed. Produced phrase-level timing instead, via `ffmpeg
+  silencedetect` + word-count proportion, snapped to real detected pauses
+  (25 of 26 beat boundaries; one flagged LOW confidence) — precision
+  labeled throughout.
+- **Key finding:** direct visual review of the recording's keyframes shows
+  it is ≈64% AI-generated illustrative B-roll, much of it violating
+  documented ÆPOCH brand exclusions (hooded-hacker imagery, literal server
+  racks, a named platform logo, a coin-drop image, generic robot-hand "AI"
+  iconography, distorted/uncanny faces) — explicitly flagged as not to be
+  copied into the unified ÆPOCH version.
+- Identified two long, well-grounded pauses (2.19s inside N14, 2.23s
+  between N24/N25) as genuine structural/emotional holds, and three
+  internal-motion-beat candidates (Scenes 5, 10, 12) anchored to real
+  detected pauses — not invented.
+- Produced `reference/lee/lee-performance-map.md` (all 26 narration beats:
+  timing, pauses, emphasis, delivery character, animation/caption
+  implications) and `inputs/scene-timing-map.yaml` (all 22 scenes, a
+  reference-timing column alongside the approved-script column — validated
+  YAML, monotonic/non-overlapping, reconciles with the recording runtime).
+
+No animation, captions, episode assembly, or MP4 render was performed. The
+approved narration, scene order, and tagged Tier 1 / Episode 001 static
+baselines were not modified.
+
+Full detail: `projects/aepoch-episodes/001-what-is-aepoch/qa/phase-13c1-performance-review.md`.
+
+**Next phase:** Phase 13C.2 — motion implementation. Not yet started.

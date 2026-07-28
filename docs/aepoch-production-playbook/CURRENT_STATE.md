@@ -5,8 +5,9 @@
 - Current branch: `aepoch-series`
 - Locked Tier 1 baseline tag: `aepoch-tier1-beta-v0.1.0`
 - Tier 1 baseline commit: `a41e3fb`
-- Current completed phase: Phase 13B
-- Next phase: Phase 13C
+- Locked Episode 001 static baseline tag: `aepoch-e001-static-v0.1.0`
+- Current completed phase: Phase 13C.1
+- Next phase: Phase 13C.2 (motion implementation) — not yet started
 - Current episode: `001-what-is-aepoch`
 - Episode type: Pre-launch countdown, Video 1
 - Working title: `What is ÆPOCH?`
@@ -56,20 +57,55 @@ Static reference-frame production complete:
   new stills.
 - Full detail: `projects/aepoch-episodes/001-what-is-aepoch/qa/phase-13b-static-review.md`.
 
+### Phase 13B.1
+Static creative-correction pass: rebuilt `SymbolicFigure` on correct adult
+proportions (fixed a leg-overlap bug found mid-pass), rescaled dark-scene
+compositions, replaced Manufactured Consensus/Uncertain Reflection/
+Extraction with brand-compliant designs, corrected the traffic-data and
+42-day-test compositions, enlarged the outro mark. Regenerated all 5
+contact sheets including a new full 22-scene storyboard sheet. Full detail:
+`qa/phase-13b-static-review.md`'s Phase 13B.1 section.
+
+### Phase 13B.2
+KeyStatement differentiation: Scenes 3/13/15/17/20/21 all rendered as
+near-identical frozen-`KeyStatement` layouts — replaced 5 of the 6 with
+distinct episode-specific compositions (Scene 3 kept as the reference
+baseline), including a new `SignalVesica` primitive (the episode's one
+Signal moment) and a new `BreathRings` primitive. Fixed Scene 18 label
+readability. Full detail: `qa/phase-13b-static-review.md`'s Phase 13B.2
+section.
+
+### Phase 13C.1
+Performance analysis and timing lock, using a reference recording
+(`reference/lee/lees-recording-review.mp4`, 314.665s) as a pacing/
+performance benchmark only — not an authoritative edit structure or
+soundtrack. No word-level alignment tool was available (none installed,
+per the phase's "no model download without approval" instruction);
+produced phrase-level timing via silence detection + word-count proportion,
+confidence-labeled throughout. Key finding: the reference recording is
+≈64% AI-generated illustrative B-roll (much of it violating documented
+brand exclusions — hooded-hacker imagery, server racks, a named platform
+logo, a coin-drop, generic robot hands) that must not be copied into the
+unified ÆPOCH version. Produced `reference/lee/lee-performance-map.md`
+(all 26 narration beats) and `inputs/scene-timing-map.yaml` (all 22 scenes,
+a reference-timing column alongside the approved-script column — does not
+overwrite `scene-plan.yaml`). Full detail:
+`qa/phase-13c1-performance-review.md`.
+
 ## Next task
 
-Phase 13C: not yet scoped. Likely candidates per `SCENE_MODULES.md`'s
-implementation order: full motion implementation for the four new modules,
-and/or resolving the Phase 13B candidate A/B creative decisions. Do not begin
-without an explicit new phase prompt.
+Phase 13C.2: motion implementation — not yet started, no prompt received.
+Do not begin without an explicit new phase prompt.
 
 ## Authoritative episode files
 
 - `projects/aepoch-episodes/001-what-is-aepoch/inputs/episode-brief.md`
 - `projects/aepoch-episodes/001-what-is-aepoch/inputs/narration-script.md`
 - `projects/aepoch-episodes/001-what-is-aepoch/inputs/scene-plan.yaml`
+- `projects/aepoch-episodes/001-what-is-aepoch/inputs/scene-timing-map.yaml` (reference timing only; does not supersede `scene-plan.yaml`)
 - `projects/aepoch-episodes/001-what-is-aepoch/storyboard/static-review.md`
 - `projects/aepoch-episodes/001-what-is-aepoch/research/claims-and-sources.md`
+- `projects/aepoch-episodes/001-what-is-aepoch/reference/lee/lee-performance-map.md`
 
 ## Authoritative brand and production files
 
