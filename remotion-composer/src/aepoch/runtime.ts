@@ -21,8 +21,8 @@ export const validateAepochSceneBase = (scene: AepochSceneBase): void => {
     throw new Error("ÆPOCH scene validation: durationFrames must be a positive integer");
   }
   const reserve = scene.captions?.reserveBottomPx;
-  if (reserve !== undefined && (!Number.isFinite(reserve) || reserve < 170)) {
-    throw new Error("ÆPOCH scene validation: caption reserve must be at least 170px");
+  if (reserve !== undefined && (!Number.isFinite(reserve) || reserve < 140)) {
+    throw new Error("ÆPOCH scene validation: caption reserve must be at least 140px");
   }
   for (const asset of scene.assetRefs ?? []) {
     requireText(asset, "assetRefs[]");

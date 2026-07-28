@@ -1,4 +1,6 @@
 import React from "react";
+import { AbsoluteFill } from "remotion";
+import { CaptionPanel, localCaptionCues, type TestReelModuleKey } from "./captions";
 import {
   CircularValueField,
   DeclarativeHook,
@@ -29,7 +31,7 @@ const base = {
   showDebugLabel: true,
   showCornerMark: false,
   seed: 1201,
-  captions: { enabled: true, reserveBottomPx: 180 },
+  captions: { enabled: true, reserveBottomPx: 150 },
   assetRefs: [],
 };
 
@@ -179,3 +181,29 @@ export const reducedCircularValueFieldProps: CircularValueFieldProps = { ...anim
 export const reducedFlowLifecycleProps: FlowLifecycleProps = { ...animatedFlowLifecycleProps, reducedMotion: true };
 export const reducedHumanNetworkProps: HumanNetworkProps = { ...animatedHumanNetworkProps, reducedMotion: true };
 export const reducedSystemComparisonProps: SystemComparisonProps = { ...animatedSystemComparisonProps, reducedMotion: true };
+
+// Phase 12C: the six standalone animated module previews get the same
+// burned-caption panel used in the combined reel, sliced to each module's
+// own local timeline via localCaptionCues. Independent fade behavior of
+// the previews themselves is untouched — this only adds a caption layer
+// on top.
+const withCaptions = <P extends object>(
+  ModuleComponent: React.FC<P>,
+  moduleKey: TestReelModuleKey,
+): React.FC<P> => {
+  const cues = localCaptionCues(moduleKey);
+  const Captioned: React.FC<P> = (props) => (
+    <AbsoluteFill>
+      <ModuleComponent {...props} />
+      <CaptionPanel cues={cues} />
+    </AbsoluteFill>
+  );
+  return Captioned;
+};
+
+export const DeclarativeHookAnimatedCaptioned = withCaptions(DeclarativeHookPreview, "declarativeHook");
+export const KeyStatementAnimatedCaptioned = withCaptions(KeyStatementPreview, "keyStatement");
+export const CircularValueFieldAnimatedCaptioned = withCaptions(CircularValueFieldPreview, "circularValueField");
+export const FlowLifecycleAnimatedCaptioned = withCaptions(FlowLifecyclePreview, "flowLifecycle");
+export const HumanNetworkAnimatedCaptioned = withCaptions(HumanNetworkPreview, "humanNetwork");
+export const SystemComparisonAnimatedCaptioned = withCaptions(SystemComparisonPreview, "systemComparison");

@@ -46,6 +46,11 @@ import type {
 const captionReserve = (props: { captions?: { enabled?: boolean; reserveBottomPx?: number } }): number =>
   props.captions?.enabled ? props.captions.reserveBottomPx ?? AEPOCH_LAYOUT.captionReserveMin : 0;
 
+// Phase 12C: SystemComparison row emphasis start frames, spread across the
+// full 190-frame narration instead of bunched in its first half. See usage
+// below for the narrated-contrast rationale.
+const ROW_EMPHASIS_START = [20, 55, 110, 155] as const;
+
 const BrandLockup: React.FC = () => (
   <div style={{ position: "absolute", left: 0, bottom: 0 }}>
     <AepochMark width={52} />
@@ -81,10 +86,15 @@ export const DeclarativeHook: React.FC<DeclarativeHookProps> = (props) => {
   });
   const eyebrowReveal = reveal({ frame, startFrame: 0, durationFrames: 18, reducedMotion: reduced });
   const humanReveal = reveal({ frame, startFrame: 42, durationFrames: 20, fromY: 36, fromScale: 0.96, reducedMotion: reduced });
+  // Phase 12C: the rigid production geometry's strongest arrival (reveal
+  // complete) is timed to land on the spoken word "production" — the last
+  // word of the hook narration, which ends at local frame ~104 (narration
+  // starts local frame 6, runs 98 frames total; "production." is the 8th
+  // of 8 words).
   const systemReveal = reveal({
     frame,
-    startFrame: 50,
-    durationFrames: 22,
+    startFrame: 72,
+    durationFrames: 28,
     fromX: 36,
     fromY: 0,
     easing: AEPOCH_EASING.sharpSystem,
@@ -203,13 +213,20 @@ export const CircularValueField: React.FC<CircularValueFieldProps> = (props) => 
   validateCircularValueField(props);
   return (
     <AepochScene theme={props.theme} captionReservePx={captionReserve(props)}>
+      {/*
+        Phase 12C: Production (index 0) introduces first, Presence (index 1)
+        second, each timed to its spoken word in "What we count shapes what
+        we value: production, or presence." (114-frame narration, local
+        frames 6-120; "production," ~86-97, "presence." ~109-120). Both
+        fields settle, then converge, then the authored conclusion reveals.
+      */}
       <div style={{ position: "absolute", top: 85, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 150 }}>
         {props.fields.map((field, index) => {
-          const start = index === 0 ? 0 : 24;
+          const start = index === 0 ? 70 : 96;
           const offset = convergenceOffset({
             frame,
-            startFrame: 36,
-            durationFrames: 30,
+            startFrame: 122,
+            durationFrames: 26,
             distance: 34,
             direction: index === 0 ? "left" : "right",
             reducedMotion: reduced,
@@ -225,7 +242,7 @@ export const CircularValueField: React.FC<CircularValueFieldProps> = (props) => 
         )})}
       </div>
       {props.footer ? (
-        <div style={{ position: "absolute", left: 0, right: 0, bottom: 52, textAlign: "center", fontSize: 34, fontStyle: "italic", color: AEPOCH_COLORS.inkMid, ...revealStyle(reveal({ frame, startFrame: 62, durationFrames: 22, reducedMotion: reduced })) }}>
+        <div style={{ position: "absolute", left: 0, right: 0, bottom: 52, textAlign: "center", fontSize: 34, fontStyle: "italic", color: AEPOCH_COLORS.inkMid, ...revealStyle(reveal({ frame, startFrame: 150, durationFrames: 22, reducedMotion: reduced })) }}>
           {props.footer}
         </div>
       ) : null}
@@ -354,7 +371,15 @@ export const SystemComparison: React.FC<SystemComparisonProps> = (props) => {
           <div style={{ display: "flex", alignItems: "center", gap: 18, ...revealStyle(reveal({ frame, startFrame: 44, durationFrames: 22, fromX: 24, fromY: 0, reducedMotion: reduced })) }}><AepochMark width={42} color={AEPOCH_COLORS.clay} />{props.right.title}</div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {props.left.items.map((leftItem, index) => (
+          {props.left.items.map((leftItem, index) => {
+            // Phase 12C: row emphasis aligned to the narrated contrasts.
+            // Narration (190 frames, local 6-196) splits into "Different
+            // systems produce different realities:" (local 10-105) and
+            // "extraction or contribution, concentration or flow."
+            // (local 105-195) — the latter names rows 2 and 3 directly, so
+            // those two rows are timed to land inside that second clause.
+            const rowStart = ROW_EMPHASIS_START[index] ?? ROW_EMPHASIS_START[ROW_EMPHASIS_START.length - 1] + (index - ROW_EMPHASIS_START.length + 1) * 45;
+            return (
             <div
               key={leftItem}
               style={{
@@ -368,20 +393,20 @@ export const SystemComparison: React.FC<SystemComparisonProps> = (props) => {
                 borderBottom: `1px solid rgba(224,216,208,0.62)`,
                 fontSize: 31,
                 fontWeight: AEPOCH_TYPE.weight.semibold,
-                opacity: frameProgress(frame, 34 + index * 23, 14, AEPOCH_EASING.sharpSystem, reduced),
+                opacity: frameProgress(frame, rowStart, 14, AEPOCH_EASING.sharpSystem, reduced),
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: 22, ...revealStyle(reveal({ frame, startFrame: 34 + index * 23, durationFrames: 14, fromX: -26, fromY: 0, easing: AEPOCH_EASING.sharpSystem, reducedMotion: reduced })) }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 22, ...revealStyle(reveal({ frame, startFrame: rowStart, durationFrames: 14, fromX: -26, fromY: 0, easing: AEPOCH_EASING.sharpSystem, reducedMotion: reduced })) }}>
                 <div style={{ opacity: 0.68 }}>{comparisonIcon(index, "left")}</div>
                 {leftItem}
               </div>
-              <div style={{ textAlign: "center", color: AEPOCH_COLORS.muted, fontSize: 31, ...revealStyle(reveal({ frame, startFrame: 42 + index * 23, durationFrames: 14, fromX: -10, fromY: 0, reducedMotion: reduced })) }}>→</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 22, ...revealStyle(reveal({ frame, startFrame: 48 + index * 23, durationFrames: 22, fromX: 26, fromY: 0, reducedMotion: reduced })) }}>
+              <div style={{ textAlign: "center", color: AEPOCH_COLORS.muted, fontSize: 31, ...revealStyle(reveal({ frame, startFrame: rowStart + 8, durationFrames: 14, fromX: -10, fromY: 0, reducedMotion: reduced })) }}>→</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 22, ...revealStyle(reveal({ frame, startFrame: rowStart + 14, durationFrames: 22, fromX: 26, fromY: 0, reducedMotion: reduced })) }}>
                 <div style={{ opacity: 0.82 }}>{comparisonIcon(index, "right")}</div>
                 {props.right.items[index]}
               </div>
             </div>
-          ))}
+          )})}
         </div>
       </div>
       <SceneChrome number={6} label="System comparison" showDebugLabel={props.showDebugLabel} showCornerMark={props.showCornerMark} />

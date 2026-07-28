@@ -72,7 +72,7 @@ export const AEPOCH_TYPE = {
 
 export const AEPOCH_LAYOUT = {
   safe: { left: 120, right: 120, top: 90, bottom: 90 },
-  captionReserveMin: 170,
+  captionReserveMin: 150,
   cardPadding: 48,
   regionGap: 64,
   cardRadius: 28,
@@ -80,6 +80,21 @@ export const AEPOCH_LAYOUT = {
   baselineStroke: 3,
   heroStroke: 5,
   contentWidth: 1680,
+} as const;
+
+// Phase 12C caption panel spec (1920x1080 reference frame).
+export const AEPOCH_CAPTION = {
+  fontSize: 38,
+  maxWidth: 1240,
+  maxLines: 2,
+  bottomOffset: 64,
+  paddingH: 28,
+  paddingV: 14,
+  background: "rgba(26,22,18,0.76)",
+  text: "#FAF8F5",
+  cornerRadius: 12,
+  lineHeight: 1.22,
+  safeReserve: 150,
 } as const;
 
 export const AEPOCH_DURATIONS = {

@@ -41,6 +41,12 @@ import {
   reducedHumanNetworkProps,
   reducedKeyStatementProps,
   reducedSystemComparisonProps,
+  DeclarativeHookAnimatedCaptioned,
+  KeyStatementAnimatedCaptioned,
+  CircularValueFieldAnimatedCaptioned,
+  FlowLifecycleAnimatedCaptioned,
+  HumanNetworkAnimatedCaptioned,
+  SystemComparisonAnimatedCaptioned,
 } from "./aepoch/previews";
 import { AEPOCH_VIDEO } from "./aepoch/tokens";
 import { AepochTier1TestReel, TEST_REEL_TIMING } from "./aepoch/reel";
@@ -219,7 +225,7 @@ export const Root: React.FC = () => {
       />
       <Composition
         id="AepochTier1DeclarativeHookAnimated"
-        component={DeclarativeHookPreview}
+        component={DeclarativeHookAnimatedCaptioned}
         durationInFrames={animatedDeclarativeHookProps.durationFrames}
         fps={AEPOCH_VIDEO.fps}
         width={AEPOCH_VIDEO.width}
@@ -228,7 +234,7 @@ export const Root: React.FC = () => {
       />
       <Composition
         id="AepochTier1KeyStatementAnimated"
-        component={KeyStatementPreview}
+        component={KeyStatementAnimatedCaptioned}
         durationInFrames={animatedKeyStatementProps.durationFrames}
         fps={AEPOCH_VIDEO.fps}
         width={AEPOCH_VIDEO.width}
@@ -237,7 +243,7 @@ export const Root: React.FC = () => {
       />
       <Composition
         id="AepochTier1CircularValueFieldAnimated"
-        component={CircularValueFieldPreview}
+        component={CircularValueFieldAnimatedCaptioned}
         durationInFrames={animatedCircularValueFieldProps.durationFrames}
         fps={AEPOCH_VIDEO.fps}
         width={AEPOCH_VIDEO.width}
@@ -246,7 +252,7 @@ export const Root: React.FC = () => {
       />
       <Composition
         id="AepochTier1FlowLifecycleAnimated"
-        component={FlowLifecyclePreview}
+        component={FlowLifecycleAnimatedCaptioned}
         durationInFrames={animatedFlowLifecycleProps.durationFrames}
         fps={AEPOCH_VIDEO.fps}
         width={AEPOCH_VIDEO.width}
@@ -255,7 +261,7 @@ export const Root: React.FC = () => {
       />
       <Composition
         id="AepochTier1HumanNetworkAnimated"
-        component={HumanNetworkPreview}
+        component={HumanNetworkAnimatedCaptioned}
         durationInFrames={animatedHumanNetworkProps.durationFrames}
         fps={AEPOCH_VIDEO.fps}
         width={AEPOCH_VIDEO.width}
@@ -264,7 +270,7 @@ export const Root: React.FC = () => {
       />
       <Composition
         id="AepochTier1SystemComparisonAnimated"
-        component={SystemComparisonPreview}
+        component={SystemComparisonAnimatedCaptioned}
         durationInFrames={animatedSystemComparisonProps.durationFrames}
         fps={AEPOCH_VIDEO.fps}
         width={AEPOCH_VIDEO.width}
