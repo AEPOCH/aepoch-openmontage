@@ -1,0 +1,575 @@
+# Scene Plan — "What is ÆPOCH?" (Episode 001)
+#
+# Phase 13A.1 scene-plan refinement. This plan is a proposal for review — no
+# Remotion components, compositions, stills, or renders exist against it yet.
+#
+# Source: inputs/narration-script.md (beats N01-N26, unchanged text)
+# Timing model: 135 words per minute (2.25 words/second), pure word-count
+# arithmetic per beat. Real production timing will be re-derived against the
+# actual recorded narration once voice work begins; these numbers are a
+# planning estimate, not a locked frame count.
+#
+# Changes from the 13A draft (21 scenes -> 22 scenes):
+#   - Scene 08 on-screen text corrected to two lines matching approved wording.
+#   - Former Scene 11 (N13+N14, one DeclarativeHook scene) split into two
+#     scenes (now sc11, sc12), sharing one DeclarativeHook variant family but
+#     with distinct settled compositions and motion intentions.
+#   - The scene after "ÆPOCH is our response" no longer converges toward the
+#     Æ mark/vesica/white ring -- it now shows two stable, connected poles,
+#     so it cannot read as a second Signal reveal.
+#   - "A layer for the internet" is no longer a plain KeyStatement scene --
+#     it is now a HumanNetwork protocol-layer variant.
+#   - FlowLifecycle's four steps are locked to: Start August 9 / Test what
+#     we built / Notice what happens / Shape what comes next. "Things will
+#     break" / "That's normal" remain spoken secondary statements, not steps.
+#   - WelcomeDirectAddress no longer uses a head-tilt; whole-body settling,
+#     minimal weight shift, and an optional presence-ring/breath-pulse on
+#     "grateful" replace it.
+#   - SyntheticMultiplication now locks three explicitly distinct
+#     configurations (Mimicry / Multiplication / Manufactured consensus)
+#     instead of one grid at increasing density.
+#   - Final thesis on-screen text replaced with "Alive and present is
+#     enough. / Presence is the foundation of value."
+#   - All scenes renumbered ep001-sc01..ep001-sc22; all timing recalculated.
+
+episodeId: "ep001"
+workingTitle: "What is ÆPOCH?"
+totalNarrationSeconds: 319.56
+assembledTotalSeconds: 322.72
+targetPaceWpm: 135
+sceneCount: 22
+generatedFrom:
+  narrationScript: "inputs/narration-script.md"
+  episodeBrief: "inputs/episode-brief.md"
+notes: >
+  Existing Tier 1 modules (DeclarativeHook, KeyStatement, CircularValueField,
+  FlowLifecycle, HumanNetwork, SystemComparison) are referenced by their
+  Remotion component names in remotion-composer/src/aepoch/modules.tsx.
+  SystemComparison is not used directly in this scene plan -- no passage in
+  this episode presents two full parallel structures side by side the way
+  the Tier 1 test reel's demo content does; DeclarativeHook and
+  CircularValueField cover this episode's contrast/comparison needs instead.
+  This remains a genuine finding, not an oversight -- see
+  storyboard/static-review.md. assembledTotalSeconds accounts for the
+  series-outro's canonical 4.5s hold (see ep001-sc22), which runs longer
+  than that scene's bare 1.33s spoken duration; both totals stay within the
+  5:30 planning ceiling for this refinement pass.
+
+scenes:
+  - id: "ep001-sc01"
+    narrationBeatIds: ["N01", "N02"]
+    startSeconds: 0.00
+    durationSeconds: 24.89
+    purpose: "Direct welcome to early participants; normalize not yet understanding ÆPOCH."
+    spokenText: "Hi. If you're watching this, you've said yes to being one of the first humans to try something new — and we're grateful to be here with you. Most people who've signed up for this might not fully grasp what ÆPOCH is yet. And that's fair — it's a new idea and it's a new category."
+    onScreenText: null
+    visualMode: "direct-address"
+    existingModule: null
+    moduleVariant: null
+    newModuleRequired: "WelcomeDirectAddress"
+    background: "earth-rise"
+    earthCosmosRole: "earth"
+    humanRole: "Single human silhouette, three-quarter posture angled toward the viewer as if speaking directly to them; natural stillness, not a rigid presenter pose."
+    motionSummary: "Whole-body settling (subtle weight shift, natural micro-adjustment) as the figure arrives; optional restrained presence-ring or a single breath-pulse (gentle opacity/scale breathing) timed to 'grateful'. No head-tilt and no acknowledge-gesture animation -- the figure must remain symbolic and still, never a mascot or presenter character."
+    transitionIn: "instant"
+    transitionOut: "crossfade"
+    captionRisk: "low — two clean beats, natural clause breaks, 56 words across ~24.9s"
+    assetDependencies:
+      - "human-forms/human-present.svg (needs a new facing-viewer pose variant; current poses are profile/interaction, not direct address)"
+      - "backgrounds/earth-rise-light.svg"
+      - "NEW module: WelcomeDirectAddress"
+    productionStatus: "blocked-new-module"
+    notes: "A series intro (seriesIntroV1, Tier 3) would normally precede this per MOTION_TOKENS.md section 8 -- not decided here, flagged as a dependency for the episode assembly stage. Motion locked per Phase 13A.1 correction #6."
+
+  - id: "ep001-sc02"
+    narrationBeatIds: ["N03"]
+    startSeconds: 24.89
+    durationSeconds: 11.56
+    purpose: "Set expectation for the multi-video run; first mention of August 9."
+    spokenText: "Over the next few days we'll walk through the fundamentals in a few short videos, so you'll have the basic understanding you need by August 9."
+    onScreenText: "August 9"
+    visualMode: "direct-address-countdown-tease"
+    existingModule: null
+    moduleVariant: null
+    newModuleRequired: "WelcomeDirectAddress"
+    background: "earth-rise"
+    earthCosmosRole: "earth"
+    humanRole: "Same silhouette as ep001-sc01, continued."
+    motionSummary: "Comet Arc introduced faintly at low opacity in the frame's periphery, foreshadowing the countdown motif reused in ep001-sc18; headlineReveal for the on-screen date."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "low — single clean clause, 26 words"
+    assetDependencies:
+      - "motion/comet-circle-path.svg"
+      - "NEW module: WelcomeDirectAddress (continued)"
+    productionStatus: "blocked-new-module"
+
+  - id: "ep001-sc03"
+    narrationBeatIds: ["N04"]
+    startSeconds: 36.44
+    durationSeconds: 5.33
+    purpose: "Land the mission statement as one memorable line."
+    spokenText: "Our mission is to make the economy and internet more human again."
+    onScreenText: "Make the economy and internet more human again."
+    visualMode: "reframe-statement"
+    existingModule: "KeyStatement"
+    moduleVariant: null
+    newModuleRequired: null
+    background: "earth-rise"
+    earthCosmosRole: "balanced"
+    humanRole: "None on screen — the statement carries the scene; optional faint distant silhouette lower-third for continuity with the two prior scenes."
+    motionSummary: "headlineReveal, statementHold; layout centered; accentTreatment none."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "low — 12 words, single clause"
+    assetDependencies:
+      - "marks/aepoch-mark-ink.svg"
+    productionStatus: "ready"
+
+  - id: "ep001-sc04"
+    narrationBeatIds: ["N05"]
+    startSeconds: 41.78
+    durationSeconds: 12.00
+    purpose: "Establish the internet was built for humans; its inventors didn't foresee bots acting as humans."
+    spokenText: "When the internet was invented, it was built for humans. Its inventors didn't imagine a time when bots and AI would be acting as humans on it."
+    onScreenText: "Built for humans."
+    visualMode: "contrast-diagram"
+    existingModule: "DeclarativeHook"
+    moduleVariant: null
+    newModuleRequired: null
+    background: "void"
+    earthCosmosRole: "balanced"
+    humanRole: "Single human node, soft reveal, left/lower placement; rigid system geometry enters right with sharp corners, per DeclarativeHook's contrastMode=earth-vs-system."
+    motionSummary: "headlineReveal on lines; humanEnter for the human node; sharpSystem-eased reveal for the rigid geometry, timed to land on 'bots and AI'."
+    transitionIn: "darkCut"
+    transitionOut: "crossfade"
+    captionRisk: "low — 27 words, two clean clauses"
+    assetDependencies:
+      - "backgrounds/void-dark.svg"
+      - "diagrams/node-human.svg"
+      - "diagrams/node-system.svg"
+    productionStatus: "ready"
+    notes: "Uses background=void here, unlike the Tier 1 test reel's earth-rise-themed DeclarativeHook demo usage -- void better fits VISUAL_LANGUAGE.md's guidance for hook-stage current-system framing in a real episode."
+
+  - id: "ep001-sc05"
+    narrationBeatIds: ["N06", "N07"]
+    startSeconds: 53.78
+    durationSeconds: 31.11
+    purpose: "Symptom list -- invite the viewer's own half-noticed unease about synthetic content. Synthetic Multiplication configuration A: Mimicry."
+    spokenText: "If you've been connected to the internet lately, you might have felt something's off. Comments that sound human but aren't. Responses get written faster than humans can type. Videos where the face looks right, but the lips don't quite sync. Phone calls where you're not fully sure the person on the other end is even real. Dating apps where you suspect you're being catfished. Does any of this sound familiar?"
+    onScreenText: "Something's off."
+    visualMode: "multiplication-motif-mimicry"
+    existingModule: null
+    moduleVariant: null
+    newModuleRequired: "SyntheticMultiplication"
+    background: "void"
+    earthCosmosRole: "cosmos"
+    humanRole: "One human node with genuinely irregular, natural rhythm (uneven timing, organic micro-variation)."
+    motionSummary: "Configuration A -- Mimicry: the human node's irregular rhythm is surrounded by several nearly identical echo-shapes that copy it a beat behind, imperfectly -- the echoes are almost right, not simply more copies at higher density. The human node's irregularity is the entire point of contrast. Ends held still on the closing question."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "medium — N07 alone is 42 words across four short clauses; needs careful phrase-grouping to avoid 3-line captions (Phase 12C caption-panel precedent applies)."
+    assetDependencies:
+      - "NEW module: SyntheticMultiplication (configuration A: Mimicry)"
+      - "NEW icon: echo/imperfect-copy unit (no existing icon covers bot/automation mimicry)"
+    productionStatus: "blocked-new-module"
+    notes: "Do not depict literal comment boxes, video-call UI, or dating-app interfaces -- represent via imperfect echo/mimicry of the human node's own irregular rhythm only. Distinct configuration from ep001-sc06 (Multiplication) and ep001-sc07 (Manufactured consensus) -- not the same grid at increasing density."
+
+  - id: "ep001-sc06"
+    narrationBeatIds: ["N08"]
+    startSeconds: 84.89
+    durationSeconds: 12.89
+    purpose: "Scale and capability of synthetic content generation -- accounts, voice, video, and image clones. Synthetic Multiplication configuration B: Multiplication."
+    spokenText: "Today, bots can create accounts at lightning speed, and AI can generate voice clones, live video clones, images and more. These systems communicate faster than humans and never sleep."
+    onScreenText: "Faster. Never sleeping."
+    visualMode: "multiplication-motif-replication"
+    existingModule: null
+    moduleVariant: null
+    newModuleRequired: "SyntheticMultiplication"
+    background: "void"
+    earthCosmosRole: "cosmos"
+    humanRole: "None -- pure automation visual; no human node in this configuration."
+    motionSummary: "Configuration B -- Multiplication: one single synthetic unit begins replicating itself at a steadily accelerating, perfectly mechanical rate -- each new copy appears at a shortening, exact interval, unlike configuration A's imperfect echo timing. This is specifically about one thing becoming many, fast, not about density alone."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "low — 29 words, two clauses"
+    assetDependencies:
+      - "NEW module: SyntheticMultiplication (configuration B: Multiplication)"
+    productionStatus: "blocked-new-module"
+
+  - id: "ep001-sc07"
+    narrationBeatIds: ["N09"]
+    startSeconds: 97.78
+    durationSeconds: 11.11
+    purpose: "Server farms and manufactured consensus. Synthetic Multiplication configuration C: Manufactured consensus."
+    spokenText: "They hide behind billions of fake accounts. And organizations set up server farms — running around the clock, manufacturing consensus, attempting to program human minds."
+    onScreenText: "Manufacturing consensus."
+    visualMode: "multiplication-motif-consensus"
+    existingModule: null
+    moduleVariant: null
+    newModuleRequired: "SyntheticMultiplication"
+    background: "depth"
+    earthCosmosRole: "cosmos"
+    humanRole: "None."
+    motionSummary: "Configuration C -- Manufactured consensus: the replicated units from configuration B stop multiplying and instead resolve into one perfectly uniform pressure field -- flat, dense, evenly distributed, no visible individual units left, only a single undifferentiated mass. A distinct end-state from configuration B's visibly multiplying units, not the same grid rendered denser."
+    transitionIn: "crossfade"
+    transitionOut: "darkCut"
+    captionRisk: "low — 25 words, two clauses"
+    assetDependencies:
+      - "NEW module: SyntheticMultiplication (configuration C: Manufactured consensus)"
+    productionStatus: "blocked-new-module"
+    notes: "No named organization or entity implied. No server-rack cyberpunk imagery, no hooded-hacker imagery -- represent industrial scale through the uniform pressure-field resolution only."
+
+  - id: "ep001-sc08"
+    narrationBeatIds: ["N10"]
+    startSeconds: 108.89
+    durationSeconds: 19.56
+    purpose: "Land the two sourced statistics -- current and projected automated-traffic share."
+    spokenText: "Some people call this the dead internet theory. What used to sound like conspiracy is now backed by data: a recent study found over 53% of online traffic is already automated, and projections say that number could climb past 90% within a few years."
+    onScreenText: "53% automated.\nCould climb past 90%."
+    visualMode: "data-poles"
+    existingModule: "CircularValueField"
+    moduleVariant: "human-vs-automated-traffic-percentages"
+    newModuleRequired: null
+    background: "paper"
+    earthCosmosRole: "cosmos"
+    humanRole: "One small, static human-pole field opposite a larger/accelerating automated-pole field carrying the value labels."
+    motionSummary: "Two CircularValueField poles, relationship=separate; automated pole's value counts from the current figure to the projection via numberResolve (max 30-frame crossfade count, tabular numerals, no spinning digits)."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "medium — 44 words including two numeric values; keep the caption grouped around the colon break already present in the edited line."
+    assetDependencies:
+      - "diagrams/earth-cosmos-convergence.svg (base geometry for two poles)"
+      - "NEW: percentage/value display treatment for CircularValueField -- not used in the Tier 1 test reel"
+    productionStatus: "needs-variant"
+    notes: "On-screen text corrected per Phase 13A.1 correction #1 to match approved narration wording exactly (two lines: '53% automated.' / 'Could climb past 90%.')."
+
+  - id: "ep001-sc09"
+    narrationBeatIds: ["N11"]
+    startSeconds: 128.44
+    durationSeconds: 15.56
+    purpose: "Name the disorientation/distrust consequence -- the reflection we see isn't always real."
+    spokenText: "This causes confusion, disorientation and distrust online — because the reflection we see isn't always real. Some of us feel this intuitively, but can't quite explain it — it's genuinely hard to know for certain."
+    onScreenText: "The reflection isn't always real."
+    visualMode: "human-consequence"
+    existingModule: null
+    moduleVariant: null
+    newModuleRequired: "HumanConsequence (Tier 2, speced not built)"
+    background: "depth"
+    earthCosmosRole: "earth"
+    humanRole: "Single human node facing a distorted/unclear reflection-like system shape; consequence='custom' with customLabel='disorientation' (not one of HumanConsequence's five named enum values)."
+    motionSummary: "humanEnter for the human node; the system/reflection shape wavers or shifts subtly rather than resolving cleanly; no violence, no victimized posture."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "low — 35 words, two clauses"
+    assetDependencies:
+      - "human-forms/human-present.svg"
+      - "NEW: HumanConsequence Tier 2 module implementation"
+    productionStatus: "blocked-tier2-not-implemented"
+
+  - id: "ep001-sc10"
+    narrationBeatIds: ["N12"]
+    startSeconds: 144.00
+    durationSeconds: 17.78
+    purpose: "Concrete harms -- relationships, mental health, data extraction, life-force/presence extraction."
+    spokenText: "And it has knock-on effects on real-life relationships and mental health. It fuels fights that wouldn't otherwise happen. It extracts our data without our knowledge. And it feeds off our life force — our time and energy — our presence."
+    onScreenText: "It feeds off our presence."
+    visualMode: "human-consequence"
+    existingModule: null
+    moduleVariant: null
+    newModuleRequired: "HumanConsequence (Tier 2, speced not built)"
+    background: "depth"
+    earthCosmosRole: "earth"
+    humanRole: "Single human node with a thin extraction path drawn away from it toward the system shape; consequence='extraction' (a named HumanConsequence enum value)."
+    motionSummary: "A thin flowPulse-style line draws from the human toward the system shape, representing extraction without literal drain/blood imagery; ends with the human node remaining intact and present -- the point is what's being taken, not that the person is destroyed."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "medium — 40 words across a run of four short clauses; needs grouping care."
+    assetDependencies:
+      - "human-forms/human-present.svg"
+      - "NEW: HumanConsequence Tier 2 module implementation"
+    productionStatus: "blocked-tier2-not-implemented"
+
+  - id: "ep001-sc11"
+    narrationBeatIds: ["N13"]
+    startSeconds: 161.78
+    durationSeconds: 13.33
+    purpose: "The economic system was built for a world before this one -- establish the system's outdated origin. First of two scenes sharing one DeclarativeHook variant family (see ep001-sc12)."
+    spokenText: "Under all of that, there's a bigger shift. Our economic system evolved to serve a world before this. It's morphed into something that runs on debt, artificial scarcity, and extraction."
+    onScreenText: "Built for another world."
+    visualMode: "system-critique-origin"
+    existingModule: "DeclarativeHook"
+    moduleVariant: "economic-system-critique-origin (shared variant family with ep001-sc12; distinct settled composition)"
+    newModuleRequired: null
+    background: "void"
+    earthCosmosRole: "cosmos"
+    humanRole: "No human node in this scene -- purely the system's own rigid geometry. The blind spot toward the human is this scene's companion beat's distinct point, not this one's."
+    motionSummary: "Rigid system geometry assembles via a sharpSystem-eased reveal, settling into a fixed, dated architecture -- a closed, rigid frame implying debt/scarcity/extraction structurally. Settles into a stillness that reads as OLD, not yet interacting with any human node."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "low — 30 words, one sentence run"
+    assetDependencies:
+      - "backgrounds/void-dark.svg"
+      - "diagrams/node-system.svg"
+    productionStatus: "needs-variant"
+    notes: "First of two DeclarativeHook scenes split per Phase 13A.1 correction #2 (formerly one combined scene). Shares the economic-system-critique variant family with ep001-sc12 but must read as a visually distinct, earlier composition -- no human node at all, versus ep001-sc12's quiet, unacknowledged human presence."
+
+  - id: "ep001-sc12"
+    narrationBeatIds: ["N14"]
+    startSeconds: 175.11
+    durationSeconds: 17.33
+    purpose: "The system cannot recognize human presence, attention, care, and creativity -- the human enters the frame only to be missed. Second of two scenes sharing one DeclarativeHook variant family (see ep001-sc11)."
+    spokenText: "It doesn't know what to do with a world where machines can do most of the labor and the thinking. And it doesn't recognize the one thing that stays uniquely human: our presence, expressed as attention, care and creativity."
+    onScreenText: "Can't see attention, care, creativity."
+    visualMode: "system-critique-blindspot"
+    existingModule: "DeclarativeHook"
+    moduleVariant: "economic-system-critique-blindspot (shared variant family with ep001-sc11; distinct settled composition)"
+    newModuleRequired: null
+    background: "void"
+    earthCosmosRole: "balanced"
+    humanRole: "Human node enters small/peripheral against the same rigid system geometry established in ep001-sc11 -- this scene is distinguished from that one by the human's presence and the system's failure to acknowledge it."
+    motionSummary: "humanEnter for the human node, entering quietly at the frame's edge; the system geometry does not react, shift, or acknowledge the node -- stillness is the point, a visual blind spot, not a punitive gesture."
+    transitionIn: "crossfade"
+    transitionOut: "darkCut"
+    captionRisk: "medium — 39 words, two clauses ending on a colon-joined list (attention, care, creativity)"
+    assetDependencies:
+      - "backgrounds/void-dark.svg"
+      - "diagrams/node-system.svg"
+      - "diagrams/node-human.svg"
+    productionStatus: "needs-variant"
+    notes: "Second of two DeclarativeHook scenes split per Phase 13A.1 correction #2. Must be visually distinguishable from ep001-sc11 by the human node's quiet, unacknowledged presence, not merely by different on-screen text. Signal reveal is NOT used here; reserved exclusively for ep001-sc13."
+
+  - id: "ep001-sc13"
+    narrationBeatIds: ["N15"]
+    startSeconds: 192.44
+    durationSeconds: 14.67
+    purpose: "THE reframe. ÆPOCH is our response -- presence (attention, care, creativity) is what the future economy needs. The episode's single Signal reveal."
+    spokenText: "ÆPOCH is our response to that. Because the various expressions of presence - such as attention, care, and creativity — are what any economy of the future will need to serve us well."
+    onScreenText: "ÆPOCH is our response."
+    visualMode: "reframe-statement"
+    existingModule: "KeyStatement"
+    moduleVariant: null
+    newModuleRequired: null
+    background: "earth-rise"
+    earthCosmosRole: "signal"
+    humanRole: "None -- the Signal convergence carries the moment; human presence returns visually starting next scene."
+    motionSummary: "signalReveal: Clay/Prism convergence, vesica lock, white-ring forge, bloom, settle (canonical Signal sequence, ~5.4s per MOTION_TOKENS.md section 7.3), resolving to the statement text. This is the ONLY Signal reveal in the episode."
+    transitionIn: "signalReveal"
+    transitionOut: "crossfade"
+    captionRisk: "low — 33 words, two clauses"
+    assetDependencies:
+      - "motion/signal-vesica.svg"
+      - "marks/aepoch-mark-signal.svg (restricted, single-reveal use)"
+    productionStatus: "ready"
+    notes: "SIGNAL-REVEAL EXCLUSIVITY: this is the one approved use in the episode. No other scene, including the other KeyStatement scenes or the CircularValueField scene immediately following, may resemble a convergence toward the Æ mark, vesica, or white ring."
+
+  - id: "ep001-sc14"
+    narrationBeatIds: ["N16"]
+    startSeconds: 207.11
+    durationSeconds: 6.67
+    purpose: "Introduce the currency framing -- ancient idea, modern tools -- as two stable, related poles, explicitly not a second convergence following ep001-sc13's Signal."
+    spokenText: "ÆPOCH provides a new kind of currency, built on one ancient idea using modern tools."
+    onScreenText: "An ancient idea. Modern tools."
+    visualMode: "connected-poles"
+    existingModule: "CircularValueField"
+    moduleVariant: "ancient-idea-modern-tools-connected-poles"
+    newModuleRequired: null
+    background: "earth-rise"
+    earthCosmosRole: "balanced"
+    humanRole: "None -- two abstract poles held in stable relation; no human node needed for this beat."
+    motionSummary: "CircularValueField relationship='balanced', NOT 'converge' -- both poles settle into position independently and remain visually distinct and stable, joined by one restrained static edgeDraw-style connecting line (single weight, no flow pulse, no vesica, no white-ring forge, no bloom, no shared convergence point). Must not resemble ep001-sc13's Signal sequence in any way."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "low — 15 words, single clause"
+    assetDependencies:
+      - "diagrams/earth-cosmos-convergence.svg (reused only for base circular geometry, not for its convergence behavior)"
+    productionStatus: "needs-variant"
+    notes: "Redesigned per Phase 13A.1 correction #3 -- the prior 'converge' relationship read too close to a second Signal reveal immediately after ep001-sc13. Must read as two related, settled ideas, not a mechanism click."
+
+  - id: "ep001-sc15"
+    narrationBeatIds: ["N17"]
+    startSeconds: 213.78
+    durationSeconds: 15.11
+    purpose: "Land the anaphoric 'already a contribution' passage -- the episode's warmest, most memorable stretch."
+    spokenText: "That you being here, unique, alive and present, is already a contribution. Not something you earn. Not something you have to buy from someone else. Something you already are. Something that should be celebrated."
+    onScreenText: "Already a contribution."
+    visualMode: "reframe-statement"
+    existingModule: "KeyStatement"
+    moduleVariant: null
+    newModuleRequired: null
+    background: "earth-rise"
+    earthCosmosRole: "earth"
+    humanRole: "Single human node present and still, statement-and-ring layout, restrained ring around the figure."
+    motionSummary: "headlineReveal by line across five short declarative fragments (the anaphora structure); statementHold; accentTreatment='prism-ring' (not signal -- reserved for ep001-sc13)."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "medium — 34 words across five short sentence fragments; each fragment likely wants its own brief caption beat rather than one long block."
+    assetDependencies:
+      - "human-forms/human-present.svg"
+    productionStatus: "ready"
+
+  - id: "ep001-sc16"
+    narrationBeatIds: ["N18"]
+    startSeconds: 228.89
+    durationSeconds: 7.11
+    purpose: "Name the mechanism at the highest level -- a shared layer for the internet -- as individually distinct human nodes sharing one restrained ring, not a technical diagram."
+    spokenText: "We're building a layer for the internet that can recognise that, and eventually pay for it."
+    onScreenText: "A layer for the internet."
+    visualMode: "protocol-layer-diagram"
+    existingModule: "HumanNetwork"
+    moduleVariant: "protocol-layer-ring"
+    newModuleRequired: null
+    background: "earth-rise"
+    earthCosmosRole: "cosmos"
+    humanRole: "A small set of individually distinct human nodes (not identical, not an equal-vote tally), each connected to one shared restrained ring representing the layer itself."
+    motionSummary: "nodeEnter for each human node, staggered with natural/unequal spacing; one ring draws once around/beneath the nodes representing the shared layer (a single edgeDraw-style reveal, not lifecycleStep, not Signal); topology='collective-ring'. No browser or application UI, no technical stack diagram, no Signal."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "low — 16 words, single clause"
+    assetDependencies:
+      - "human-forms/human-present.svg"
+      - "diagrams/network-distributed.svg (reused for base node vocabulary)"
+      - "icons/ring.svg"
+    productionStatus: "needs-variant"
+    notes: "Replaces a plain KeyStatement scene per Phase 13A.1 correction #4. The ring is symbolic (a shared layer around distinct people), not a system-architecture diagram, and must not resemble product/app UI."
+
+  - id: "ep001-sc17"
+    narrationBeatIds: ["N19"]
+    startSeconds: 236.00
+    durationSeconds: 8.44
+    purpose: "Mark the single-idea structure of the whole series explicitly."
+    spokenText: "That's the whole thesis. Everything else we walk through in the days ahead is downstream of that one idea."
+    onScreenText: "One idea. Everything else follows."
+    visualMode: "reframe-statement"
+    existingModule: "KeyStatement"
+    moduleVariant: null
+    newModuleRequired: null
+    background: "earth-rise"
+    earthCosmosRole: "balanced"
+    humanRole: "None."
+    motionSummary: "headlineReveal, statementHold; accentTreatment='none'."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "low — 19 words, two short clauses"
+    assetDependencies: []
+    productionStatus: "ready"
+
+  - id: "ep001-sc18"
+    narrationBeatIds: ["N20", "N21"]
+    startSeconds: 244.44
+    durationSeconds: 21.33
+    purpose: "The 42-day test invitation starting August 9, walked as a four-step lifecycle, with the break/confusion acknowledgement carried as secondary narration."
+    spokenText: "For 42 days starting on August 9, you're going to help us test the foundational systems we've built. You'll be first. You'll be inside this earlier than almost anyone else will ever be. Things will break. That's what first tests are for. You'll get confused sometimes. That's normal."
+    onScreenText: "Start August 9. Test what we built. Notice what happens. Shape what comes next."
+    visualMode: "lifecycle-countdown"
+    existingModule: "FlowLifecycle"
+    moduleVariant: "42-day-test-period-steps (locked four-step set)"
+    newModuleRequired: null
+    background: "earth-rise"
+    earthCosmosRole: "balanced"
+    humanRole: "Human node present at the first step, joined progressively -- represents the participant entering the test, not a mechanism diagram."
+    motionSummary: "FlowLifecycle with four locked steps -- 'Start August 9' -> 'Test what we built' -> 'Notice what happens' -> 'Shape what comes next' -- paired with a Comet Arc completing one partial orbit to represent the 42-day span, matching the countdown tease foreshadowed at ep001-sc02; lifecycleStep gap 10-16 frames per step. 'Things will break' / 'That's normal' (N21) are carried as a secondary caption/on-screen line alongside the diagram, not as a fifth step -- the four steps above are the only lifecycle stages."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "medium — 48 words across four short sentences; needs per-step caption pacing matched to lifecycleStep timing, not one long caption block."
+    assetDependencies:
+      - "motion/comet-circle-path.svg"
+      - "icons/presence.svg"
+      - "NEW: step icons for the locked 42-day test lifecycle (Start/Test/Notice/Shape) -- the canonical Show up/Activate/Circulate/Permanent labels do not apply here"
+    productionStatus: "needs-variant"
+    notes: "Steps locked per Phase 13A.1 correction #5. 'Notice what happens' and 'Shape what comes next' preview, in diagram form, the same ideas ep001-sc19 delivers again in human/emotional form via HumanNetwork -- deliberate reinforcement, flagged in the episode brief's production risks so it reads as reinforcement, not redundancy, in review."
+
+  - id: "ep001-sc19"
+    narrationBeatIds: ["N22"]
+    startSeconds: 265.78
+    durationSeconds: 16.89
+    purpose: "Frame the participant as a co-creator -- noticing things the team can't see, shaping what comes next."
+    spokenText: "And you'll notice things we can't see from where we sit — the moments, the patterns, the questions that shape what we build next. Either way, you'll help co-create what comes next and how we launch this properly."
+    onScreenText: "Help us see what we can't."
+    visualMode: "network-cohort"
+    existingModule: "HumanNetwork"
+    moduleVariant: "early-participant-test-cohort"
+    newModuleRequired: null
+    background: "earth-rise"
+    earthCosmosRole: "earth"
+    humanRole: "Small distributed set of human nodes (the enrolled cohort), each individually distinguishable, natural/unequal spacing and stagger -- not a governance/vote topology."
+    motionSummary: "humanJoinCollective (individual enters, relationship lines draw, collective responds); topology='distributed'; deterministic per-node stagger, reusing the Tier 1 HumanNetwork implementation's existing stagger helper."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "low — 38 words, two clauses"
+    assetDependencies:
+      - "human-forms/human-community.svg"
+      - "diagrams/network-distributed.svg"
+    productionStatus: "needs-variant"
+    notes: "Distinct HumanNetwork variant from ep001-sc16's protocol-layer-ring configuration -- this scene uses topology='distributed' (a cohort), not 'collective-ring' (a shared layer)."
+
+  - id: "ep001-sc20"
+    narrationBeatIds: ["N23", "N24"]
+    startSeconds: 282.67
+    durationSeconds: 20.00
+    purpose: "Cue and then deliver the single-sentence thesis -- the whole episode crystallized."
+    spokenText: "So — here's the whole thing in one sentence: We're making the economy and internet more human again, starting with a new kind of currency built on the idea that you being here, alive and present, is enough. Because it's the foundation of value itself."
+    onScreenText: "Alive and present is enough.\nPresence is the foundation of value."
+    visualMode: "reframe-statement"
+    existingModule: "KeyStatement"
+    moduleVariant: null
+    newModuleRequired: null
+    background: "earth-rise"
+    earthCosmosRole: "balanced"
+    humanRole: "Single human node, still, centered."
+    motionSummary: "Brief statementHold on the transitional line (N23), then headlineReveal and a longer statementHold on the two-line thesis text (N24); accentTreatment='clay-underline' (warm reinforcement, not signal -- reserved for ep001-sc13)."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "medium — 45 words across two beats; keep the transitional line and the thesis line as two distinct caption cues, not one merged block."
+    assetDependencies:
+      - "human-forms/human-present.svg"
+    productionStatus: "ready"
+    notes: "On-screen text replaced per Phase 13A.1 correction #8. Spoken narration (N24) is unchanged; the on-screen text is a distilled restatement, consistent with SCENE_MODULES.md's typography rule that on-screen text should complement narration, not duplicate it verbatim."
+
+  - id: "ep001-sc21"
+    narrationBeatIds: ["N25"]
+    startSeconds: 302.67
+    durationSeconds: 15.56
+    purpose: "Invite personal reflection and land the 'magnificent biological transformer' line."
+    spokenText: "Say that back to yourself. Try it on for the rest of the day and see how it feels. And don't forget to take a moment to appreciate the magnificent biological transformer that you are."
+    onScreenText: "A magnificent biological transformer."
+    visualMode: "reframe-statement"
+    existingModule: "KeyStatement"
+    moduleVariant: null
+    newModuleRequired: null
+    background: "earth-rise"
+    earthCosmosRole: "earth"
+    humanRole: "Single human silhouette, warm and still -- no machine or transformer imagery of any kind."
+    motionSummary: "headlineReveal, statementHold, gentle pushInSmall (max 5%) on the final line for intimacy."
+    transitionIn: "crossfade"
+    transitionOut: "crossfade"
+    captionRisk: "low — 35 words, three clauses"
+    assetDependencies:
+      - "human-forms/human-present.svg"
+    productionStatus: "ready"
+    notes: "The 'biological transformer' line must resolve to a warm human silhouette, not a robot, machine part, or glowing AI-brain image."
+
+  - id: "ep001-sc22"
+    narrationBeatIds: ["N26"]
+    startSeconds: 318.22
+    durationSeconds: 4.50
+    purpose: "Close the episode and cue the next video in the run."
+    spokenText: "See you tomorrow."
+    onScreenText: "See you tomorrow."
+    visualMode: "series-outro"
+    existingModule: null
+    moduleVariant: null
+    newModuleRequired: "AepochSeriesOutro (Tier 3, speced not built)"
+    background: "earth-rise"
+    earthCosmosRole: "earth"
+    humanRole: "None -- resolves to the Æ mark, per AepochSeriesOutro's own structure."
+    motionSummary: "seriesOutroV1: statement holds, resolves toward the Æ mark, mark and identifier settle, clean hold for end-screen behavior. The spoken line is only 1.3s; the outro's own canonical 4.5s hold carries the remainder."
+    transitionIn: "crossfade"
+    transitionOut: "instant"
+    captionRisk: "low — 3 words"
+    assetDependencies:
+      - "marks/aepoch-mark-ink.svg"
+      - "wordmarks/aepoch-identifier-ink.svg"
+      - "NEW: AepochSeriesOutro Tier 3 module implementation"
+    productionStatus: "blocked-tier3-not-implemented"
+    notes: "durationSeconds is set to 4.5s (the seriesOutroV1 canonical minimum), not the bare 1.33s spoken duration -- this is why assembledTotalSeconds (322.72) exceeds totalNarrationSeconds (319.56)."
