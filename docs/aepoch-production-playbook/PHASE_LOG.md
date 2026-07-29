@@ -371,3 +371,99 @@ Full detail: [`PROVIDER_SETUP.md`](PROVIDER_SETUP.md).
 
 **Next phase:** The 30–45 second production-quality proof itself. Not yet
 scoped, not yet started — no prompt received.
+
+---
+
+## Phase 14A.1 — AI editorial illustration style exploration
+
+**Status:** Complete
+
+Generated twelve production-direction still images (three directions ×
+four shared narrative beats: Human Among Synthetic Echoes, Uncertain
+Digital Reflection, Synthetic Multiplication, Manufactured Consensus)
+through the repaired `recraft_image` tool, for creative comparison only —
+this phase did not select a direction itself.
+
+**Three incidents found and fixed/worked around, each reported before
+further paid calls:**
+
+1. `style="vector_illustration"` returns SVG, not PNG — the first 4 calls
+   (Direction A) had to be discarded and redone.
+2. The live fal.ai Recraft v4 endpoint only accepts `style="any"` or
+   `"vector_illustration"` — the tool's declared 5-value enum is stale (a
+   genuine, separate defect from the Provider hardening pass above, not
+   fixed in this phase, flagged as a follow-up).
+3. A literal negative-exclusion-list prompt clause triggered content
+   moderation; fixed by switching to positive-only prompt framing.
+
+Both the call-count cap (12 planned → 19 actual attempts) and the budget
+cap ($0.60 → $0.64 actual) were exceeded, disclosed, and approved
+mid-phase before the corrective spend happened.
+
+**Finding:** no direction currently qualifies as a clean four-frame
+family. Direction B/F4 (masked/hooded-figure read) and Direction C/F3
+(robot-register imagery) are direct brand-exclusion failures, not just
+style-consistency notes. Direction A was judged the closest to a coherent
+family and the easiest to animate/composite later, and was recommended —
+not approved — as the most promising starting point for further work.
+
+Full detail: `qa/phase-14a1-style-exploration.md`.
+
+**Next phase:** Author reviewed the twelve images outside this document
+and approved **Direction A — Editorial Geometric** as the production
+base. The three-direction comparison is now closed.
+
+---
+
+## Phase 14A.2 — Direction A visual-style convergence test
+
+**Status:** Complete — technical validation PASS (one disclosed, approved
+cap overage); **creative validation mixed, awaiting author review**
+
+Tested whether the approved Direction A style holds together as one
+coherent family across three difficult narrative concepts not covered by
+Phase 14A.1's frames: Human Among Synthetic Echoes, Uncertain Digital
+Reflection, and Manufactured Consensus — two candidates each, six images
+total, using Direction A/F1 and Direction A/F4 from Phase 14A.1 as visual
+anchors and borrowing only the layered-contour *technique* (not the full
+paper-cut style or Void background) from Direction B/F2 for the
+reflection concept.
+
+**Round 1** (6 calls, within the original 6-call/$0.30 cap) found real
+problems in four of six images: heavy unrequested texture/pattern fills
+in both Human Among Synthetic Echoes candidates (violating
+`VISUAL_LANGUAGE.md`'s flat-color-field rule), chibi/mascot-proportioned
+figures and a curling tail-shape in Manufactured Consensus A, and a
+blank-eye-adjacent blob artifact in Manufactured Consensus B (a direct
+brand-exclusion risk, not just a style note).
+
+**Round 2** (4 more calls, disclosed and approved as a cap overage — 10
+calls / $0.40 total against the original 6-call/$0.30 cap) regenerated
+those four with corrected prompts. Results were mixed: `echoes-a` and
+`consensus-a`'s specific Round 1 problems were fixed (the latter with new
+reservations); `echoes-b` traded its texture/composition problems for a
+new one (an accessorized, personality-bearing face — in tension with the
+series' no-mascot rule); `consensus-b` traded its blank-eye artifact for
+a different failure (a dense wall of repeating head/neck shapes with no
+negative space, violating that candidate's own explicit "broad and
+spacious, not a dense wall" requirement). The author reviewed this
+outcome and chose to stop and document rather than fund a third
+generation round.
+
+**Positive finding:** the Direction B/F2 layered-contour technique
+integrated cleanly into Direction A on a Paper background —
+`reflection-a` and `reflection-b` (both untouched since Round 1) are the
+two strongest images in the set.
+
+**Verdict:** the family is not yet ready to become the basis of a custom
+ÆPOCH style. Two of three concepts have a clean or near-clean pass
+(Human Among Synthetic Echoes via `echoes-a`; Uncertain Digital
+Reflection via either candidate). Manufactured Consensus has no clean
+pass after two rounds — this is the phase's main open risk.
+
+Full detail: `qa/phase-14a2-style-convergence.md`.
+
+**Next phase:** Awaiting author review. Recommendation only (not
+approved): a third, narrower pass on Human Among Synthetic Echoes B and
+Manufactured Consensus B specifically, then reconsider custom-style
+training once all three concepts converge cleanly.

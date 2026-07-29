@@ -6,8 +6,8 @@
 - Locked Tier 1 baseline tag: `aepoch-tier1-beta-v0.1.0`
 - Tier 1 baseline commit: `a41e3fb`
 - Locked Episode 001 static baseline tag: `aepoch-e001-static-v0.1.0`
-- Current completed phase: Phase 13C.2A — technical validation PASS, **creative review FAIL, production baseline REJECTED**. Provider hardening (prerequisite for the asset-first proof) is also complete — see below and [PROVIDER_SETUP.md](PROVIDER_SETUP.md).
-- Next phase: the 30–45 second production-quality proof itself is not yet scoped or started. Direction: asset-first hybrid production (real human footage, AI-generated editorial artwork, stock media, Remotion as composition layer only). Next deliverable: a 30–45 second production-quality proof, not another complete five-minute draft.
+- Current completed phase: Phase 14A.2 — Direction A visual-style convergence test. Technical validation PASS (with one disclosed, approved cap overage). Creative validation mixed and **awaiting author review** — see below and [`qa/phase-14a2-style-convergence.md`](../../projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14a2-style-convergence.md).
+- Next phase: not yet started. Depending on author review of Phase 14A.2, likely a third targeted image-generation pass on the two still-failing candidate slots (Human Among Synthetic Echoes B, Manufactured Consensus B), followed eventually by the 30–45 second production-quality proof (asset-first hybrid production: real human footage, AI-generated editorial artwork, stock media, Remotion as composition layer only).
 - Current episode: `001-what-is-aepoch`
 - Episode type: Pre-launch countdown, Video 1
 - Working title: `What is ÆPOCH?`
@@ -113,16 +113,7 @@ primitive metaphor scenes must not be used as production assets. The
 rejected prototype is retained (not deleted) as a technical/timing reference
 only. Full detail: `qa/phase-13c2a-motion-blocking-review.md`.
 
-## Next task
-
-Not Phase 13C.2B (motion polish on the rejected prototype). Next direction:
-an asset-first hybrid production approach — real human footage,
-AI-generated editorial artwork, stock media where appropriate, and Remotion
-retained as the composition layer, not the source of primitive geometric
-visuals. Next deliverable: a 30–45 second production-quality proof, not
-another complete five-minute draft.
-
-**Provider hardening (prerequisite) — done, this pass:**
+### Provider hardening (prerequisite for the asset-first proof)
 
 - fal.ai — Recraft functionally verified (color-format bug fixed, one real
   generation succeeded). FLUX, Kling, Veo, MiniMax remain registry-verified
@@ -135,9 +126,57 @@ another complete five-minute draft.
 
 Full detail: [`PROVIDER_SETUP.md`](PROVIDER_SETUP.md).
 
-**The 30–45 second proof itself is not yet started, no prompt received.**
-Do not begin asset generation for Episode 001 without an explicit new phase
-prompt.
+### Phase 14A.1 — AI editorial illustration style exploration
+
+Twelve production-direction still images (three directions × four shared
+narrative beats) generated through the repaired `recraft_image` tool, for
+creative comparison only. No direction was selected by this phase itself.
+Key findings: `style="vector_illustration"` returns SVG not PNG; the live
+fal.ai endpoint only accepts `"any"` or `"vector_illustration"` (the tool's
+declared 5-value enum is stale, unfixed, logged as a follow-up); literal
+negative-exclusion-list prompt text triggers content moderation (fixed by
+positive-only framing). No direction passed cleanly across all four
+frames; Direction A (editorial geometric) was judged closest to a coherent
+family and was subsequently **approved by the author as the production
+base**, outside this document. Full detail:
+`qa/phase-14a1-style-exploration.md`.
+
+### Phase 14A.2 — Direction A visual-style convergence test
+
+Six new 16:9 images testing whether Direction A holds together across
+three difficult concepts (Human Among Synthetic Echoes, Uncertain Digital
+Reflection, Manufactured Consensus), two candidates each. Round 1 (6
+calls) found brand-language/consistency problems in four of six images
+(texture violations, mascot-adjacent chibi proportions, a blank-eye-
+adjacent artifact, a "surrounding mob" composition). Round 2 (4 more
+calls, disclosed/approved cap overage — 10 calls total, $0.40 against an
+original $0.30 cap) regenerated those four; two now pass cleanly
+(`echoes-a`, plus the untouched `reflection-a`/`reflection-b`), one passes
+with reservations (`consensus-a`), and two still do not pass
+(`echoes-b` now has an accessorized/personality-bearing face; `consensus-b`
+now fails the "broad and spacious, not a dense wall" requirement and lost
+full human figures). The Direction B/F2 layered-contour technique
+integrated successfully into Direction A on a Paper background — the
+clearest positive finding. **Not yet ready to become the basis of a custom
+ÆPOCH style** — Manufactured Consensus in particular has no clean pass
+after two rounds. Full detail:
+`qa/phase-14a2-style-convergence.md`.
+
+## Next task
+
+Not yet started — awaiting author review of Phase 14A.2. Likely next
+step: a third, narrower image-generation pass on the two still-failing
+candidate slots (Human Among Synthetic Echoes B — remove facial
+accessories/expression; Manufactured Consensus B — full human silhouettes
+with generous spacing, not a dense repeating pattern). After the family
+converges cleanly, the next deliverable is a 30–45 second
+production-quality proof (asset-first hybrid: real human footage,
+AI-generated editorial artwork in the converged style, stock media where
+appropriate, Remotion as composition layer only) — not another complete
+five-minute draft, and not yet scoped or started.
+
+Do not begin episode-scale asset generation for Episode 001 without an
+explicit new phase prompt.
 
 ## Authoritative episode files
 
@@ -148,6 +187,8 @@ prompt.
 - `projects/aepoch-episodes/001-what-is-aepoch/storyboard/static-review.md`
 - `projects/aepoch-episodes/001-what-is-aepoch/research/claims-and-sources.md`
 - `projects/aepoch-episodes/001-what-is-aepoch/reference/lee/lee-performance-map.md`
+- `projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14a1-style-exploration.md`
+- `projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14a2-style-convergence.md`
 
 ## Authoritative brand and production files
 
@@ -171,6 +212,14 @@ prompt.
   or decorative-gradient imagery.
 - Generated video, audio, previews, and renders remain uncommitted unless
   explicitly selected.
+- **Direction A — Editorial Geometric** is the approved production-base
+  visual style (author decision, outside Phase 14A.1/14A.2's own scope —
+  neither document selects a direction itself). The three-direction
+  comparison is closed and must not be reopened without explicit new
+  authorization. Direction A is not yet a fully converged, production-
+  ready family — see Phase 14A.2 in `PHASE_LOG.md` for the specific gaps
+  (Manufactured Consensus, in particular, has no clean pass after two
+  generation rounds).
 - Every production phase has a review gate and stop condition.
 - The Phase 13C.2A primitive Remotion-first prototype (programmatic
   `SymbolicFigure`/`HumanNode` figures, geometric metaphor scenes) was
