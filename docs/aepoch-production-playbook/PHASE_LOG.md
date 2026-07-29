@@ -467,3 +467,81 @@ Full detail: `qa/phase-14a2-style-convergence.md`.
 approved): a third, narrower pass on Human Among Synthetic Echoes B and
 Manufactured Consensus B specifically, then reconsider custom-style
 training once all three concepts converge cleanly.
+
+---
+
+## Phase 14A.3 — Targeted Manufactured Consensus repair
+
+**Status:** Complete — technical validation PASS (one disclosed,
+non-error finding); **creative validation FAIL, improved but not
+resolved, awaiting author review**
+
+Narrow image-editing phase: repair the Manufactured Consensus slot only,
+using reference-image editing on `consensus-a.png` rather than another
+fresh-generation round. Did not reopen the Direction A style decision, did
+not regenerate Human Among Synthetic Echoes or Uncertain Digital
+Reflection, no video generation, no Remotion code changes, no custom-style
+training.
+
+**Tool-gap finding, reported and resolved before any paid call:** no FLUX
+Kontext or fal.ai reference-image-editing tool existed in the registry.
+`flux_image`/`recraft_image` are text-to-image only; the only two
+edit-capable tools (`grok_image`/xAI, `kling_official_image`/Kling) aren't
+fal.ai and were registry-`unavailable` (empty key placeholders, not a real
+auth failure — `FAL_AI_API_KEY` itself is genuinely configured). Author
+approved building a new tool rather than switching provider. Added
+`tools/graphics/flux_kontext_image.py` (calls fal.ai's hosted FLUX.1
+Kontext endpoints, `fal-ai/flux-pro/kontext` and `.../kontext/max`),
+following the exact `recraft_image.py`/`flux_image.py` pattern, plus a
+small generic `file_to_data_uri` helper added to
+`tools/graphics/_shared.py`. The live endpoint schema was confirmed via two
+unbilled `422` schema-validation diagnostics before the first real call.
+
+**Source-image decision:** `consensus-a.png` confirmed over Phase 14A.1
+Direction A/Frame 4 via visual inspection — Frame 4 has no visible human
+bodies/limbs at all (a wall of head/shoulder blobs), failing the brief's
+"recognizable as simplified human identities" requirement outright and
+requiring a rebuild, not an edit; `consensus-a.png`'s problems (perspective
+recession, busy body pattern) are concrete and edit-fixable.
+
+**Three edit calls (all FLUX.1 Kontext [pro], $0.04 each, $0.12 total
+against a $0.25 cap):**
+
+- **Candidate A (lateral sync):** fixed the recession and busy-pattern
+  problems cleanly — full-body figures, consistent size, flat color, good
+  negative space — but dropped the "resolve into one shared output"
+  device entirely; no output band appeared. **Fail.**
+- **Candidate B (layered sync):** regressed to chibi/toddler proportions
+  in a hand-holding paper-doll-chain composition — a repeat of the exact
+  problem Phase 14A.2 Round 1 already fixed once for this same concept
+  slot — plus no output device and weak negative space. **Fail.**
+- **Candidate C (corrective pass on Candidate A, not the literal
+  "Minimal consensus" brief — deviation disclosed):** added an output
+  shape, but it reads as an ambiguous blob/puddle rather than a clean,
+  unmistakable band or wave; no alignment-gradient progression appeared;
+  figure count dropped from 8 to 6. **Fail, but the best of the three** —
+  recommended candidate, with reservations.
+
+**Dimension finding (disclosed, not silently resolved):** all three
+candidates returned genuine PNG at **1392×752**, not the 1344×768 the
+phase brief expected (written against Recraft v4's native bucket). FLUX
+Kontext's native 16:9 bucket differs by aspect ratio (1.851 vs. 1.75), not
+just scale — a direct resize would have distorted the image, so none was
+performed; all three are delivered at their true native resolution,
+correctly labeled.
+
+**Verdict:** Manufactured Consensus still has no clean pass after five
+total generation attempts across two phases (14A.2's two rounds + 14A.3's
+three edit calls). The output-band/waveform device specifically has never
+rendered successfully in any attempt. `consensus-edit-c.png` is the
+recommended best candidate for a possible future fourth attempt, but the
+family (`echoes-a`, `reflection-a`, `consensus-edit-c`) is not yet ready
+for custom-style training.
+
+Full detail: `qa/phase-14a3-consensus-repair.md`.
+
+**Next phase:** Awaiting author review. Recommendation only (not
+approved): a fourth attempt focused specifically on the output-band
+device (likely needing a different visual approach than a "wave" shape,
+given its consistent failure to render clearly), then reconsider
+custom-style training once all three concepts converge cleanly.

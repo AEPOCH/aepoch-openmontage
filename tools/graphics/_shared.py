@@ -19,6 +19,8 @@ package hits them:
 
 from __future__ import annotations
 
+import base64
+import mimetypes
 import re
 from io import BytesIO
 from pathlib import Path
@@ -114,6 +116,27 @@ def normalize_colors(values: Any) -> list[dict[str, int]]:
             f"colors must be a list of hex strings or RGB objects, got: {values!r}"
         )
     return [normalize_color(v) for v in values]
+
+
+# ---------------------------------------------------------------------------
+# Local file -> data URI (for providers whose reference-image input only
+# accepts a URL, not a local path)
+# ---------------------------------------------------------------------------
+
+
+def file_to_data_uri(path_str: "str | Path") -> str:
+    """Read a local file and return it as a ``data:<mime>;base64,...`` URI.
+
+    Raises ``FileNotFoundError`` if the path doesn't exist.
+    """
+    path = Path(path_str)
+    if not path.exists():
+        raise FileNotFoundError(f"Input file not found: {path}")
+    mime_type, _ = mimetypes.guess_type(path.name)
+    if not mime_type:
+        mime_type = "application/octet-stream"
+    encoded = base64.b64encode(path.read_bytes()).decode("ascii")
+    return f"data:{mime_type};base64,{encoded}"
 
 
 # ---------------------------------------------------------------------------

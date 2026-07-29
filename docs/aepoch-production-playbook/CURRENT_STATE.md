@@ -6,8 +6,8 @@
 - Locked Tier 1 baseline tag: `aepoch-tier1-beta-v0.1.0`
 - Tier 1 baseline commit: `a41e3fb`
 - Locked Episode 001 static baseline tag: `aepoch-e001-static-v0.1.0`
-- Current completed phase: Phase 14A.2 — Direction A visual-style convergence test. Technical validation PASS (with one disclosed, approved cap overage). Creative validation mixed and **awaiting author review** — see below and [`qa/phase-14a2-style-convergence.md`](../../projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14a2-style-convergence.md).
-- Next phase: not yet started. Depending on author review of Phase 14A.2, likely a third targeted image-generation pass on the two still-failing candidate slots (Human Among Synthetic Echoes B, Manufactured Consensus B), followed eventually by the 30–45 second production-quality proof (asset-first hybrid production: real human footage, AI-generated editorial artwork, stock media, Remotion as composition layer only).
+- Current completed phase: Phase 14A.3 — targeted Manufactured Consensus repair via reference-image editing. Technical validation PASS (one disclosed, non-error finding: FLUX Kontext's native 16:9 bucket is 1392×752, not Recraft's 1344×768 — not resized to avoid distortion). Creative validation FAIL, improved but not resolved, and **awaiting author review** — see below and [`qa/phase-14a3-consensus-repair.md`](../../projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14a3-consensus-repair.md).
+- Next phase: not yet started. Depending on author review of Phase 14A.3, likely a fourth targeted attempt specifically on the output-band/waveform device (unresolved across all 5 generation attempts at this concept slot, spanning Phases 14A.2 and 14A.3), followed eventually by the 30–45 second production-quality proof (asset-first hybrid production: real human footage, AI-generated editorial artwork, stock media, Remotion as composition layer only).
 - Current episode: `001-what-is-aepoch`
 - Episode type: Pre-launch countdown, Video 1
 - Working title: `What is ÆPOCH?`
@@ -189,6 +189,7 @@ explicit new phase prompt.
 - `projects/aepoch-episodes/001-what-is-aepoch/reference/lee/lee-performance-map.md`
 - `projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14a1-style-exploration.md`
 - `projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14a2-style-convergence.md`
+- `projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14a3-consensus-repair.md`
 
 ## Authoritative brand and production files
 
@@ -213,13 +214,14 @@ explicit new phase prompt.
 - Generated video, audio, previews, and renders remain uncommitted unless
   explicitly selected.
 - **Direction A — Editorial Geometric** is the approved production-base
-  visual style (author decision, outside Phase 14A.1/14A.2's own scope —
-  neither document selects a direction itself). The three-direction
-  comparison is closed and must not be reopened without explicit new
-  authorization. Direction A is not yet a fully converged, production-
-  ready family — see Phase 14A.2 in `PHASE_LOG.md` for the specific gaps
-  (Manufactured Consensus, in particular, has no clean pass after two
-  generation rounds).
+  visual style (author decision, outside Phase 14A.1/14A.2/14A.3's own
+  scope — none of those documents selects a direction itself). The
+  three-direction comparison is closed and must not be reopened without
+  explicit new authorization. Direction A is not yet a fully converged,
+  production-ready family — see Phase 14A.3 in `PHASE_LOG.md` for the
+  specific gaps (Manufactured Consensus, in particular, still has no clean
+  pass after two generation rounds plus a three-call targeted edit pass —
+  five total generation attempts at this concept slot).
 - Every production phase has a review gate and stop condition.
 - The Phase 13C.2A primitive Remotion-first prototype (programmatic
   `SymbolicFigure`/`HumanNode` figures, geometric metaphor scenes) was
