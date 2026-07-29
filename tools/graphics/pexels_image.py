@@ -19,6 +19,7 @@ from tools.base_tool import (
     ToolStatus,
     ToolTier,
 )
+from tools.graphics._shared import save_image_correctly
 
 
 class PexelsImage(BaseTool):
@@ -154,9 +155,13 @@ class PexelsImage(BaseTool):
             image_response = requests.get(image_url, timeout=60)
             image_response.raise_for_status()
 
-            output_path = Path(inputs.get("output_path", f"pexels_{photo['id']}.jpg"))
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            output_path.write_bytes(image_response.content)
+            # Pexels' actual bytes don't always match a caller's requested
+            # extension (e.g. an illustration/vector hit can come back as
+            # PNG even under a default ".jpg" output name) — detect the
+            # real format and convert/correct rather than mislabeling.
+            requested_path = Path(inputs.get("output_path", f"pexels_{photo['id']}.jpg"))
+            save_result = save_image_correctly(image_response.content, requested_path)
+            output_path = Path(save_result["path"])
 
         except Exception as e:
             return ToolResult(success=False, error=f"Pexels image search failed: {e}")
@@ -173,6 +178,9 @@ class PexelsImage(BaseTool):
                 "height": photo.get("height"),
                 "query": query,
                 "output": str(output_path),
+                "format": save_result["saved_format"],
+                "source_format": save_result["source_format"],
+                "format_converted": save_result["converted"],
                 "total_results": data.get("total_results", 0),
                 "results_returned": len(photos),
                 "license": "Pexels License (free, no attribution required)",

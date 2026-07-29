@@ -6,8 +6,8 @@
 - Locked Tier 1 baseline tag: `aepoch-tier1-beta-v0.1.0`
 - Tier 1 baseline commit: `a41e3fb`
 - Locked Episode 001 static baseline tag: `aepoch-e001-static-v0.1.0`
-- Current completed phase: Phase 13C.1
-- Next phase: Phase 13C.2 (motion implementation) — not yet started
+- Current completed phase: Phase 13C.2A — technical validation PASS, **creative review FAIL, production baseline REJECTED**. Provider hardening (prerequisite for the asset-first proof) is also complete — see below and [PROVIDER_SETUP.md](PROVIDER_SETUP.md).
+- Next phase: the 30–45 second production-quality proof itself is not yet scoped or started. Direction: asset-first hybrid production (real human footage, AI-generated editorial artwork, stock media, Remotion as composition layer only). Next deliverable: a 30–45 second production-quality proof, not another complete five-minute draft.
 - Current episode: `001-what-is-aepoch`
 - Episode type: Pre-launch countdown, Video 1
 - Working title: `What is ÆPOCH?`
@@ -92,10 +92,52 @@ a reference-timing column alongside the approved-script column — does not
 overwrite `scene-plan.yaml`). Full detail:
 `qa/phase-13c1-performance-review.md`.
 
+### Phase 13C.2A
+Complete episode motion-blocking draft: implemented deterministic motion for
+all 22 scenes, synced to `inputs/scene-timing-map.yaml`'s Lee-reference
+timing. Registered `Aepoch-E001-MotionBlocking` and
+`Aepoch-E001-MotionBlocking-Reduced` (1920×1080, 30fps, 9440 frames). New
+source under `remotion-composer/src/aepoch/episodes/001-what-is-aepoch/`
+(`timeline.ts`, `motion-presets.ts`, `motion.tsx`, `audio.tsx`,
+`compositions.tsx`) — reuses, does not modify, the frozen Tier 1 baseline and
+locked Episode 001 static baseline. Scene 13 implements the full canonical
+Signal sequence (the episode's one Signal moment); its entry boundary was
+manually spot-checked against the reference-audio waveform. Rendered a full
+720p preview, six chapter clips, three reduced-motion spot checks, and a
+63-frame transition contact sheet. Type-check clean (zero new diagnostics).
+**Status: technical validation PASS — creative review FAIL — production baseline REJECTED.**
+Cause: the primitive Remotion-first approach (programmatic SVG human figures,
+geometric metaphor scenes, phrase-level audio timing) lacks production-quality
+artwork and precise word-level synchronization. The current human figures and
+primitive metaphor scenes must not be used as production assets. The
+rejected prototype is retained (not deleted) as a technical/timing reference
+only. Full detail: `qa/phase-13c2a-motion-blocking-review.md`.
+
 ## Next task
 
-Phase 13C.2: motion implementation — not yet started, no prompt received.
-Do not begin without an explicit new phase prompt.
+Not Phase 13C.2B (motion polish on the rejected prototype). Next direction:
+an asset-first hybrid production approach — real human footage,
+AI-generated editorial artwork, stock media where appropriate, and Remotion
+retained as the composition layer, not the source of primitive geometric
+visuals. Next deliverable: a 30–45 second production-quality proof, not
+another complete five-minute draft.
+
+**Provider hardening (prerequisite) — done, this pass:**
+
+- fal.ai — Recraft functionally verified (color-format bug fixed, one real
+  generation succeeded). FLUX, Kling, Veo, MiniMax remain registry-verified
+  only (env var present; not yet actually called).
+- Pexels and Pixabay stock APIs — functionally verified (real search +
+  download on both), plus a provider-format-mislabeling bug fixed (Pixabay
+  returning PNG under a `.jpg`-named default output).
+- faster-whisper — import verified in `.venv` (1.2.1); no transcription run
+  yet.
+
+Full detail: [`PROVIDER_SETUP.md`](PROVIDER_SETUP.md).
+
+**The 30–45 second proof itself is not yet started, no prompt received.**
+Do not begin asset generation for Episode 001 without an explicit new phase
+prompt.
 
 ## Authoritative episode files
 
@@ -130,3 +172,9 @@ Do not begin without an explicit new phase prompt.
 - Generated video, audio, previews, and renders remain uncommitted unless
   explicitly selected.
 - Every production phase has a review gate and stop condition.
+- The Phase 13C.2A primitive Remotion-first prototype (programmatic
+  `SymbolicFigure`/`HumanNode` figures, geometric metaphor scenes) was
+  rejected on creative-review grounds and **must not be used as production
+  assets** — retained on disk only as a technical/timing reference. See
+  Phase 13C.2A in `PHASE_LOG.md` for the rejection rationale and next
+  direction.

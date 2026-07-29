@@ -22,6 +22,7 @@ from tools.base_tool import (
     ToolStatus,
     ToolTier,
 )
+from tools.graphics._shared import normalize_colors, save_image_correctly
 
 
 class RecraftImage(BaseTool):
@@ -91,8 +92,31 @@ class RecraftImage(BaseTool):
             },
             "colors": {
                 "type": "array",
-                "items": {"type": "string"},
-                "description": "Color palette as hex strings, e.g. ['#FF5733', '#2E86C1']",
+                "items": {
+                    "oneOf": [
+                        {
+                            "type": "string",
+                            "description": "Hex color, with or without '#', e.g. '#FF5733' or 'FF5733'",
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "r": {"type": "integer", "minimum": 0, "maximum": 255},
+                                "g": {"type": "integer", "minimum": 0, "maximum": 255},
+                                "b": {"type": "integer", "minimum": 0, "maximum": 255},
+                            },
+                            "required": ["r", "g", "b"],
+                        },
+                    ]
+                },
+                "description": (
+                    "Color palette. Each entry may be a hex string (e.g. '#FF5733') "
+                    "or an RGB object (e.g. {'r': 255, 'g': 87, 'b': 51}). Both forms "
+                    "are normalized internally to RGB objects before calling fal.ai — "
+                    "the Recraft v4 endpoint requires that shape and rejects hex "
+                    "strings with a 422. Malformed entries are rejected locally with "
+                    "a ValueError before any API call is made."
+                ),
             },
             "output_path": {"type": "string"},
         },
@@ -144,17 +168,22 @@ class RecraftImage(BaseTool):
         if inputs.get("image_size"):
             payload["image_size"] = inputs["image_size"]
         if inputs.get("style"):
-            # NOTE: As of 2026-04, fal.ai's Recraft V4 endpoint rejects the
-            # `style` parameter with a 422 Unprocessable Entity error. The
-            # style enum values (digital_illustration, realistic_image, etc.)
-            # are NOT accepted by the /fal-ai/recraft/v4/text-to-image route.
-            # Workaround: encode the style direction in the prompt text instead
-            # (e.g. "digital illustration of..." rather than style="digital_illustration").
-            # We still pass the parameter through in case fal.ai re-enables it,
-            # but callers should be aware this may fail.
+            # NOTE: as of 2026-04, an earlier version of this tool blamed the
+            # `style` parameter for a 422 from the Recraft v4 endpoint. A
+            # 2026-07 smoke test traced that 422 to malformed `colors`
+            # (hex strings instead of RGB objects, fixed below) — the
+            # request still failed with `style` omitted, so `style` was
+            # never confirmed as an independent cause. It is passed through
+            # as documented; if fal.ai does reject it again, the workaround
+            # is folding the style direction into the prompt text instead
+            # (e.g. "digital illustration of..." rather than
+            # style="digital_illustration").
             payload["style"] = inputs["style"]
         if inputs.get("colors"):
-            payload["colors"] = inputs["colors"]
+            try:
+                payload["colors"] = normalize_colors(inputs["colors"])
+            except ValueError as exc:
+                return ToolResult(success=False, error=f"Invalid colors input: {exc}")
 
         try:
             response = requests.post(
@@ -173,10 +202,15 @@ class RecraftImage(BaseTool):
             image_response = requests.get(image_url, timeout=60)
             image_response.raise_for_status()
 
-            ext = "svg" if inputs.get("style") == "vector_illustration" else "png"
-            output_path = Path(inputs.get("output_path", f"generated_image.{ext}"))
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            output_path.write_bytes(image_response.content)
+            # fal.ai's actual returned bytes do not reliably match the
+            # requested extension (e.g. Recraft v4 commonly returns WebP
+            # regardless of what the caller asked for) — save_image_correctly
+            # detects the real format and converts to the requested
+            # extension where practical, rather than mislabeling the file.
+            ext_hint = "svg" if inputs.get("style") == "vector_illustration" else "png"
+            requested_path = Path(inputs.get("output_path", f"generated_image.{ext_hint}"))
+            save_result = save_image_correctly(image_response.content, requested_path)
+            output_path = Path(save_result["path"])
 
         except Exception as e:
             return ToolResult(success=False, error=f"Recraft generation failed: {e}")
@@ -188,6 +222,11 @@ class RecraftImage(BaseTool):
                 "model": model,
                 "prompt": prompt,
                 "output": str(output_path),
+                "format": save_result["saved_format"],
+                "source_format": save_result["source_format"],
+                "format_converted": save_result["converted"],
+                "width": save_result["width"],
+                "height": save_result["height"],
             },
             artifacts=[str(output_path)],
             cost_usd=self.estimate_cost(inputs),
