@@ -1,0 +1,141 @@
+ÆPOCH Episode 001 Asset Inventory
+Captured: 2026-07-30
+Repository: aepoch-openmontage
+Branch context: aepoch-series
+
+Purpose:
+Preserve the terminal output used to construct
+knowledge/production/asset-system.md.
+
+Notes:
+- The checked remotion-composer/public/aepoch path returned no files.
+- This is raw evidence and should not be rewritten after placement.
+
+------------------------------------------------------------------------
+
+chris@chris-U59:~/.../aepoch-openmontage$
+chris@chris-U59:~/.../aepoch-openmontage$ find remotion-composer/public/aepoch \
+  -maxdepth 4 -type f -printf '%p\n' 2>/dev/null | sort
+chris@chris-U59:~/.../aepoch-openmontage$ find remotion-composer/src/aepoch \
+  -maxdepth 4 -type f -printf '%p\n' | sort
+remotion-composer/src/aepoch/captions.tsx
+remotion-composer/src/aepoch/components.tsx
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/audio.tsx
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/components.tsx
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/compositions.tsx
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/motion-presets.ts
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/motion.tsx
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/phase14b/assets.ts
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/phase14b/audio.tsx
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/phase14b/beats.tsx
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/phase14b/composition.tsx
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/phase14b/consensus-geometry.tsx
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/phase14b/plate.tsx
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/phase14b/timeline.ts
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/phase14b/transitions.tsx
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/phase14b/types.ts
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/static-previews.tsx
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/timeline.ts
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/tokens.ts
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/types.ts
+remotion-composer/src/aepoch/episodes/001-what-is-aepoch/variants.tsx
+remotion-composer/src/aepoch/index.ts
+remotion-composer/src/aepoch/modules.tsx
+remotion-composer/src/aepoch/motion.tsx
+remotion-composer/src/aepoch/previews.tsx
+remotion-composer/src/aepoch/random.ts
+remotion-composer/src/aepoch/reel.tsx
+remotion-composer/src/aepoch/runtime.ts
+remotion-composer/src/aepoch/tokens.ts
+remotion-composer/src/aepoch/types.ts
+chris@chris-U59:~/.../aepoch-openmontage$ find projects/aepoch-episodes/001-what-is-aepoch \
+  -maxdepth 4 -type f \
+  \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \
+     -o -iname '*.svg' -o -iname '*.webp' -o -iname '*.mp4' \
+     -o -iname '*.wav' -o -iname '*.mp3' -o -iname '*.json' \
+     -o -iname '*.yaml' \) \
+  -printf '%p\n' | sort
+projects/aepoch-episodes/001-what-is-aepoch/assets/style-convergence/phase-14a2/phase-14a2-all-candidates.png
+projects/aepoch-episodes/001-what-is-aepoch/assets/style-convergence/phase-14a2/phase-14a2-family-comparison.png
+projects/aepoch-episodes/001-what-is-aepoch/assets/style-convergence/phase-14a2/phase-14a2-phone-scale.png
+projects/aepoch-episodes/001-what-is-aepoch/assets/style-convergence/phase-14a3/consensus-edit-a.png
+projects/aepoch-episodes/001-what-is-aepoch/assets/style-convergence/phase-14a3/consensus-edit-b.png
+projects/aepoch-episodes/001-what-is-aepoch/assets/style-convergence/phase-14a3/consensus-edit-c.png
+projects/aepoch-episodes/001-what-is-aepoch/assets/style-convergence/phase-14a3/phase-14a3-consensus-candidates.png
+projects/aepoch-episodes/001-what-is-aepoch/assets/style-convergence/phase-14a3/phase-14a3-family-lock.png
+projects/aepoch-episodes/001-what-is-aepoch/assets/style-convergence/phase-14a3/phase-14a3-phone-scale.png
+projects/aepoch-episodes/001-what-is-aepoch/assets/style-exploration/phase-14a1/all-directions-contact-sheet.png
+projects/aepoch-episodes/001-what-is-aepoch/assets/style-exploration/phase-14a1/concept-comparison-contact-sheet.png
+projects/aepoch-episodes/001-what-is-aepoch/assets/style-exploration/phase-14a1/generation-manifest.json
+projects/aepoch-episodes/001-what-is-aepoch/assets/style-exploration/phase-14a1/phone-scale-contact-sheet.png
+projects/aepoch-episodes/001-what-is-aepoch/audio/final/phase-14b-proof-audio.wav
+projects/aepoch-episodes/001-what-is-aepoch/inputs/phase-14b-proof-word-timings.json
+projects/aepoch-episodes/001-what-is-aepoch/inputs/scene-plan.yaml
+projects/aepoch-episodes/001-what-is-aepoch/inputs/scene-timing-map.yaml
+projects/aepoch-episodes/001-what-is-aepoch/qa/complete-reference-contact-sheet.png
+projects/aepoch-episodes/001-what-is-aepoch/qa/full-episode-storyboard-contact-sheet.png
+projects/aepoch-episodes/001-what-is-aepoch/qa/neighboring-scenes-contact-sheet.png
+projects/aepoch-episodes/001-what-is-aepoch/qa/new-modules-contact-sheet.png
+projects/aepoch-episodes/001-what-is-aepoch/qa/phase-13c2a-transition-contact-sheet.png
+projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14b-proof-contact-sheet.png
+projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14b-transition-contact-sheet.png
+projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14b-word-alignment-contact-sheet.png
+projects/aepoch-episodes/001-what-is-aepoch/qa/tier1-variants-contact-sheet.png
+projects/aepoch-episodes/001-what-is-aepoch/reference/lee/analysis/lee-reference-audio.wav
+projects/aepoch-episodes/001-what-is-aepoch/reference/lee/lees-recording-review.mp4
+projects/aepoch-episodes/001-what-is-aepoch/renders/previews/phase-13c2a/00-welcome-and-setup.mp4
+projects/aepoch-episodes/001-what-is-aepoch/renders/previews/phase-13c2a/01-automation-and-synthetic-internet.mp4
+projects/aepoch-episodes/001-what-is-aepoch/renders/previews/phase-13c2a/02-consequence-and-economic-system.mp4
+projects/aepoch-episodes/001-what-is-aepoch/renders/previews/phase-13c2a/03-aepoch-answer.mp4
+projects/aepoch-episodes/001-what-is-aepoch/renders/previews/phase-13c2a/04-test-invitation.mp4
+projects/aepoch-episodes/001-what-is-aepoch/renders/previews/phase-13c2a/05-thesis-and-close.mp4
+projects/aepoch-episodes/001-what-is-aepoch/renders/previews/phase-13c2a/aepoch-e001-motion-blocking-720p.mp4
+projects/aepoch-episodes/001-what-is-aepoch/renders/previews/phase-13c2a/reduced-automation-sequence.mp4
+projects/aepoch-episodes/001-what-is-aepoch/renders/previews/phase-13c2a/reduced-final-thesis-through-outro.mp4
+projects/aepoch-episodes/001-what-is-aepoch/renders/previews/phase-13c2a/reduced-signal-transition-and-aftermath.mp4
+projects/aepoch-episodes/001-what-is-aepoch/renders/previews/phase-14b/aepoch-e001-phase14b-proof-720p.mp4
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/01-welcome-direct-address-a.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/02-welcome-direct-address-b.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/03-august-9-continuation.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/04-synthetic-mimicry-a.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/05-synthetic-mimicry-b.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/06-synthetic-multiplication.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/07-manufactured-consensus-a.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/08-manufactured-consensus-b.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/09-human-consequence-uncertain-reflection.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/10-human-consequence-extraction.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/11-declarative-hook-built-for-another-world.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/12-declarative-hook-does-not-recognize-presence.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/13-circular-value-field-traffic-data.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/14-ancient-idea-modern-tools-a.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/15-ancient-idea-modern-tools-b.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/16-human-network-protocol-layer-a.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/17-human-network-protocol-layer-b.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/18-human-network-participant-cohort.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/19-flow-lifecycle-42-day-test.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b/20-aepoch-series-outro.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/01-welcome-direct-address-a.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/02-welcome-direct-address-b.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/03-august-9-continuation.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/04-synthetic-mimicry.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/05-synthetic-multiplication.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/06-manufactured-consensus-a.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/07-manufactured-consensus-b.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/08-human-consequence-uncertain-reflection.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/09-human-consequence-extraction.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/10-declarative-hook-built-for-another-world.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/11-declarative-hook-does-not-recognize-presence.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/12-circular-value-field-traffic-data.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/13-ancient-idea-modern-tools.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/14-human-network-protocol-layer.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/15-human-network-participant-cohort.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/16-flow-lifecycle-path.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b1/17-aepoch-series-outro.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b2/16-flow-lifecycle-path.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b2/sc13-signal-reveal.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b2/sc15-contribution.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b2/sc17-one-idea.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b2/sc18-42-day-test.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b2/sc20-final-thesis.png
+projects/aepoch-episodes/001-what-is-aepoch/renders/stills/phase-13b2/sc21-biological-transformer.png
+chris@chris-U59:~/.../aepoch-openmontage$

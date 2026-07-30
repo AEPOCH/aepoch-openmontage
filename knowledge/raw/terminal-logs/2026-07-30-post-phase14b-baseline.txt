@@ -1,0 +1,36 @@
+# ÆPOCH OpenMontage — Post-Phase-14B Baseline
+
+Captured: 2026-07-30T15:23:50+01:00
+Repository: /home/chris/Projects/aepoch/code/ai-video/aepoch-openmontage
+Branch: aepoch-series
+Synced commit: 0c29faea76193481c02c31567b3739e97baca41c
+
+## Repository policy
+
+Only the knowledge/ directory is intended to be synchronized by this documentation workflow.
+Other modified and untracked files shown below are intentionally excluded by design.
+
+## Complete local working state
+ M README.md
+ M diagram.png
+?? MANIFEST.sha256
+?? OPENMONTAGE_BASE_COMMIT.txt
+?? aepoch-phase10a-assets.zip
+?? knowledge/raw/
+?? pexels_6684209.jpg
+?? preflight-aepoch.json
+?? preflight-initial.json
+?? preview/
+?? styles/aepoch-symbolic.yaml
+
+## Knowledge working state
+?? knowledge/raw/
+
+## Latest synchronized commit
+commit 0c29faea76193481c02c31567b3739e97baca41c
+Author:     calm108 <chrisalmida@protonmail.com>
+AuthorDate: Thu Jul 30 15:23:30 2026 +0100
+Commit:     calm108 <chrisalmida@protonmail.com>
+CommitDate: Thu Jul 30 15:23:30 2026 +0100
+
+    docs(knowledge): bootstrap project memory
