@@ -93,6 +93,18 @@ import {
   Scene21BiologicalTransformerPreview,
   DeclarativeHookStoryboardPreview,
 } from "./aepoch/episodes/001-what-is-aepoch/static-previews";
+import {
+  AepochE001MotionBlocking,
+  AepochE001MotionBlockingReduced,
+  AEPOCH_E001_MOTION_BLOCKING_DURATION,
+} from "./aepoch/episodes/001-what-is-aepoch/compositions";
+import {
+  AepochE001Phase14bProof,
+  AEPOCH_E001_PHASE14B_PROOF_DURATION,
+  AEPOCH_E001_PHASE14B_PROOF_FPS,
+  AEPOCH_E001_PHASE14B_PROOF_WIDTH,
+  AEPOCH_E001_PHASE14B_PROOF_HEIGHT,
+} from "./aepoch/episodes/001-what-is-aepoch/phase14b/composition";
 
 // ---------------------------------------------------------------------------
 // Theme System — prevents every video from looking like dark fintech
@@ -623,6 +635,39 @@ export const Root: React.FC = () => {
         width={AEPOCH_VIDEO.width}
         height={AEPOCH_VIDEO.height}
         defaultProps={scene21BiologicalTransformerProps}
+      />
+      {/* Phase 13C.2A — complete episode motion-blocking draft (all 22
+          scenes, synced to the Lee-reference timing map). Development
+          preview only, not the final animation polish pass. */}
+      <Composition
+        id="Aepoch-E001-MotionBlocking"
+        component={AepochE001MotionBlocking}
+        durationInFrames={AEPOCH_E001_MOTION_BLOCKING_DURATION}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={{ reducedMotion: false }}
+      />
+      <Composition
+        id="Aepoch-E001-MotionBlocking-Reduced"
+        component={AepochE001MotionBlockingReduced}
+        durationInFrames={AEPOCH_E001_MOTION_BLOCKING_DURATION}
+        fps={AEPOCH_VIDEO.fps}
+        width={AEPOCH_VIDEO.width}
+        height={AEPOCH_VIDEO.height}
+        defaultProps={{ reducedMotion: true }}
+      />
+      {/* Phase 14B — production-quality visual proof (35-50s asset-first
+          hybrid proof segment, N06-N09). Isolated composition, does not
+          reuse the rejected Phase 13C.2A motion-blocking prototype above. */}
+      <Composition
+        id="Aepoch-E001-Phase14B-Proof"
+        component={AepochE001Phase14bProof}
+        durationInFrames={AEPOCH_E001_PHASE14B_PROOF_DURATION}
+        fps={AEPOCH_E001_PHASE14B_PROOF_FPS}
+        width={AEPOCH_E001_PHASE14B_PROOF_WIDTH}
+        height={AEPOCH_E001_PHASE14B_PROOF_HEIGHT}
+        defaultProps={{}}
       />
       <Composition
         id="Explainer"

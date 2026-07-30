@@ -545,3 +545,136 @@ approved): a fourth attempt focused specifically on the output-band
 device (likely needing a different visual approach than a "wave" shape,
 given its consistent failure to render clearly), then reconsider
 custom-style training once all three concepts converge cleanly.
+
+---
+
+## Phase 14B — Production-quality visual proof
+
+**Status:** Complete — technical validation PASS; asset-first hybrid
+workflow PASS; word-level synchronization method PASS; **creative-review
+verdict: CONDITIONAL PASS — not public-ready**
+
+Built one 35–50 second production-quality proof using the asset-first
+hybrid workflow, per the phase's creative lock: Direction A / Editorial
+Geometric, family = `echoes-a` (Phase 14A.2), `reflection-a` (Phase 14A.2),
+`consensus-edit-a` (Phase 14A.3). No new image-generation or image-editing
+calls this phase — all four locked assets (plus the Phase 14A.1 Direction A
+multiplication frame) were copied byte-for-byte into Remotion's `public/`
+folder and used strictly as illustration plates. Does not reuse or modify
+the rejected Phase 13C.2A motion-blocking prototype's creative content
+(programmatic `SymbolicFigure`/metaphor scenes) — only its proven
+incoming-over-outgoing crossfade transition architecture was reused
+structurally, in a fresh `phase14b/` source directory.
+
+**Word-level alignment:** Ran `faster-whisper` (`small` model, CPU/int8,
+`word_timestamps=True`) locally via `./.venv/bin/python` on the complete
+314.667s Lee reference recording — the word-level tool Phase 13C.1
+explicitly could not use. All ten required markers ("something's off",
+"comments that sound human", "faster than humans can type", "lips don't
+quite sync", "catfished", "bots can create accounts", "voice clones",
+"never sleep", "billions of fake accounts", "manufacturing consensus")
+located as real spoken-word timestamps — none estimated or invented. Two
+markers ("lips don't quite sync", "catfished") reveal genuine
+spoken-delivery deviations from the approved script (Lee's actual words
+differ slightly from `inputs/narration-script.md`); both are disclosed,
+neither required a script change. Full record:
+`inputs/phase-14b-proof-word-timings.json`.
+
+**Exact segment boundaries:** 52.60s–99.60s (47.00s / 1410 frames @30fps),
+chosen inside real `ffmpeg silencedetect` gaps adjacent to each quoted
+narration boundary. Notably shorter than Phase 13C.1's phrase-level
+estimate for the same span (≈54.5s) would have suggested — confirming that
+phrase-level timing was imprecise in the direction the real transcript now
+corrects, not a new problem. Audio extracted losslessly (`ffmpeg atrim`,
+no time-stretch/normalize/EQ/denoise) from Lee's original recording.
+
+**Composition:** Registered `Aepoch-E001-Phase14B-Proof` (1920×1080, 30fps,
+1410 frames) with six beats, each phrase-aligned to the word-timings JSON:
+
+1. **Something's Off** — `echoes-a`, tight crop with a Paper edge-wash that
+   clears exactly on "something's off," introducing the cool echo figures
+   as a reveal rather than showing the full crowd immediately.
+2. **Comments and Rapid Responses** — `echoes-a` full composition, with a
+   brief mechanical color-state strobe on "faster than humans can type."
+3. **Uncertain Video Identity** — `reflection-a`, a restrained registration
+   wobble with one deliberate uptick on the actual spoken anchor ("lips
+   aren't quite sinking").
+4. **Phone Calls and Catfishing** — continues `reflection-a` (no literal
+   phone/dating UI) with a measured pan and an Iris→Prism tint-state
+   refresh, holding through "catfished."
+5. **Synthetic Multiplication** — a continuous crop-pan across the Phase
+   14A.1 Direction A multiplication frame, small-to-dense, with a
+   deterministic (non-random) mechanical highlight sweep.
+6. **Manufactured Consensus** — `consensus-edit-a` used strictly as a
+   figure plate; the "resolve into one shared output" device that failed
+   across all five prior image-generation attempts (Phases 14A.2/14A.3) is
+   built here entirely from Remotion brand geometry: per-figure
+   deterministic sync markers converging into lockstep plus a single
+   drawn-on flat Iris wave, both resolving around "manufacturing
+   consensus."
+
+**Rendered:** one full 720p preview
+(`renders/previews/phase-14b/aepoch-e001-phase14b-proof-720p.mp4`, 1280×720,
+h264/aac, concurrency 1) and three required contact sheets (clean proof,
+word-alignment, transition) — all verified as valid PNGs showing no blank
+transition frames across all five beat cuts. Type-check clean (zero new
+diagnostics vs. the pre-existing 15-error baseline). No Moss, no Signal, no
+`Math.random()`, no primitive human components anywhere in the new code.
+
+No captions, no audio mastering, no full 1080p render, no episode-scale
+asset generation. Full detail:
+`qa/phase-14b-production-proof-review.md`.
+
+**Author creative-review decision:**
+
+| Axis | Verdict |
+|---|---|
+| Technical validation | PASS |
+| Asset-first hybrid workflow | PASS |
+| Word-level synchronization method | PASS |
+| Creative proof | **CONDITIONAL PASS** |
+| Public-ready | **NO** |
+
+The proof is suitable as an **internal pipeline demonstration** only. The
+full Episode 001 must not begin yet.
+
+**Next phase:** Phase 14B.1 — a polish pass on the existing 47-second proof
+only (not a new proof, not full Episode 001). Not yet started.
+
+---
+
+## Phase 14B.1 — Proof polish (required corrections)
+
+**Status:** Not yet started
+
+Scoped corrections to the existing Phase 14B proof, per the author's
+creative review of that proof:
+
+1. Begin with one dominant human and reveal synthetic echoes progressively
+   (Beat 1 currently shows all figures from frame 0, not a single dominant
+   human).
+2. Treat Beats 1 and 2 as **one continuous** echoes composition rather than
+   crossfading the same plate into itself.
+3. Strengthen the internal visual shift during the phone-call/catfishing
+   narration (Beat 4) — the current tint/pan refresh reads too subtly.
+4. Treat Beats 3 and 4 as **one continuous** reflection composition rather
+   than crossfading the same plate into itself.
+5. Replace the inconsistent synthetic-multiplication plate (Beat 5) with
+   either the selected Direction A human vocabulary or an isolated approved
+   synthetic figure multiplied through Remotion — not the Phase 14A.1
+   Direction A/Frame 3 abstract-geometric plate currently used.
+6. Make the Manufactured Consensus synchronization and the shared output
+   band **unmistakable at normal playback size**.
+7. Continue using Lee's recording **only as the timing reference** — not as
+   final production audio.
+8. Final narration will use a **clean recording of the approved script**
+   (not Lee's reference recording, whose disclosed spoken-delivery
+   deviations are documented in Phase 14B's word-timings JSON).
+
+**Production paused:** the author is recording new human video and the
+clean narration pass referenced in correction 8. No Claude session,
+Remotion render, image generation, or episode build should run during that
+recording session. Phase 14B.1 begins only after the author explicitly
+signals the recording session is complete.
+
+**Next phase:** Phase 14B.1 itself, once the recording pause ends.

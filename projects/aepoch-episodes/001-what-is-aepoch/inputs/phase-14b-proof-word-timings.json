@@ -1,0 +1,867 @@
+{
+  "source_audio": "projects/aepoch-episodes/001-what-is-aepoch/reference/lee/analysis/lee-reference-audio.wav",
+  "transcription": {
+    "tool": "faster-whisper",
+    "interpreter": "./.venv/bin/python",
+    "model": "small",
+    "device": "cpu",
+    "compute_type": "int8",
+    "beam_size": 5,
+    "word_timestamps": true,
+    "vad_filter": false,
+    "language": "en",
+    "language_probability": 1,
+    "full_file_duration_seconds": 314.6666875,
+    "elapsed_seconds": 723.6113452911377
+  },
+  "proof_segment": {
+    "start_seconds": 52.6,
+    "end_seconds": 99.6,
+    "duration_seconds": 47.0,
+    "fps": 30,
+    "duration_frames": 1410,
+    "boundary_method": "faster-whisper word timestamp for the first/last word of the quoted range, refined against ffmpeg silencedetect (-30dB, min 0.1s) so the cut falls inside a real detected silence gap rather than exactly on the word boundary.",
+    "start_boundary_evidence": {
+      "anchor_word": "If",
+      "anchor_word_start_seconds": 53.02,
+      "detected_silence_gap": [
+        52.526979,
+        53.375333
+      ],
+      "chosen_cut_seconds": 52.6
+    },
+    "end_boundary_evidence": {
+      "anchor_word": "minds.",
+      "anchor_word_end_seconds": 99.24,
+      "detected_silence_gap": [
+        99.378083,
+        99.710896
+      ],
+      "next_word_after_gap": {
+        "word": "Some",
+        "start_seconds": 99.9
+      },
+      "chosen_cut_seconds": 99.6
+    }
+  },
+  "words": [
+    {
+      "word": "If",
+      "start": 53.02,
+      "end": 53.44
+    },
+    {
+      "word": "you've",
+      "start": 53.44,
+      "end": 53.62
+    },
+    {
+      "word": "been",
+      "start": 53.62,
+      "end": 53.72
+    },
+    {
+      "word": "connected",
+      "start": 53.72,
+      "end": 54.0
+    },
+    {
+      "word": "to",
+      "start": 54.0,
+      "end": 54.22
+    },
+    {
+      "word": "the",
+      "start": 54.22,
+      "end": 54.34
+    },
+    {
+      "word": "internet",
+      "start": 54.34,
+      "end": 54.58
+    },
+    {
+      "word": "lately,",
+      "start": 54.58,
+      "end": 55.02
+    },
+    {
+      "word": "you",
+      "start": 55.3,
+      "end": 55.38
+    },
+    {
+      "word": "might",
+      "start": 55.38,
+      "end": 55.5
+    },
+    {
+      "word": "have",
+      "start": 55.5,
+      "end": 55.66
+    },
+    {
+      "word": "felt",
+      "start": 55.66,
+      "end": 55.84
+    },
+    {
+      "word": "something's",
+      "start": 55.84,
+      "end": 56.3
+    },
+    {
+      "word": "off.",
+      "start": 56.3,
+      "end": 56.54
+    },
+    {
+      "word": "Comments",
+      "start": 57.14,
+      "end": 57.48
+    },
+    {
+      "word": "that",
+      "start": 57.48,
+      "end": 57.72
+    },
+    {
+      "word": "sound",
+      "start": 57.72,
+      "end": 57.96
+    },
+    {
+      "word": "human,",
+      "start": 57.96,
+      "end": 58.3
+    },
+    {
+      "word": "but",
+      "start": 58.42,
+      "end": 58.52
+    },
+    {
+      "word": "aren't.",
+      "start": 58.52,
+      "end": 58.92
+    },
+    {
+      "word": "Responses",
+      "start": 59.52,
+      "end": 60.0
+    },
+    {
+      "word": "that",
+      "start": 60.0,
+      "end": 60.18
+    },
+    {
+      "word": "get",
+      "start": 60.18,
+      "end": 60.34
+    },
+    {
+      "word": "written",
+      "start": 60.34,
+      "end": 60.62
+    },
+    {
+      "word": "faster",
+      "start": 60.62,
+      "end": 60.98
+    },
+    {
+      "word": "than",
+      "start": 60.98,
+      "end": 61.2
+    },
+    {
+      "word": "humans",
+      "start": 61.2,
+      "end": 61.46
+    },
+    {
+      "word": "can",
+      "start": 61.46,
+      "end": 61.68
+    },
+    {
+      "word": "type.",
+      "start": 61.68,
+      "end": 61.98
+    },
+    {
+      "word": "Videos",
+      "start": 62.54,
+      "end": 62.82
+    },
+    {
+      "word": "that",
+      "start": 62.82,
+      "end": 63.18
+    },
+    {
+      "word": "look",
+      "start": 63.18,
+      "end": 63.34
+    },
+    {
+      "word": "like",
+      "start": 63.34,
+      "end": 63.56
+    },
+    {
+      "word": "people,",
+      "start": 63.56,
+      "end": 63.94
+    },
+    {
+      "word": "but",
+      "start": 64.04,
+      "end": 64.16
+    },
+    {
+      "word": "their",
+      "start": 64.16,
+      "end": 64.34
+    },
+    {
+      "word": "lips",
+      "start": 64.34,
+      "end": 64.62
+    },
+    {
+      "word": "aren't",
+      "start": 64.62,
+      "end": 65.02
+    },
+    {
+      "word": "quite",
+      "start": 65.02,
+      "end": 65.24
+    },
+    {
+      "word": "sinking.",
+      "start": 65.24,
+      "end": 65.7
+    },
+    {
+      "word": "Phone",
+      "start": 66.26,
+      "end": 66.54
+    },
+    {
+      "word": "calls",
+      "start": 66.54,
+      "end": 66.94
+    },
+    {
+      "word": "where",
+      "start": 66.94,
+      "end": 67.26
+    },
+    {
+      "word": "you're",
+      "start": 67.26,
+      "end": 67.4
+    },
+    {
+      "word": "not",
+      "start": 67.4,
+      "end": 67.5
+    },
+    {
+      "word": "really",
+      "start": 67.5,
+      "end": 67.74
+    },
+    {
+      "word": "fully",
+      "start": 67.74,
+      "end": 67.98
+    },
+    {
+      "word": "sure",
+      "start": 67.98,
+      "end": 68.28
+    },
+    {
+      "word": "that",
+      "start": 68.28,
+      "end": 68.42
+    },
+    {
+      "word": "the",
+      "start": 68.42,
+      "end": 68.56
+    },
+    {
+      "word": "other",
+      "start": 68.56,
+      "end": 68.66
+    },
+    {
+      "word": "person",
+      "start": 68.66,
+      "end": 68.98
+    },
+    {
+      "word": "on",
+      "start": 68.98,
+      "end": 69.12
+    },
+    {
+      "word": "the",
+      "start": 69.12,
+      "end": 69.22
+    },
+    {
+      "word": "other",
+      "start": 69.22,
+      "end": 69.36
+    },
+    {
+      "word": "end",
+      "start": 69.36,
+      "end": 69.54
+    },
+    {
+      "word": "is",
+      "start": 69.54,
+      "end": 69.64
+    },
+    {
+      "word": "even",
+      "start": 69.64,
+      "end": 69.86
+    },
+    {
+      "word": "real.",
+      "start": 69.86,
+      "end": 70.12
+    },
+    {
+      "word": "Dating",
+      "start": 70.68,
+      "end": 70.92
+    },
+    {
+      "word": "apps",
+      "start": 70.92,
+      "end": 71.12
+    },
+    {
+      "word": "where",
+      "start": 71.12,
+      "end": 71.32
+    },
+    {
+      "word": "you",
+      "start": 71.32,
+      "end": 71.42
+    },
+    {
+      "word": "suspect",
+      "start": 71.42,
+      "end": 71.72
+    },
+    {
+      "word": "you",
+      "start": 71.72,
+      "end": 71.92
+    },
+    {
+      "word": "might",
+      "start": 71.92,
+      "end": 72.06
+    },
+    {
+      "word": "be",
+      "start": 72.06,
+      "end": 72.22
+    },
+    {
+      "word": "getting",
+      "start": 72.22,
+      "end": 72.36
+    },
+    {
+      "word": "catfish.",
+      "start": 72.36,
+      "end": 72.88
+    },
+    {
+      "word": "Does",
+      "start": 73.04,
+      "end": 73.14
+    },
+    {
+      "word": "any",
+      "start": 73.14,
+      "end": 73.56
+    },
+    {
+      "word": "of",
+      "start": 73.56,
+      "end": 73.82
+    },
+    {
+      "word": "this",
+      "start": 73.82,
+      "end": 74.12
+    },
+    {
+      "word": "sound",
+      "start": 74.12,
+      "end": 74.6
+    },
+    {
+      "word": "familiar?",
+      "start": 74.6,
+      "end": 75.1
+    },
+    {
+      "word": "Today,",
+      "start": 76.3,
+      "end": 76.62
+    },
+    {
+      "word": "bots",
+      "start": 76.98,
+      "end": 77.18
+    },
+    {
+      "word": "can",
+      "start": 77.18,
+      "end": 77.46
+    },
+    {
+      "word": "create",
+      "start": 77.46,
+      "end": 77.76
+    },
+    {
+      "word": "accounts",
+      "start": 77.76,
+      "end": 78.12
+    },
+    {
+      "word": "at",
+      "start": 78.12,
+      "end": 78.36
+    },
+    {
+      "word": "lightning",
+      "start": 78.36,
+      "end": 78.66
+    },
+    {
+      "word": "speed.",
+      "start": 78.66,
+      "end": 79.1
+    },
+    {
+      "word": "And",
+      "start": 79.1,
+      "end": 79.62
+    },
+    {
+      "word": "AI",
+      "start": 79.62,
+      "end": 79.84
+    },
+    {
+      "word": "can",
+      "start": 79.84,
+      "end": 80.26
+    },
+    {
+      "word": "generate",
+      "start": 80.26,
+      "end": 80.64
+    },
+    {
+      "word": "voice",
+      "start": 80.64,
+      "end": 80.96
+    },
+    {
+      "word": "clones",
+      "start": 80.96,
+      "end": 81.4
+    },
+    {
+      "word": "and",
+      "start": 81.4,
+      "end": 81.58
+    },
+    {
+      "word": "live",
+      "start": 81.58,
+      "end": 81.82
+    },
+    {
+      "word": "video",
+      "start": 81.82,
+      "end": 82.18
+    },
+    {
+      "word": "clones",
+      "start": 82.18,
+      "end": 82.66
+    },
+    {
+      "word": "and",
+      "start": 82.66,
+      "end": 82.86
+    },
+    {
+      "word": "images",
+      "start": 82.86,
+      "end": 83.28
+    },
+    {
+      "word": "and",
+      "start": 83.28,
+      "end": 83.6
+    },
+    {
+      "word": "so",
+      "start": 83.6,
+      "end": 84.02
+    },
+    {
+      "word": "much",
+      "start": 84.02,
+      "end": 84.42
+    },
+    {
+      "word": "more.",
+      "start": 84.42,
+      "end": 84.76
+    },
+    {
+      "word": "These",
+      "start": 85.32,
+      "end": 85.84
+    },
+    {
+      "word": "systems",
+      "start": 85.84,
+      "end": 86.24
+    },
+    {
+      "word": "communicate",
+      "start": 86.24,
+      "end": 86.64
+    },
+    {
+      "word": "faster",
+      "start": 86.64,
+      "end": 87.2
+    },
+    {
+      "word": "than",
+      "start": 87.2,
+      "end": 87.38
+    },
+    {
+      "word": "humans",
+      "start": 87.38,
+      "end": 87.74
+    },
+    {
+      "word": "and",
+      "start": 87.74,
+      "end": 87.96
+    },
+    {
+      "word": "never",
+      "start": 87.96,
+      "end": 88.18
+    },
+    {
+      "word": "sleep.",
+      "start": 88.18,
+      "end": 88.56
+    },
+    {
+      "word": "They",
+      "start": 89.0,
+      "end": 89.16
+    },
+    {
+      "word": "hide",
+      "start": 89.16,
+      "end": 89.4
+    },
+    {
+      "word": "behind",
+      "start": 89.4,
+      "end": 89.62
+    },
+    {
+      "word": "billions",
+      "start": 89.62,
+      "end": 90.1
+    },
+    {
+      "word": "of",
+      "start": 90.1,
+      "end": 90.44
+    },
+    {
+      "word": "fake",
+      "start": 90.44,
+      "end": 90.6
+    },
+    {
+      "word": "accounts.",
+      "start": 90.6,
+      "end": 91.04
+    },
+    {
+      "word": "And",
+      "start": 91.4,
+      "end": 91.5
+    },
+    {
+      "word": "organizations",
+      "start": 91.5,
+      "end": 91.98
+    },
+    {
+      "word": "set",
+      "start": 91.98,
+      "end": 92.6
+    },
+    {
+      "word": "up",
+      "start": 92.6,
+      "end": 92.76
+    },
+    {
+      "word": "server",
+      "start": 92.76,
+      "end": 93.1
+    },
+    {
+      "word": "farms",
+      "start": 93.1,
+      "end": 93.54
+    },
+    {
+      "word": "running",
+      "start": 93.54,
+      "end": 93.94
+    },
+    {
+      "word": "around",
+      "start": 93.94,
+      "end": 94.3
+    },
+    {
+      "word": "the",
+      "start": 94.3,
+      "end": 94.46
+    },
+    {
+      "word": "clock,",
+      "start": 94.46,
+      "end": 94.78
+    },
+    {
+      "word": "manufacturing",
+      "start": 95.12,
+      "end": 95.84
+    },
+    {
+      "word": "consensus",
+      "start": 95.84,
+      "end": 96.4
+    },
+    {
+      "word": "and",
+      "start": 96.4,
+      "end": 97.0
+    },
+    {
+      "word": "attempting",
+      "start": 97.0,
+      "end": 97.44
+    },
+    {
+      "word": "to",
+      "start": 97.44,
+      "end": 97.8
+    },
+    {
+      "word": "program",
+      "start": 97.8,
+      "end": 98.24
+    },
+    {
+      "word": "human",
+      "start": 98.24,
+      "end": 98.72
+    },
+    {
+      "word": "minds.",
+      "start": 98.72,
+      "end": 99.24
+    }
+  ],
+  "required_markers": [
+    {
+      "label": "something's off",
+      "approved_script_text": "something's off",
+      "matched_words": "something's off.",
+      "spoken_deviation": null,
+      "start_seconds": 55.84,
+      "end_seconds": 56.54,
+      "segment_local_frame": 97
+    },
+    {
+      "label": "comments that sound human",
+      "approved_script_text": "Comments that sound human but aren't",
+      "matched_words": "Comments that sound human, but aren't.",
+      "spoken_deviation": null,
+      "start_seconds": 57.14,
+      "end_seconds": 58.92,
+      "segment_local_frame": 136
+    },
+    {
+      "label": "faster than humans can type",
+      "approved_script_text": "Responses get written faster than humans can type",
+      "matched_words": "Responses that get written faster than humans can type.",
+      "spoken_deviation": "Lee's delivery adds 'that' after 'Responses' (not in the approved script) \u2014 meaning unchanged.",
+      "start_seconds": 60.62,
+      "end_seconds": 61.98,
+      "segment_local_frame": 241
+    },
+    {
+      "label": "lips don't quite sync",
+      "approved_script_text": "Videos where the face looks right, but the lips don't quite sync.",
+      "matched_words": "Videos that look like people, but their lips aren't quite sinking.",
+      "spoken_deviation": "Real spoken-delivery deviation, not a transcription artifact risk taken lightly: Lee's actual recorded delivery does not contain the words 'the face looks right' at all \u2014 he says 'Videos that look like people, but their lips aren't quite sinking.' No timestamp is invented for words never spoken; the beat is anchored to the actual spoken words that carry the same meaning (an uncanny video likeness with a lip-sync problem).",
+      "start_seconds": 64.34,
+      "end_seconds": 65.7,
+      "segment_local_frame": 352
+    },
+    {
+      "label": "catfished",
+      "approved_script_text": "you suspect you're being catfished",
+      "matched_words": "you suspect you might be getting catfish.",
+      "spoken_deviation": "Lee says 'getting catfish' (word-final '-ed' not present in the transcribed audio), and 'you suspect you might be' rather than \"you're being\". Anchored to the actual spoken word 'catfish.' at 72.36s, the closest real spoken anchor to the approved concept.",
+      "start_seconds": 72.36,
+      "end_seconds": 72.88,
+      "segment_local_frame": 593
+    },
+    {
+      "label": "bots can create accounts",
+      "approved_script_text": "bots can create accounts at lightning speed",
+      "matched_words": "bots can create accounts at lightning speed.",
+      "spoken_deviation": null,
+      "start_seconds": 76.98,
+      "end_seconds": 79.1,
+      "segment_local_frame": 731
+    },
+    {
+      "label": "voice clones",
+      "approved_script_text": "AI can generate voice clones, live video clones",
+      "matched_words": "AI can generate voice clones and live video clones",
+      "spoken_deviation": "Lee adds 'and' between the two clone types (not in the approved script) \u2014 meaning unchanged.",
+      "start_seconds": 80.64,
+      "end_seconds": 81.4,
+      "segment_local_frame": 841
+    },
+    {
+      "label": "never sleep",
+      "approved_script_text": "communicate faster than humans and never sleep",
+      "matched_words": "communicate faster than humans and never sleep.",
+      "spoken_deviation": null,
+      "start_seconds": 87.96,
+      "end_seconds": 88.56,
+      "segment_local_frame": 1061
+    },
+    {
+      "label": "billions of fake accounts",
+      "approved_script_text": "They hide behind billions of fake accounts",
+      "matched_words": "They hide behind billions of fake accounts.",
+      "spoken_deviation": null,
+      "start_seconds": 89.62,
+      "end_seconds": 91.04,
+      "segment_local_frame": 1111
+    },
+    {
+      "label": "manufacturing consensus",
+      "approved_script_text": "running around the clock, manufacturing consensus, attempting to program human minds",
+      "matched_words": "running around the clock, manufacturing consensus and attempting to program human minds.",
+      "spoken_deviation": "Lee says 'consensus and attempting' rather than 'consensus, attempting' \u2014 meaning unchanged.",
+      "start_seconds": 95.12,
+      "end_seconds": 96.4,
+      "segment_local_frame": 1276
+    }
+  ],
+  "beat_schedule": [
+    {
+      "id": "beat1-something-off",
+      "name": "Something's Off",
+      "cut_start_seconds": 52.6,
+      "cut_end_seconds": 56.8,
+      "start_frame": 0,
+      "duration_frames": 126,
+      "cut_start_seconds_evidence": "chosen inside a real ffmpeg silencedetect gap adjacent to this cut, not an arbitrary timer"
+    },
+    {
+      "id": "beat2-echoes",
+      "name": "Comments and Rapid Responses (echoes-a)",
+      "cut_start_seconds": 56.8,
+      "cut_end_seconds": 62.27,
+      "start_frame": 126,
+      "duration_frames": 164,
+      "cut_start_seconds_evidence": "chosen inside a real ffmpeg silencedetect gap adjacent to this cut, not an arbitrary timer"
+    },
+    {
+      "id": "beat3-reflection",
+      "name": "Uncertain Video Identity (reflection-a)",
+      "cut_start_seconds": 62.27,
+      "cut_end_seconds": 65.93,
+      "start_frame": 290,
+      "duration_frames": 110,
+      "cut_start_seconds_evidence": "chosen inside a real ffmpeg silencedetect gap adjacent to this cut, not an arbitrary timer"
+    },
+    {
+      "id": "beat4-catfished",
+      "name": "Phone Calls and Catfishing (crop/scale continuation)",
+      "cut_start_seconds": 65.93,
+      "cut_end_seconds": 75.93,
+      "start_frame": 400,
+      "duration_frames": 300,
+      "cut_start_seconds_evidence": "chosen inside a real ffmpeg silencedetect gap adjacent to this cut, not an arbitrary timer"
+    },
+    {
+      "id": "beat5-multiplication",
+      "name": "Synthetic Multiplication",
+      "cut_start_seconds": 75.93,
+      "cut_end_seconds": 88.67,
+      "start_frame": 700,
+      "duration_frames": 382,
+      "cut_start_seconds_evidence": "chosen inside a real ffmpeg silencedetect gap adjacent to this cut, not an arbitrary timer"
+    },
+    {
+      "id": "beat6-consensus",
+      "name": "Manufactured Consensus (consensus-edit-a)",
+      "cut_start_seconds": 88.67,
+      "cut_end_seconds": 99.6,
+      "start_frame": 1082,
+      "duration_frames": 328,
+      "cut_start_seconds_evidence": "chosen inside a real ffmpeg silencedetect gap adjacent to this cut, not an arbitrary timer"
+    }
+  ],
+  "notes": [
+    "All segment_local_frame / start_seconds / end_seconds values above come directly from faster-whisper's word-level output on Lee's real recording (see transcription block) - none are estimated or invented.",
+    "Several required markers show a real spoken-delivery deviation from the approved narration script (see each marker's spoken_deviation field) - Lee's actual recorded words differ in minor ways from inputs/narration-script.md at N06-N09. This proof anchors to what was actually said, per faster-whisper's transcript, never to invented timing for un-spoken words.",
+    "The full proof segment (52.60s-99.60s, 47.00s / 1410 frames @30fps) covers narration beats N06 through N09 in full, matching the phase brief's quoted start ('If you've been connected...') and end ('...attempting to program human minds.') boundaries."
+  ]
+}

@@ -6,8 +6,9 @@
 - Locked Tier 1 baseline tag: `aepoch-tier1-beta-v0.1.0`
 - Tier 1 baseline commit: `a41e3fb`
 - Locked Episode 001 static baseline tag: `aepoch-e001-static-v0.1.0`
-- Current completed phase: Phase 14A.3 — targeted Manufactured Consensus repair via reference-image editing. Technical validation PASS (one disclosed, non-error finding: FLUX Kontext's native 16:9 bucket is 1392×752, not Recraft's 1344×768 — not resized to avoid distortion). Creative validation FAIL, improved but not resolved, and **awaiting author review** — see below and [`qa/phase-14a3-consensus-repair.md`](../../projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14a3-consensus-repair.md).
-- Next phase: not yet started. Depending on author review of Phase 14A.3, likely a fourth targeted attempt specifically on the output-band/waveform device (unresolved across all 5 generation attempts at this concept slot, spanning Phases 14A.2 and 14A.3), followed eventually by the 30–45 second production-quality proof (asset-first hybrid production: real human footage, AI-generated editorial artwork, stock media, Remotion as composition layer only).
+- Current completed phase: **Phase 14B — production-quality visual proof.** Technical validation PASS. Asset-first hybrid workflow PASS. Word-level synchronization method PASS. **Creative-review verdict: CONDITIONAL PASS — not public-ready; suitable as an internal pipeline demonstration only.** See below and [`qa/phase-14b-production-proof-review.md`](../../projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14b-production-proof-review.md).
+- Next phase: **Phase 14B.1** — a polish pass on the existing 47-second proof only (not a new proof, not full Episode 001). See "Phase 14B.1 — required corrections" below. **Not yet started.**
+- **Production is currently paused.** The author is recording new human video and a clean narration pass. No Claude session, Remotion render, image generation, or episode build should run during that recording session — see "Recording pause" below.
 - Current episode: `001-what-is-aepoch`
 - Episode type: Pre-launch countdown, Video 1
 - Working title: `What is ÆPOCH?`
@@ -162,21 +163,107 @@ clearest positive finding. **Not yet ready to become the basis of a custom
 after two rounds. Full detail:
 `qa/phase-14a2-style-convergence.md`.
 
+### Phase 14A.3 — Targeted Manufactured Consensus repair
+
+Repaired the Manufactured Consensus slot via FLUX Kontext reference-image
+editing rather than another fresh-generation round. Technical validation
+PASS. Creative validation FAIL, improved but not resolved after five total
+generation attempts across two phases. Full detail:
+`qa/phase-14a3-consensus-repair.md`.
+
+### Phase 14B — Production-quality visual proof
+
+**Status:** Complete — technical validation PASS; creative validation
+**awaiting author review**.
+
+Built one 47.00-second (1410-frame @30fps) proof segment covering narration
+beats N06–N09, using the asset-first hybrid workflow: three locked
+Direction A illustrations (`echoes-a`, `reflection-a`, `consensus-edit-a`)
+plus one Direction A multiplication frame, treated entirely through
+Remotion-native motion (crop, mask, camera, color-state, brand geometry) —
+no new image-generation calls this phase.
+
+- Word-level audio boundaries determined via `faster-whisper` (`small`
+  model, CPU/int8) on Lee's real reference recording, refined against
+  `ffmpeg silencedetect` gaps — not the phrase-level estimate from Phase
+  13C.1. All ten required markers located as real spoken words; two show a
+  genuine spoken-delivery deviation from the approved script (disclosed,
+  script itself unchanged). Full word-level output:
+  `inputs/phase-14b-proof-word-timings.json`.
+- Registered `Aepoch-E001-Phase14B-Proof` (1920×1080, 30fps, 1410 frames)
+  under a fresh `phase14b/` source directory — does not reuse or modify the
+  rejected Phase 13C.2A motion-blocking prototype's creative content;
+  reuses only its proven incoming-over-outgoing crossfade architecture.
+- Beat 6 (Manufactured Consensus) builds the "resolve into one shared
+  output" transformation — unresolved across all five prior
+  image-generation attempts in Phases 14A.2/14A.3 — entirely from Remotion
+  brand geometry (deterministic sync-marker convergence + a drawn-on flat
+  wave line), using `consensus-edit-a` strictly as a figure plate.
+- Rendered a full 720p preview and three required contact sheets (clean,
+  word-alignment, transition). Type-check clean (zero new diagnostics vs.
+  the 15 pre-existing baseline errors).
+
+Full detail: `qa/phase-14b-production-proof-review.md`.
+
+**Author creative-review decision (post-phase, recorded here):**
+
+| Axis | Verdict |
+|---|---|
+| Technical validation | PASS |
+| Asset-first hybrid workflow | PASS |
+| Word-level synchronization method | PASS |
+| Creative proof | **CONDITIONAL PASS** |
+| Public-ready | **NO** |
+
+The proof is suitable as an **internal pipeline demonstration** only. The
+full Episode 001 must not begin yet. **Phase 14B.1** is the next production
+phase, and it will **polish the existing 47-second proof only** — not
+regenerate it from scratch, and not extend it into the full episode.
+
+**Next phase:** Phase 14B.1 — not yet started. See "Phase 14B.1 — required
+corrections" below.
+
+## Phase 14B.1 — required corrections (not yet started)
+
+Scoped corrections to the existing Phase 14B proof, per author creative
+review:
+
+1. Begin with one dominant human and reveal synthetic echoes progressively
+   (Beat 1's opening currently shows all figures from frame 0, not a single
+   dominant human).
+2. Treat Beats 1 and 2 as **one continuous** echoes composition rather than
+   crossfading the same plate into itself.
+3. Strengthen the internal visual shift during the phone-call/catfishing
+   narration (Beat 4) — the current tint/pan refresh reads too subtly.
+4. Treat Beats 3 and 4 as **one continuous** reflection composition rather
+   than crossfading the same plate into itself.
+5. Replace the inconsistent synthetic-multiplication plate (Beat 5) with
+   either the selected Direction A human vocabulary or an isolated approved
+   synthetic figure multiplied through Remotion — not the Phase 14A.1
+   Direction A/Frame 3 abstract-geometric plate currently used.
+6. Make the Manufactured Consensus synchronization and the shared output
+   band **unmistakable at normal playback size** (the current sync markers
+   and wave line are legible but read as subtle/small).
+7. Continue using Lee's recording **only as the timing reference** — not as
+   final production audio.
+8. Final narration will use a **clean recording of the approved script**
+   (not Lee's reference recording, which has the disclosed spoken-delivery
+   deviations documented in Phase 14B's word-timings JSON).
+
+## Recording pause (current)
+
+The author is pausing production to record new human video and a clean
+narration pass of the approved script. **No Claude session, Remotion
+render, image generation, or episode build should run during that
+recording session.** Phase 14B.1 work resumes only after the author
+explicitly signals the recording session is complete.
+
 ## Next task
 
-Not yet started — awaiting author review of Phase 14A.2. Likely next
-step: a third, narrower image-generation pass on the two still-failing
-candidate slots (Human Among Synthetic Echoes B — remove facial
-accessories/expression; Manufactured Consensus B — full human silhouettes
-with generous spacing, not a dense repeating pattern). After the family
-converges cleanly, the next deliverable is a 30–45 second
-production-quality proof (asset-first hybrid: real human footage,
-AI-generated editorial artwork in the converged style, stock media where
-appropriate, Remotion as composition layer only) — not another complete
-five-minute draft, and not yet scoped or started.
-
-Do not begin episode-scale asset generation for Episode 001 without an
-explicit new phase prompt.
+Paused for the author's recording session (human video + clean narration).
+Once that session completes and the author gives an explicit new phase
+prompt, begin Phase 14B.1 (polish pass on the existing 47-second proof,
+per the corrections above) — not full Episode 001 asset generation.
 
 ## Authoritative episode files
 
@@ -190,6 +277,8 @@ explicit new phase prompt.
 - `projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14a1-style-exploration.md`
 - `projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14a2-style-convergence.md`
 - `projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14a3-consensus-repair.md`
+- `projects/aepoch-episodes/001-what-is-aepoch/inputs/phase-14b-proof-word-timings.json`
+- `projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14b-production-proof-review.md`
 
 ## Authoritative brand and production files
 
