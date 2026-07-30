@@ -4,6 +4,33 @@ Start here. This is the complete operating guide and agent contract for OpenMont
 
 For architecture, key files, and conventions see [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md).
 
+## Project Memory
+
+When `knowledge/` exists, it is the durable record of project-specific state.
+
+Before continuing an existing project:
+
+1. Read `knowledge/state/current-state.md`.
+2. Read `knowledge/index.md`.
+3. Read the latest entries in `knowledge/log.md`.
+4. Read the current phase brief, checkpoints, and relevant QA evidence.
+
+Repository code, validated artifacts, tests, renders, and captured evidence take precedence over chat history.
+
+Agents hand work off through repository artifacts rather than copied chat transcripts:
+
+- approved phase brief
+- canonical artifacts
+- checkpoints
+- code and generated outputs
+- tests and QA reports
+- `knowledge/state/current-state.md`
+- `knowledge/log.md`
+
+The planning or review agent defines scope and verifies results. The execution agent implements the approved scope and leaves evidence in the repository. The user may assign either role to any agent.
+
+Before editing files under `knowledge/`, read `knowledge/SCHEMA.md`.
+
 ## First Interaction — Onboarding
 
 When the user's first message is vague, exploratory, or asks what you can do ("make me a video", "what can you do?", "help me create something", "I want to make content"), read the onboarding skill **before** doing anything else:

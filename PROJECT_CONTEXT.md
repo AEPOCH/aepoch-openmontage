@@ -29,6 +29,10 @@ Agent reads pipeline manifest (YAML) → reads stage director skill (MD)
 - **Stage director skills:** `skills/pipelines/<pipeline>/<stage>-director.md`
 - **Meta skills:** `skills/meta/*.md` (reviewer, checkpoint-protocol, skill-creator)
 - **Architecture deep-dive:** `docs/ARCHITECTURE.md`
+- **Knowledge governance:** `knowledge/SCHEMA.md`
+- **Current project state:** `knowledge/state/current-state.md`
+- **Knowledge navigation:** `knowledge/index.md`
+- **Project history:** `knowledge/log.md`
 
 ## Knowledge Architecture (3 Layers)
 
