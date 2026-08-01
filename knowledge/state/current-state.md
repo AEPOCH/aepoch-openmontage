@@ -614,14 +614,17 @@ the existing untracked `styles/aepoch-symbolic.yaml` — recommended as the
 playbook — currently fails schema validation and needs a fix before scene
 planning can use it.
 
-**Immediate next action:** Chris reviews the 3 concepts (data_narrative /
-comparison / analogy, all sharing one `core_message`), the Remotion-vs-
-HyperFrames and templated-vs-atelier decisions (atelier + Remotion
-recommended), the cost estimate (~$0.77 of $2.00, real `estimate_cost()`
-figures), and the `aepoch-symbolic.yaml` schema blocker, then approves,
-requests changes, or rejects. Only after approval may Claude proceed to
-script and later stages. No paid generation, full production, publish, or
-deploy is authorized.
+**Executive-producer review 2026-08-01 — proposal revision required:** The
+four canonical JSON artifacts validate and the protected source fields are
+preserved, but the required eight-video benchmark analysis was not persisted.
+The proposal points to chat and unrelated decision entries rather than a
+repository artifact; `research_brief` still says benchmark analysis will be
+merged later. Claude must persist the structured benchmark analysis and its
+frame/transcript provenance, update artifact references, re-run proposal
+review, refresh the proposal checkpoint as `awaiting_human`, update durable
+knowledge, and stop. Full finding:
+`knowledge/wiki/reports/phase-16-proposal-gate-review.md`. No script, paid
+generation, full production, publish, or deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 

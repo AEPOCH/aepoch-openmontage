@@ -1373,3 +1373,29 @@ requests changes, or rejects. Only after approval may Claude proceed to
 script and later stages.
 
 ---
+
+## 2026-08-01 — Executive-producer proposal review requires persisted benchmark evidence
+
+Monty reviewed the Phase 16 proposal gate after Chris confirmed that extraction
+approval occurred in Claude's separate session. All four canonical JSON
+artifacts validate, protected fields are preserved, and the proposal correctly
+keeps concept/runtime/mode/provider/music decisions pending.
+
+The proposal did not pass executive-producer review because the required
+eight-video benchmark analysis exists only as a knowledge-log summary and a
+reference to chat. No structured benchmark-analysis artifact, five-aspect
+shot/shot-group report, or frame/transcript evidence index exists in the
+workspace. `research_brief` says analysis will be merged later, while
+`proposal_packet.benchmark_summary_ref` points to chat and unrelated decision
+entries.
+
+### Next action
+
+Claude persists the completed benchmark analysis and evidence under the Phase
+16 workspace, updates real artifact references, reruns validation and proposal
+self-review, refreshes the proposal checkpoint as `awaiting_human`, updates
+knowledge, and stops. Full requirements:
+`knowledge/wiki/reports/phase-16-proposal-gate-review.md`. No new paid calls or
+advance to script is authorized.
+
+---
