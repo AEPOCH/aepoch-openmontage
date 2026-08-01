@@ -753,12 +753,33 @@ entries. Scene-plan checkpoint written `awaiting_human`. Full detail:
 `knowledge/log.md`, 2026-08-01 "Scene-plan tranche executed per
 phase-16-scene-plan-tranche.md" entry.
 
-**Immediate next action:** Chris and Monty review the scene plan (coverage,
-distinctness inventory, signature-device usage, pacing exceptions, and the
-still-open TTS decision). Only after approval may Claude proceed to `assets`.
-The existing voice recording's role/path and the two `aepoch-symbolic.yaml`
-WCAG contrast findings remain open regardless. No asset generation, audio
-generation, paid calls, full production, publish, or deploy is authorized.
+**Update 2026-08-01 (scene-plan revision round 1 executed):** Fixed all four
+corrections from `knowledge/wiki/reports/phase-16-scene-plan-gate-review.md`:
+(1) `hook-1b`'s shot_intent no longer implies a "nine out of ten" ratio the
+survey didn't measure; (2) `build-3a`'s forbidden radial diagram rebuilt as a
+linear left-to-right flow per `VISUAL_LANGUAGE.md`; (3) removed the entire
+checker-motivated camera-movement override layer (13 scenes had contradicted
+their own "static" prose) -- verified zero contradictions remain; only
+`climax-3` keeps its (genuinely pre-existing) push-in; `camera_note` rewritten
+to describe the artifact truthfully; (4) the 18.75s `tail-hold` (over the
+12.0s playbook max) split into `tail-hold-mark` (12.0s) + `tail-release`
+(6.75s, distinct wordless Paper-to-black scene) -- both now pacing-compliant,
+resolving rather than just disclosing the exception. Scene count 31 -> 32.
+Re-validated: schema-valid, exact 0-280s coverage, every section/cue covered,
+no shared adjacent subjects, no 3+ same-type runs, zero camera contradictions.
+Honest checker re-run (not re-gamed): variation checker "strong"/0.0 (gamed)
+-> "strong"/0.6 (honest, 31/32 scenes genuinely static); slideshow-risk
+unchanged "strong"/0.42. Checkpoint refreshed `awaiting_human` (Claude did not
+self-approve). Full detail: `knowledge/log.md`, 2026-08-01 "Scene-plan
+revision round 1" entry.
+
+**Immediate next action:** Chris and Monty re-review the corrected scene plan.
+Only after approval may Claude proceed to `assets`. The disclosed
+`climax-2b-scene` pacing exception, the existing voice recording's role/path,
+the two `aepoch-symbolic.yaml` WCAG contrast findings, and the open
+OpenAI-vs-ElevenLabs TTS decision (`d-015`) all remain outstanding regardless.
+No asset generation, audio generation, paid calls, full production, publish,
+or deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 

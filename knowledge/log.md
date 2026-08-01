@@ -1814,3 +1814,83 @@ audio generation, paid calls, full production, publish, or deploy is
 authorized until then.
 
 ---
+
+## 2026-08-01 — Scene-plan revision round 1: content, brand, and camera-honesty fixes
+
+Executed `docs/aepoch-production-playbook/prompts/phase-16-scene-plan-revision-round-1.md`
+exactly, per `knowledge/wiki/reports/phase-16-scene-plan-gate-review.md`'s four
+required corrections. All fixes are scene-plan-only; narration, section timing,
+claims, cue intent, the Presence Ring/Signal reveal, atelier mode, runtime,
+and provider decisions are unchanged.
+
+1. **Unsupported survey inference removed (`hook-1b`).** Its `shot_intent` had
+   said the scene visualizes "nine out of ten" — reintroducing exactly the
+   inference the approved script deliberately removed, since the Malwarebytes
+   survey measured US-adult self-report, not a feed population ratio.
+   Rewritten to describe general uncertainty-to-human-focus without any
+   ratio claim. Verified: the phrase no longer appears anywhere in the
+   artifact.
+
+2. **Forbidden radial diagram fixed (`build-3a`).** `VISUAL_LANGUAGE.md`
+   requires diagrams to run left-to-right or top-to-bottom only, no radial
+   mind-map layouts — the prior `framing` specified exactly that forbidden
+   pattern. Rebuilt as a linear three-icon row with one continuing flow-line
+   into a collection point at the row's end, matching `build-1a`'s established
+   linear grammar.
+
+3. **Camera-movement honesty.** The prior round's `CAMERA_MOVEMENT_OVERRIDES`
+   layer had added `dolly`/`pan` movement to 13 scenes specifically to raise
+   the variation checker's score above its 40%-movement threshold — but each
+   scene's own prose (`movement`, `description`) still said "static"/"no
+   camera movement," creating exactly the contradiction Monty's review named
+   in `hook-2b`, `build-2a`, and `landing-1a`. Removed the override layer
+   entirely: every scene now uses its own originally-authored
+   `camera_movement`, which is `static` except `climax-3` — the one scene
+   whose push-in was genuinely designed with matching prose in the very first
+   draft, before any checker feedback existed. Verified programmatically:
+   zero remaining contradictions between movement claims and
+   `shot_language.camera_movement` across all 32 scenes. Rewrote
+   `scene_plan.metadata.camera_note`, which had falsely claimed
+   `lighting_key`/`color_temperature` were omitted while the artifact
+   populated them throughout — it now accurately describes both the
+   camera-movement reality and the Void-to-Paper lighting arc.
+
+4. **Playbook-breaking logo hold fixed (`tail-hold`).** The prior single
+   18.75s hold exceeded `aepoch-symbolic.yaml`'s 12.0s max scene hold. Split
+   into `tail-hold-mark` (12.0s — the ÆPOCH mark, at the playbook's exact
+   maximum) followed by `tail-release` (6.75s — a distinct wordless
+   Paper-to-black scene with no mark, text, or logo). Both scenes now comply
+   with pacing bounds; this resolves the exception rather than merely
+   disclosing it. Total scene count: 31 → 32; total duration unchanged at
+   exactly 280s.
+
+**Re-validation:** schema-valid; exact 0-280s coverage, no gaps or overlaps;
+every script section and enhancement cue still covered; no adjacent scenes
+share a primary subject; no 3+ consecutive same-`type` run. One disclosed
+pacing exception remains, unchanged and unavoidable: `climax-2b-scene` at
+2.92s, 0.08s under the 3.0s minimum, because its boundaries exactly match the
+approved script's `climax-2b` section timing.
+
+**Honest before/after on the automated checkers, not re-gamed:** variation
+checker was `strong`/`0.0` (with the checker-motivated movement) → now
+`strong`/`0.6` (honest state, 31/32 scenes genuinely static — the checker
+flags this plainly, but the verdict holds because shot-size and lighting
+variety alone carry enough signal). Slideshow-risk unchanged at
+`strong`/`0.42` in both rounds. Per the handoff's explicit instruction, this
+regression on one sub-metric was reported plainly rather than patched with
+more unmotivated movement.
+
+Scene-plan checkpoint refreshed as `awaiting_human` (revision round 1;
+Claude did not self-approve the gate). No images, narration, music, review
+stills, or other assets were generated; no paid call was made; no `assets`,
+`edit`, `compose`, or `publish` work began.
+
+### Next action
+
+Chris and Monty re-review the corrected scene plan. Only after approval may
+Claude proceed to `assets`. The disclosed `climax-2b-scene` pacing exception
+and the open OpenAI-vs-ElevenLabs TTS decision (`d-015`) remain outstanding
+regardless. No asset generation, audio generation, paid calls, full
+production, publish, or deploy is authorized.
+
+---
