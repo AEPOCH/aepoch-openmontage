@@ -623,8 +623,21 @@ merged later. Claude must persist the structured benchmark analysis and its
 frame/transcript provenance, update artifact references, re-run proposal
 review, refresh the proposal checkpoint as `awaiting_human`, update durable
 knowledge, and stop. Full finding:
-`knowledge/wiki/reports/phase-16-proposal-gate-review.md`. No script, paid
-generation, full production, publish, or deploy is authorized.
+`knowledge/wiki/reports/phase-16-proposal-gate-review.md`.
+
+**Update 2026-08-01 (revision executed):** Persisted the full 8-video
+benchmark analysis under `projects/aepoch-blog-pilot-what-is-aepoch/artifacts/`
+— `benchmark_analysis.md` (cross-video synthesis), 8 schema-valid
+`video_analysis_brief.json` files, `benchmark/raw/` (full per-shot 5-aspect
+breakdowns), and `benchmark/evidence/` (transcripts, sampled keyframes,
+scene-change timestamps). Fixed `research_brief.json` and
+`proposal_packet.json` references to point to these real paths instead of
+chat/decision-log cross-references. All 4 canonical artifacts plus all 8
+`video_analysis_brief` files re-validated clean. Proposal checkpoint refreshed
+as `awaiting_human` (revision round 1). Full detail: `knowledge/log.md`,
+2026-08-01 "Benchmark evidence persisted per executive-producer revision
+request" entry. No script, paid generation, full production, publish, or
+deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 

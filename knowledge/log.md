@@ -1399,3 +1399,55 @@ knowledge, and stops. Full requirements:
 advance to script is authorized.
 
 ---
+
+## 2026-08-01 — Benchmark evidence persisted per executive-producer revision request
+
+Executed Monty's required revision (`knowledge/wiki/reports/phase-16-proposal-gate-review.md`).
+The prior round's benchmark analysis existed only in a session-local `/tmp`
+scratchpad and a knowledge-log narrative summary — not a repository artifact a
+fresh agent could resume from, violating the Phase 16 handoff's
+resume-without-chat-history requirement.
+
+Persisted, under `projects/aepoch-blog-pilot-what-is-aepoch/artifacts/`:
+
+- `benchmark_analysis.md` — cross-video synthesis (the NotebookLM-generation
+  finding, the zero-camera-movement finding, brand-coherence violations found,
+  and techniques worth adopting).
+- `benchmark/<video_id>.video_analysis_brief.json` — one per channel video (8
+  total), each schema-valid against `schemas/artifacts/video_analysis_brief.schema.json`,
+  covering structure/scenes, style profile, replication guidance, and keyframe
+  references.
+- `benchmark/raw/<video_id>.md` — the full original per-shot 5-aspect
+  narrative breakdowns, preserved verbatim.
+- `benchmark/evidence/<video_id>/` — transcripts (`.en.srt`), a representative
+  set of sampled keyframes, and scene-change timestamp lists for each video.
+  Full source `.mp4`/`.wav` files were deliberately not persisted (disk size);
+  the recorded video ID/URL in each brief is sufficient to re-acquire them via
+  the same `yt-dlp` command, and this decision is stated explicitly in
+  `benchmark_analysis.md`'s Confidence and Limitations section rather than
+  left as a silent gap.
+
+Corrected `research_brief.json`'s `metadata` (previously said benchmark
+analysis "will be merged later") and `proposal_packet.json`'s
+`metadata.benchmark_summary_ref` (previously pointed to "chat presentation"
+and decision entries `d-006`/`d-007`) to reference the real persisted paths
+above. Verified `decision_log.json`'s `d-006`/`d-007` were already correctly
+scoped to `concept_selection` and `music_source` respectively — the
+misrepresentation was only in `proposal_packet`'s cross-reference to them, not
+in the decisions themselves, so no `decision_log` edit was needed.
+
+Re-ran schema validation on all 4 canonical artifacts plus all 8
+`video_analysis_brief` files — all pass. Refreshed the proposal checkpoint as
+`awaiting_human` with the updated artifact set and a note documenting this as
+revision round 1. The three concepts, cost estimate, and
+runtime/composition-mode/provider/music decisions are otherwise unchanged from
+the prior round — no new paid calls, no advance to script.
+
+### Next action
+
+Monty (executive producer) re-reviews the proposal gate with the now-persisted
+benchmark evidence. If it passes, Chris reviews and approves/revises/rejects
+the proposal itself. No script, paid generation, full production, publish, or
+deploy is authorized until both reviews clear.
+
+---
