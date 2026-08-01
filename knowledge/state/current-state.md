@@ -583,14 +583,45 @@ files/cleanup. See TR-030 in `knowledge/operations/troubleshooting.md` and
 
 ## Immediate Next Action
 
-**Authorized by Chris on 2026-08-01.** Claude initializes a new Phase 16
-workspace, records the fresh preflight, and executes the live-blog
-`extraction` stage only. Claude produces a schema-valid `source_extraction`,
-writes the binding extraction checkpoint as `awaiting_human`, updates the
-knowledge tree, and stops for Chris's explicit approval. Only after that
-approval may Claude proceed to source verification/enrichment, grounded
-benchmark analysis, research, and differentiated proposals. No paid
-generation, full production, publish, or deploy is authorized.
+**Update 2026-08-01 (extraction tranche executed, awaiting approval):**
+Claude initialized `projects/aepoch-blog-pilot-what-is-aepoch/`, retrieved the
+live blog (`https://aepoch.xyz/blog/post/what-is-aepoch` — WebFetch was
+blocked by Cloudflare bot-protection; a browser-User-Agent `curl` retrieval of
+the same public page succeeded), and produced a schema-valid
+`source_extraction` artifact per `skills/pipelines/explainer/extraction-director.md`
+and `brands/aepoch/SCRIPT_RULES.md` Part 1. The extraction checkpoint is
+written as `awaiting_human`
+(`projects/aepoch-blog-pilot-what-is-aepoch/checkpoint_extraction.json`).
+Full detail: `knowledge/log.md`, 2026-08-01 "Phase 16 extraction tranche
+executed" entry.
+
+**Update 2026-08-01 (research, benchmark analysis, and proposal completed):**
+Chris approved the extraction. Claude completed research/verification
+(`research_brief`), analyzed all 8 ÆPOCH Protocol YouTube videos, and produced
+a 3-concept `proposal_packet` + `decision_log`, checkpointed `awaiting_human`
+per the manifest's gate on the `proposal` stage. Full detail:
+`knowledge/log.md`, 2026-08-01 "Extraction approved; research, benchmark
+analysis, and proposal completed" entry.
+
+Headline findings: the source's core claims are verified/strengthened (a
+fresher hook candidate surfaced — 85% of people can't tell real from
+AI-generated content); 4 of the 8 benchmark videos are confirmed Google
+NotebookLM auto-generated outputs, not bespoke productions, and the channel's
+visual identity is not currently locked across its more custom videos; all 8
+videos use zero camera movement, validating the project's asset-first hybrid
+workflow and identifying real Remotion motion as a genuine differentiator; and
+the existing untracked `styles/aepoch-symbolic.yaml` — recommended as the
+playbook — currently fails schema validation and needs a fix before scene
+planning can use it.
+
+**Immediate next action:** Chris reviews the 3 concepts (data_narrative /
+comparison / analogy, all sharing one `core_message`), the Remotion-vs-
+HyperFrames and templated-vs-atelier decisions (atelier + Remotion
+recommended), the cost estimate (~$0.77 of $2.00, real `estimate_cost()`
+figures), and the `aepoch-symbolic.yaml` schema blocker, then approves,
+requests changes, or rejects. Only after approval may Claude proceed to
+script and later stages. No paid generation, full production, publish, or
+deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 

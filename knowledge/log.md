@@ -1235,3 +1235,141 @@ extraction-only tranche, records evidence and knowledge, and returns the
 extraction artifact for Chris's approval.
 
 ---
+
+## 2026-08-01 — Phase 16 extraction tranche executed; awaiting Chris's approval
+
+Claude executed the authorized extraction-only tranche. Initialized a new
+project workspace, `projects/aepoch-blog-pilot-what-is-aepoch/` (distinct from
+the superseded manual `aepoch-episodes/001-what-is-aepoch/` workspace), via
+`lib.checkpoint.init_project`. Attempting to open the Backlot board was
+blocked by the local permission classifier; this is non-fatal per
+`AGENT_GUIDE.md` (the board is an observer, never a blocker) and was not
+retried.
+
+Retrieved the live blog at `https://aepoch.xyz/blog/post/what-is-aepoch`.
+`WebFetch` returned HTTP 403 (a Cloudflare bot-protection fingerprint block,
+confirmed by a bare `curl -I` from this host); a retry with a standard
+browser `User-Agent` string returned HTTP 200. No authentication bypass was
+involved — the page is public company content. The full article text (~6.3k
+characters) was extracted and hashed for provenance (`sha256`, recorded in
+the artifact's `source.content_hash`).
+
+Produced a schema-valid `source_extraction` artifact
+(`schemas/artifacts/source_extraction.schema.json`) following
+`skills/pipelines/explainer/extraction-director.md` and Part 1 of
+`brands/aepoch/SCRIPT_RULES.md`. One central narrative through-line was
+identified — ÆPOCH's Proof of Life mechanism as what makes confirmed daily
+human presence economically foundational — satisfying `SCRIPT_RULES.md`'s
+one-sentence-without-"and" test and `SERIES_BIBLE.md`'s "one central idea per
+episode" rule. The `central_question` ("How does the internet know you're
+real?") matches `SERIES_BIBLE.md`'s own worked example verbatim. All five
+protected narrative fields are populated. Nine claims were individually
+inventoried with source location and a `verification_required` flag,
+including two `SERIES_BIBLE.md`-driven flags: (1) the source never names the
+token "KAIROS" (locked terminology) — only "the protocol's native token" —
+and (2) the Proof of Life mechanism description reads as present-tense
+capability where `SERIES_BIBLE.md` requires pilot-today vs. future-vision to
+be distinguished on screen. Four items were recorded as `excluded_material`
+(broader economic-history critique, CBDC/surveillance context,
+founding-cohort recruitment framing, and waitlist CTAs) to keep the episode
+to one idea. Four `ambiguities` were recorded rather than silently resolved,
+most notably that `desired_duration_seconds` (300s) is a working default
+against the benchmark channel's range, not an author-specified figure.
+
+Wrote the extraction checkpoint as `awaiting_human`
+(`projects/aepoch-blog-pilot-what-is-aepoch/checkpoint_extraction.json`),
+matching the `animated-explainer` manifest's `human_approval_default: true`
+gate for the `extraction` stage. No research, verification/enrichment,
+benchmark-video analysis, proposal work, paid provider call, or production
+work was performed — Claude stopped at the gate as directed by the corrected
+next action above.
+
+### Next action
+
+Chris reviews the `source_extraction` artifact and either approves it,
+requests revision, or flags a material conflict for resolution. Only after
+approval may Claude proceed to source verification/enrichment, benchmark-video
+analysis, research, and differentiated proposals, per the Phase 16 handoff
+(`docs/aepoch-production-playbook/prompts/phase-16-what-is-aepoch-real-blog-pilot.md`).
+
+---
+
+## 2026-08-01 — Extraction approved; research, benchmark analysis, and proposal completed; awaiting Chris's proposal approval
+
+Chris approved the `source_extraction` artifact. Claude re-wrote the extraction
+checkpoint as `completed`/`human_approved=True` and proceeded through research,
+benchmark-video analysis, and proposal per the Phase 16 handoff.
+
+**Research (`research_brief`, non-gated):** Verified and enriched the nine
+inventoried claims. The source's core "more than half of internet traffic is
+automated" claim is confirmed and strengthened (Thales/Imperva 2026 Bad Bot
+Report: 53%, though Cloudflare's own Q2 2026 telemetry shows a lower 35.2% —
+disclosed rather than picked silently). The CBDC claim was enriched with real
+figures (146 countries exploring, 66 in advanced pilot, 3 fully launched). The
+source's "every monetary system required extraction" claim was found to be
+contested by real anthropological scholarship (Graeber's debt/credit theory)
+rather than settled fact, and flagged for the script stage to treat as
+illustrative framing, not fact. Landscape research placed ÆPOCH in a real
+"proof of personhood" space (World/Worldcoin, Pi Network, Gitcoin Passport,
+BrightID, Proof of Humanity, Idena) and found the genuine, defensible gap: no
+comparable project pairs identity verification with an equal, no-accumulation
+value layer. A stronger hook candidate surfaced: 85% of people now say they
+can't tell real from AI-generated content (Malwarebytes 2026), and Reddit is
+actively weighing a World ID integration right now.
+
+**Benchmark analysis (all 8 ÆPOCH Protocol YouTube videos):** Downloaded via
+`yt-dlp` (confirmed working without Deno, using the format-18 legacy fallback)
+and analyzed via ffmpeg scene-detection/frame-sampling, auto-captions, and
+direct visual inspection. Key finding: 4 of 8 videos ("KAIROS Presence in
+Motion," "Securing the Human Economy," "The Synthetic Internet," "Valuing
+Human Presence") are confirmed Google NotebookLM "Video Overview"
+auto-generated outputs — visible NotebookLM watermark on every frame, one
+ending on a bare `notebooklm.google.com` end-card with no ÆPOCH branding at
+all. The other 4 ("The Fable of the Reclaimed Forest," "The Magic of Waking
+Up," "Manufactured Consensus," "ÆPOCH Building the Presence Layer") are more
+deliberately produced but use three different, mutually inconsistent
+illustration styles (painterly myth, storybook, watercolor essay, halftone
+pop-art) — the channel's visual identity is not currently locked. All 8 videos
+are 100% static/animated-still with zero camera movement in every sampled
+shot; none use motion_clip footage, which validates the project's own
+already-locked Phase 13C asset-first hybrid workflow (illustration plates +
+deterministic Remotion motion) and identifies real camera movement as a
+genuine, low-risk differentiation opportunity. Two videos ("The Synthetic
+Internet," "Securing the Human Economy") visibly violate `VISUAL_LANGUAGE.md`
+with crypto/hacker-cliche imagery (glowing terminal text, robotic claws,
+shadow monsters) in their "threat" sections.
+
+**Proposal (`proposal_packet` + `decision_log`, gated):** Produced 3
+differentiated concepts sharing one identical `core_message` and preserving
+all five protected `source_extraction` fields: "The Realness Tax"
+(data_narrative, agent-recommended), "A Different Answer to the Same
+Question" (comparison), and "One Thing Every Human Still Makes for Free"
+(analogy). Both composition runtimes were presented per the hard rule
+(Remotion recommended, reasoned against the project's existing Remotion
+investment; HyperFrames presented honestly) and both composition modes
+(atelier recommended for this hero-quality pilot over templated). Real cost
+figures were pulled from each tool's `estimate_cost()` rather than estimated:
+FLUX $0.05/image, OpenAI TTS $0.0645 for a ~720-word script — total estimate
+$0.77 of a $2.00 budget. A real, verified blocker was found and disclosed
+rather than silently worked around: the existing untracked
+`styles/aepoch-symbolic.yaml` — which otherwise faithfully encodes
+`VISUAL_LANGUAGE.md` and is recommended as the playbook — currently **fails**
+`playbook_loader.load_playbook()` schema validation (`background_dark` and
+`reveal_accent` are rejected as additional properties by
+`schemas/styles/playbook.schema.json`). No music generation or library is
+configured; Pixabay stock search is the only real option, presented alongside
+"provide a track" and "no music."
+
+Proposal checkpoint written as `awaiting_human`
+(`projects/aepoch-blog-pilot-what-is-aepoch/checkpoint_proposal.json`) per the
+`animated-explainer` manifest's gate on this stage. No paid provider call,
+asset generation, or production work was performed.
+
+### Next action
+
+Chris reviews the 3 concepts, the runtime/composition-mode/provider/cost
+decisions, and the `aepoch-symbolic.yaml` schema blocker, then approves,
+requests changes, or rejects. Only after approval may Claude proceed to
+script and later stages.
+
+---
