@@ -1992,3 +1992,82 @@ music/sound-effect/review-still generation, composition, render, publish, or
 deploy is authorized.
 
 ---
+
+## 2026-08-01 — ElevenLabs voice-audition samples generated; sample gate reached
+
+Chris approved raising the audition cap to $0.11 and auditioning all three
+shortlisted voices. Executed via the registered `elevenlabs_tts` tool
+(`tools/audio/elevenlabs_tts.py`), not the raw SDK.
+
+**Provider failure and disclosed adjustment:** the first real call (George,
+planned `output_format: mp3_44100_192`) returned HTTP 403
+`subscription_required`: "Output format 'mp3_44100_192' is only available on
+the Creator tier and above." The account is confirmed pay-as-you-go (a lower
+tier). Per the handoff's "fallback: none, escalate and stop" rule, no other
+provider was called and no retry loop was run blindly -- the exact error was
+read first. `GET /v1/user/subscription` (free, read-only) confirmed 0
+characters consumed by the failed attempts. Switched only `output_format` to
+`mp3_44100_128` (the `elevenlabs_tts` tool's own schema default) -- voice,
+model, speed, and text were unchanged -- and re-ran all three calls
+successfully for a fair, identical-settings comparison.
+
+**Samples generated and verified.** Same exact climax passage (`climax-1`
+through `climax-2b`, phonetic AY-pock/KY-ross substitutions in the provider
+request only; canonical `script.json` unchanged), `eleven_multilingual_v2`,
+`stability: 0.62, similarity_boost: 0.85, style: 0.25, speed: 0.95,
+use_speaker_boost: true`:
+
+- **George** (`JBFqnCBsd6RMkjVDRZzb`) --
+  `assets/audio/samples/climax-audition_george_JBFqnCBsd6RMkjVDRZzb.mp3`,
+  25.77s, verified via `ffprobe` (mp3, 44100 Hz, mono, 128 kbps).
+- **Bill** (`pqHfZKP75CvOlQylNhV4`) --
+  `assets/audio/samples/climax-audition_bill_pqHfZKP75CvOlQylNhV4.mp3`,
+  30.05s, verified.
+- **River** (`SAz9YHcvj6GT2YYXdXww`) --
+  `assets/audio/samples/climax-audition_river_SAz9YHcvj6GT2YYXdXww.mp3`,
+  24.80s, verified.
+
+**Cost reconciliation, transparently reported.** The registered tool's own
+`estimate_cost()` formula priced this at $0.1071/voice ($0.3213 total),
+numerically over the approved $0.11 cap -- recorded as such in
+`cost_log.json` (`status: completed`, `budget_spent_usd: 0.3213`) for
+consistency with the project's existing cost-tracking convention. Direct,
+read-only inspection of the ElevenLabs account before and after all three
+calls (`GET /v1/user/subscription`) showed `tier: payg`,
+`character_limit: 37472`/month, `character_count: 0` both before and after,
+and `current_overage: {"amount": "0"}` both before and after -- the account's
+real billing is a monthly character quota, not a per-call marginal charge,
+and no overage was triggered. Real out-of-pocket cost for this tranche was
+$0, comfortably inside any reading of the approved cap. Both figures are
+recorded plainly rather than only the favorable one.
+
+**Checkpoint contract gap found and disclosed, not worked around:**
+`lib/checkpoint.py`'s `_validate_artifacts_for_stage()` requires the
+canonical `asset_manifest` artifact whenever the `assets` stage is written as
+either `completed` or `awaiting_human` -- it has no separate state for a
+pre-batch sample gate. The handoff explicitly forbids writing an incomplete
+canonical `asset_manifest` at this point (no voice chosen, no batch
+narration). Rather than fabricate a placeholder manifest to satisfy the
+validator, `checkpoint_assets.json` is honestly kept `in_progress`, with the
+full sample-gate state (samples, settings, adjustment, cost note, listening
+instructions) recorded under `metadata.partial_progress` and this gap
+recorded in `review.suggestions`. The actual stop is enforced by not
+proceeding further, not by the checkpoint state machine.
+
+No voice has been selected. No batch narration, image, diagram, music, sound
+effect, review still, or other asset was generated. No composition,
+rendering, publishing, or deployment occurred.
+
+### Next action
+
+Chris listens to the three samples and tells Claude which voice to select
+(George / Bill / River), or requests a different shortlist/settings if none
+fit. Only after Chris's choice may Claude write the canonical
+`voice_selection`/`asset_manifest` fields, mark the ElevenLabs voice decision
+fully resolved, and proceed toward batch narration (a separate, later,
+explicitly authorized handoff). The disclosed `climax-2b-scene` pacing
+exception, the two `aepoch-symbolic.yaml` WCAG contrast findings, and the
+checkpoint schema's assets-stage `asset_manifest` requirement (a real gap,
+not yet fixed) remain outstanding.
+
+---

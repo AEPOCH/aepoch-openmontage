@@ -793,13 +793,34 @@ spent) entries recorded in a new schema-valid `cost_log.json`. Full detail:
 `knowledge/log.md`, 2026-08-01 "ElevenLabs voice-audition tranche executed;
 stopped at cost conflict" entry.
 
-**Immediate next action:** Chris resolves the audition-budget conflict
-(approve a higher cap, fewer voices, a shorter passage, or another choice).
-Only after that may Claude make any paid ElevenLabs call. The disclosed
-`climax-2b-scene` pacing exception, the two `aepoch-symbolic.yaml` WCAG
-contrast findings, and this new audition-budget conflict remain outstanding.
-No voice selection, batch narration, other asset generation, paid calls
-beyond the resolved audition, full production, publish, or deploy is
+**Update 2026-08-01 (samples generated; sample gate reached):** Chris raised
+the audition cap to $0.11 and approved all 3 voices. Generated real
+ElevenLabs samples via the registered `elevenlabs_tts` tool for George, Bill,
+and River using the identical approved climax passage and settings (one
+disclosed adjustment: `output_format` switched from `mp3_44100_192` to
+`mp3_44100_128` after a real HTTP 403 `subscription_required` error showed
+the account's tier doesn't support 192kbps -- confirmed 0 characters
+consumed by the failed attempts, no other setting changed). All three
+samples verified via `ffprobe`. Direct account inspection before/after
+confirmed real cost was $0 (monthly-quota PAYG plan, no overage), reported
+alongside the tool's own formula-based estimate ($0.3213) for transparency.
+Found and disclosed a real checkpoint-library gap: the `assets` stage's
+`awaiting_human`/`completed` states both require a canonical `asset_manifest`
+that doesn't yet exist (no voice chosen) -- rather than fabricate one,
+`checkpoint_assets.json` stays `in_progress` with the full sample-gate state
+in `metadata.partial_progress`. Full detail: `knowledge/log.md`, 2026-08-01
+"ElevenLabs voice-audition samples generated; sample gate reached" entry.
+
+**Immediate next action:** Chris listens to the three samples under
+`projects/aepoch-blog-pilot-what-is-aepoch/assets/audio/samples/` and tells
+Claude which voice to select (George / Bill / River), or requests a
+different shortlist/settings. Only after that may Claude write canonical
+voice-selection fields and proceed toward batch narration (a separate,
+later, explicitly authorized handoff). The disclosed `climax-2b-scene`
+pacing exception, the two `aepoch-symbolic.yaml` WCAG contrast findings, and
+the checkpoint schema's assets-stage `asset_manifest` requirement (a real
+gap, not yet fixed) remain outstanding. No voice selection, batch narration,
+other asset generation, paid calls, full production, publish, or deploy is
 authorized.
 
 ## Verification Criteria for Phase 15 Start
