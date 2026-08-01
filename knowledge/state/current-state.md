@@ -679,12 +679,16 @@ all 10 `SCRIPT_RULES.md` Part 4 items, all pass. Script checkpoint written
 `awaiting_human`. Full detail: `knowledge/log.md`, 2026-08-01 "Proposal
 formally approved; playbook fixed; script stage executed" entry.
 
-**Immediate next action:** Chris reviews the script and either approves it,
-requests revision, or flags a concern. The existing voice recording's
-role/path and the two WCAG contrast findings remain open regardless. Only
-after script approval may Claude proceed to `scene_plan`. No asset generation,
-audio generation, paid calls, full production, publish, or deploy is
-authorized.
+**Executive-producer script review 2026-08-01 — revision required:** The
+script is schema-valid and structurally sound but broadens the 85% US-adult
+statistic, misstates it through a “nine out of ten people you scroll past”
+inference, falsely marks claim `c7` as used, and requests prohibited app logos.
+Metadata also disagrees on word count. Two source ambiguities require Chris:
+present capability versus pilot/design framing for Proof of Life, and whether
+to name KAIROS adjacent to the preserved “native token” wording. Monty
+recommends pilot/design framing and naming KAIROS once. Full findings:
+`knowledge/wiki/reports/phase-16-script-gate-review.md`. No scene plan,
+audio/assets, or paid calls are authorized.
 
 ## Verification Criteria for Phase 15 Start
 

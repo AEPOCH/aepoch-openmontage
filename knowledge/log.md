@@ -1590,3 +1590,23 @@ Full audit:
 `knowledge/wiki/reports/phase-16-capability-investment-audit.md`.
 
 ---
+
+## 2026-08-01 — Executive-producer script review requires revision and two Chris decisions
+
+Claude completed and pushed the script tranche at `9c40d28`; the sentinel
+verified scope compliance and the script checkpoint is `awaiting_human`.
+Monty's content review found the script structurally sound and schema-valid
+but not ready for Chris's approval.
+
+Required corrections: restore the 85% statistic's US-adult population; remove
+the unsupported “nine out of ten people you scroll past” inference; stop
+claiming `c7` is used when no CBDC statement appears; replace prohibited app
+logos with unbranded symbols; and reconcile the 632/637 word-count mismatch.
+
+Two ambiguities require Chris: whether Proof of Life is described as a
+pilot/design mechanism rather than a proven universal anti-automation
+capability, and whether KAIROS is named once adjacent to the verbatim protected
+“protocol's native token” wording. Monty recommends yes to both. Full review:
+`knowledge/wiki/reports/phase-16-script-gate-review.md`.
+
+---
