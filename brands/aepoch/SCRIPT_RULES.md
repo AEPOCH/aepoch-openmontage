@@ -215,7 +215,7 @@ Keep pause, emphasis, and pronunciation attached to the section that contains th
 | Term | Say it as |
 |---|---|
 | ÆPOCH | A-pock -- IPA `/ˈeɪ.pɒk/`; exactly two syllables; first syllable is the spoken letter-name "A" (as in "angle"); never pronounce a separate "Y" sound or expand to three syllables. Corrected 2026-08-01 after a real ElevenLabs audition mispronounced the prior "AY-pock" guide as "A-Y-POCK." |
-| Kairos | KY-ross (rhymes with "eye-ross," not "care-ee-os") |
+| Kairos | KYE-rohs -- IPA `/ˈkaɪ.roʊs/`; exactly two syllables; "Kye" rhymes with "fry," "rohs" rhymes with "gross" (no G); never use the short "ross" vowel. Corrected 2026-08-01 after a real ElevenLabs sample used the wrong second-syllable vowel under the prior "KY-ross" guide. |
 | KAIROS (the token, spoken) | same as above |
 | Pulses | as spelled, normal English |
 | RSK / Rootstock | say "Rootstock" in narration; "RSK" only in on-screen text |

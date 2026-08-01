@@ -2160,3 +2160,88 @@ contrast findings, and the checkpoint schema's assets-stage `asset_manifest`
 requirement (a real gap, still not fixed) remain outstanding.
 
 ---
+
+## 2026-08-01 — ÆPOCH fixed; KAIROS pronunciation correction required
+
+Chris confirmed that Bill now pronounces ÆPOCH correctly as two-syllable
+“A-pock.” On relistening, he identified a separate defect in KAIROS that was
+missed during the initial audition. The correct KAIROS pronunciation is
+exactly two syllables: **KYE-rohs**, IPA `/ˈkaɪ.roʊs/`; “kye” rhymes with
+“fry,” with a K at the beginning, and “rohs” rhymes with “gross,” without the
+G. The active `KY-ross` guide uses the wrong second vowel and is superseded.
+
+The next tracked handoff is
+`docs/aepoch-production-playbook/prompts/phase-16-bill-kairos-pronunciation-fix.md`:
+retain the successful ÆPOCH request spelling, correct active KAIROS guides,
+preserve all earlier samples/evidence, generate one new Bill-only correction
+sample, checkpoint assets `in_progress`, and stop. Batch narration and visual
+generation remain unauthorized.
+
+---
+
+## 2026-08-01 — Bill KAIROS pronunciation-fix tranche executed
+
+Executed `docs/aepoch-production-playbook/prompts/phase-16-bill-kairos-pronunciation-fix.md`.
+This entry supersedes nothing above -- the prior entries accurately recorded
+what the earlier prompts and failed/superseded samples actually used at the
+time; only the *active* guide changes here, per this tranche.
+
+**KAIROS pronunciation guide corrected.** The only `KAIROS`
+`pronunciation_guides` entry in the script (`climax-2b`) had
+`phonetic: "KY-ross"`, which used the wrong second-syllable vowel. Corrected
+to `phonetic: "KYE-rohs"` in `script.json` (schema-revalidated; canonical
+narrated text `"KAIROS"` unchanged). Also updated the artifact's
+`kairos_naming_note` metadata field, which referenced the old phonetic
+string by name, to document the correction rather than silently drop the
+history. Corrected the "Pronunciation reference" table row in
+`brands/aepoch/SCRIPT_RULES.md` to `KYE-rohs -- IPA /ˈkaɪ.roʊs/` with the
+"fry"/"gross" rhyme guidance, noting the correction date and cause.
+Bill (`pqHfZKP75CvOlQylNhV4`, `decision_log.json` `d-017`) remains the
+selected voice -- unchanged and unmutated by this tranche.
+
+**Correction sample generated via the registered `elevenlabs_tts` tool.**
+Identical settings to the successful ÆPOCH correction sample
+(`eleven_multilingual_v2`, `stability: 0.62, similarity_boost: 0.85,
+style: 0.25, speed: 0.95, use_speaker_boost: true, output_format:
+mp3_44100_128`). Same exact climax passage, with the provider request text
+retaining the confirmed-correct `A-pock` for ÆPOCH and updating KAIROS to
+`KYE-rohs` (was `KY-ross`). Saved as a new, distinct file --
+`assets/audio/samples/climax-audition_bill_pqHfZKP75CvOlQylNhV4_pronunciation-fix-2.mp3`
+(29.35s, verified via `ffprobe`: mp3, 44100 Hz, mono, 128 kbps) -- without
+touching either earlier Bill file (both confirmed unchanged by checksum:
+the original audition with both defects, and fix-1 with ÆPOCH corrected but
+KAIROS still wrong). Pronunciation success is **not** claimed from the
+file's existence; it is left for Chris to hear and judge.
+
+**Cost.** Tool-formula estimate/actual: $0.1068 (356-char request), recorded
+in `cost_log.json` (`budget_spent_usd` now $0.5346 across all 5 samples to
+date). Direct account inspection (`GET /v1/user/subscription`, free,
+read-only) before and after showed `character_count` unchanged at
+392/37,472 monthly quota and `current_overage` still $0 both times -- real
+out-of-pocket cost remains $0.
+
+**Checkpoint gap, same disclosed handling as both prior tranches:**
+`assets`/`awaiting_human` still requires a canonical `asset_manifest` that
+can't honestly exist yet (KAIROS pronunciation not yet Chris-approved).
+`checkpoint_assets.json` stays `in_progress` with the full correction state
+(selected voice, all three Bill sample files, settings, real cost,
+listening instructions) under `metadata.partial_progress`.
+
+No batch narration was generated. No image, diagram, music, sound effect, or
+review still was generated. No composition, render, publish, or deploy
+occurred.
+
+### Next action
+
+Chris listens to the new correction sample
+(`climax-audition_bill_pqHfZKP75CvOlQylNhV4_pronunciation-fix-2.mp3`) and
+confirms whether KAIROS now reads as a clean two-syllable "KYE-rohs" (and
+that ÆPOCH is still correct). If approved, Claude may write canonical
+voice-selection fields into the `asset_manifest` and proceed toward batch
+narration under a separate, later, explicitly authorized handoff. If not,
+another correction attempt is needed. The disclosed `climax-2b-scene`
+pacing exception, the two `aepoch-symbolic.yaml` WCAG contrast findings, and
+the checkpoint schema's assets-stage `asset_manifest` requirement (a real
+gap, still not fixed) remain outstanding.
+
+---

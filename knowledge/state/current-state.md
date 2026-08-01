@@ -827,16 +827,30 @@ mispronounced evidence file. Real cost confirmed $0 against the account's
 monthly PAYG quota. Full detail: `knowledge/log.md`, 2026-08-01 "Bill
 pronunciation-fix tranche executed" entry.
 
+**Update 2026-08-01 (KAIROS pronunciation defect found and fixed):** Chris
+confirmed ÆPOCH now sounds correct in fix-1, but caught a second defect on
+relisten: KAIROS's guide (`KY-ross`) used the wrong second-syllable vowel.
+Correct pronunciation is `KYE-rohs`, IPA `/ˈkaɪ.roʊs/`. Claude corrected the
+`pronunciation_guides` phonetic spelling and `kairos_naming_note` in
+`script.json`, and the reference table in `brands/aepoch/SCRIPT_RULES.md`
+(canonical narrated `"KAIROS"` text unchanged), then generated one new Bill
+sample (`_pronunciation-fix-2.mp3`) retaining the confirmed-correct
+`A-pock` for ÆPOCH and using the corrected `KYE-rohs` for KAIROS -- without
+touching either earlier Bill file. Real cost confirmed $0 against the
+account's monthly PAYG quota. Full detail: `knowledge/log.md`, 2026-08-01
+"Bill KAIROS pronunciation-fix tranche executed" entry.
+
 **Immediate next action:** Chris listens to
-`climax-audition_bill_pqHfZKP75CvOlQylNhV4_pronunciation-fix-1.mp3` and
-confirms whether the pronunciation is now correct. If approved, Claude may
-write canonical voice-selection fields and proceed toward batch narration
-(a separate, later, explicitly authorized handoff); if not, another
-correction attempt is needed. The disclosed `climax-2b-scene` pacing
-exception, the two `aepoch-symbolic.yaml` WCAG contrast findings, and the
-checkpoint schema's assets-stage `asset_manifest` requirement (a real gap,
-still not fixed) remain outstanding. No batch narration, other asset
-generation, paid calls, full production, publish, or deploy is authorized.
+`climax-audition_bill_pqHfZKP75CvOlQylNhV4_pronunciation-fix-2.mp3` and
+confirms whether KAIROS now sounds correct (and that ÆPOCH still does). If
+approved, Claude may write canonical voice-selection fields and proceed
+toward batch narration (a separate, later, explicitly authorized handoff);
+if not, another correction attempt is needed. The disclosed
+`climax-2b-scene` pacing exception, the two `aepoch-symbolic.yaml` WCAG
+contrast findings, and the checkpoint schema's assets-stage `asset_manifest`
+requirement (a real gap, still not fixed) remain outstanding. No batch
+narration, other asset generation, paid calls, full production, publish, or
+deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 
