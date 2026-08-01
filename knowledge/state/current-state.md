@@ -840,17 +840,33 @@ touching either earlier Bill file. Real cost confirmed $0 against the
 account's monthly PAYG quota. Full detail: `knowledge/log.md`, 2026-08-01
 "Bill KAIROS pronunciation-fix tranche executed" entry.
 
+**Update 2026-08-01 (fix-2 rejected; switched to eleven_flash_v2_5 with IPA
+phoneme tags):** Chris rejected `pronunciation-fix-2` --
+`eleven_multilingual_v2` read the respelling `KYE-rohs` as letters
+("Kai-Y-E-ross"). Chris approved switching this one diagnostic sample to
+ElevenLabs `eleven_flash_v2_5`, which supports real SSML `<phoneme>` IPA
+tags. Claude recorded the scoped model switch (`decision_log.json` `d-018`,
+same subject as `d-016`, explicit that it does not redecide the production
+model), generated one new sample using
+`<phoneme alphabet="ipa" ph="ˈeɪ.pɒk">ÆPOCH</phoneme>` and
+`<phoneme alphabet="ipa" ph="ˈkaɪ.roʊs">KAIROS</phoneme>` in the provider
+request, and verified it (28.10s, full passage) without touching any of the
+three earlier Bill files. Real cost confirmed $0 against the account's
+monthly PAYG quota. Full detail: `knowledge/log.md`, 2026-08-01 "Bill IPA
+pronunciation-fix tranche executed (eleven_flash_v2_5)" entry.
+
 **Immediate next action:** Chris listens to
-`climax-audition_bill_pqHfZKP75CvOlQylNhV4_pronunciation-fix-2.mp3` and
-confirms whether KAIROS now sounds correct (and that ÆPOCH still does). If
-approved, Claude may write canonical voice-selection fields and proceed
-toward batch narration (a separate, later, explicitly authorized handoff);
-if not, another correction attempt is needed. The disclosed
-`climax-2b-scene` pacing exception, the two `aepoch-symbolic.yaml` WCAG
-contrast findings, and the checkpoint schema's assets-stage `asset_manifest`
-requirement (a real gap, still not fixed) remain outstanding. No batch
-narration, other asset generation, paid calls, full production, publish, or
-deploy is authorized.
+`climax-audition_bill_pqHfZKP75CvOlQylNhV4_pronunciation-fix-3-flash.mp3`
+and confirms whether BOTH ÆPOCH and KAIROS now sound correct. If approved,
+Claude may write canonical voice-selection fields and proceed toward batch
+narration (a separate, later, explicitly authorized handoff) -- Chris would
+also need to decide whether batch narration uses `eleven_flash_v2_5` or
+reverts to the `d-016`-locked `eleven_multilingual_v2`. If rejected, another
+correction attempt is needed. The disclosed `climax-2b-scene` pacing
+exception, the two `aepoch-symbolic.yaml` WCAG contrast findings, and the
+checkpoint schema's assets-stage `asset_manifest` requirement (a real gap,
+still not fixed) remain outstanding. No batch narration, other asset
+generation, paid calls, full production, publish, or deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 

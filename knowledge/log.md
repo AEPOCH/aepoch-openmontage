@@ -2179,6 +2179,23 @@ generation remain unauthorized.
 
 ---
 
+## 2026-08-01 — IPA-capable ElevenLabs model approved for pronunciation correction
+
+The Bill KAIROS respelling attempt failed: `eleven_multilingual_v2` interpreted
+`KYE-rohs` as letters and produced “Kai-Y-E-ross.” Chris approved ending the
+English-respelling retries and switching one Bill correction sample to
+`eleven_flash_v2_5`, which supports explicit IPA phoneme tags.
+
+The locked IPA values are ÆPOCH `/ˈeɪ.pɒk/` and KAIROS `/ˈkaɪ.roʊs/`, both
+exactly two syllables. The next tracked handoff is
+`docs/aepoch-production-playbook/prompts/phase-16-bill-ipa-pronunciation-fix.md`.
+It authorizes one Bill/Flash sample using phoneme tags, preserves all failed
+samples as evidence, forbids another guessed spelling or fallback, and stops
+for Chris's listening approval. Batch narration and visual generation remain
+unauthorized.
+
+---
+
 ## 2026-08-01 — Bill KAIROS pronunciation-fix tranche executed
 
 Executed `docs/aepoch-production-playbook/prompts/phase-16-bill-kairos-pronunciation-fix.md`.
@@ -2243,5 +2260,81 @@ another correction attempt is needed. The disclosed `climax-2b-scene`
 pacing exception, the two `aepoch-symbolic.yaml` WCAG contrast findings, and
 the checkpoint schema's assets-stage `asset_manifest` requirement (a real
 gap, still not fixed) remain outstanding.
+
+---
+
+## 2026-08-01 — Bill IPA pronunciation-fix tranche executed (eleven_flash_v2_5)
+
+Chris rejected the `pronunciation-fix-2` sample: `eleven_multilingual_v2`
+read the English respelling `KYE-rohs` as letters and produced
+"Kai-Y-E-ross." Chris explicitly approved switching this one
+pronunciation-correction sample to ElevenLabs `eleven_flash_v2_5` so both
+locked terms could use real SSML `<phoneme alphabet="ipa" ph="...">` tags
+instead of ambiguous English respelling.
+
+Executed `docs/aepoch-production-playbook/prompts/phase-16-bill-ipa-pronunciation-fix.md`.
+This entry supersedes nothing above -- the `pronunciation-fix-2` entry
+accurately records what that sample used and why Chris rejected it.
+
+**Model switch recorded, scoped.** Appended `decision_log.json` `d-018`
+under the same `(category, subject)` pair as `d-016`
+(`voice_selection` / "Narration TTS provider") per the handoff's explicit
+instruction, selecting `eleven_flash_v2_5` for this ONE diagnostic sample
+only. The entry is explicit that this does **not** redecide the
+production/batch-narration model -- `eleven_multilingual_v2` remains the
+`d-016` lock unless Chris says otherwise based on this sample's outcome.
+`d-005`, `d-012`, `d-015`, `d-016`, `d-017` verified unmutated. Bill
+(`pqHfZKP75CvOlQylNhV4`) remains the selected voice throughout.
+
+**Correction sample generated via the registered `elevenlabs_tts` tool**,
+model `eleven_flash_v2_5`, same voice settings as prior Bill samples
+(`stability: 0.62, similarity_boost: 0.85, style: 0.25, speed: 0.95,
+use_speaker_boost: true, output_format: mp3_44100_128`). Provider request
+text used real SSML phoneme tags for both terms --
+`<phoneme alphabet="ipa" ph="ˈeɪ.pɒk">ÆPOCH</phoneme>` and
+`<phoneme alphabet="ipa" ph="ˈkaɪ.roʊs">KAIROS</phoneme>` -- with no
+invented respelling and no slash delimiters inside the `ph` attribute.
+Saved as a new, distinct file --
+`assets/audio/samples/climax-audition_bill_pqHfZKP75CvOlQylNhV4_pronunciation-fix-3-flash.mp3`
+(28.10s, verified via `ffprobe`: mp3, 44100 Hz, mono, 128 kbps -- confirmed
+a full, non-truncated passage, not just the tool's ~1s wall-clock
+execution-time field) -- without touching any of the three earlier Bill
+files (all three confirmed unchanged by checksum). Pronunciation success is
+**not** claimed from the file's existence; it is left for Chris to hear and
+judge.
+
+**Cost.** Tool-formula estimate/actual: $0.1485 (495-char SSML request),
+recorded in `cost_log.json` (`budget_spent_usd` now $0.6831 across all 6
+samples to date). Direct account inspection (`GET /v1/user/subscription`,
+free, read-only) before and after showed `character_count` unchanged at
+490/37,472 monthly quota and `current_overage` still $0 both times -- real
+out-of-pocket cost remains $0.
+
+**Checkpoint gap, same disclosed handling as all prior tranches:**
+`assets`/`awaiting_human` still requires a canonical `asset_manifest` that
+can't honestly exist yet. `checkpoint_assets.json` stays `in_progress` with
+the full correction state (selected voice, all four Bill sample files,
+model/settings, real cost, listening instructions) under
+`metadata.partial_progress`.
+
+No batch narration was generated. No image, diagram, music, sound effect, or
+review still was generated. No composition, render, publish, or deploy
+occurred.
+
+### Next action
+
+Chris listens to the new correction sample
+(`climax-audition_bill_pqHfZKP75CvOlQylNhV4_pronunciation-fix-3-flash.mp3`)
+and confirms whether BOTH ÆPOCH and KAIROS now sound correct. If approved,
+Claude may write canonical voice-selection fields into the `asset_manifest`
+and proceed toward batch narration under a separate, later, explicitly
+authorized handoff -- Chris would also need to decide whether batch
+narration uses `eleven_flash_v2_5` (with phoneme tags) or reverts to the
+`d-016`-locked `eleven_multilingual_v2` for the rest of the narration with
+some other pronunciation strategy for these two terms. If rejected, another
+correction attempt is needed. The disclosed `climax-2b-scene` pacing
+exception, the two `aepoch-symbolic.yaml` WCAG contrast findings, and the
+checkpoint schema's assets-stage `asset_manifest` requirement (a real gap,
+still not fixed) remain outstanding.
 
 ---
