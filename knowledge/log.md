@@ -1685,3 +1685,39 @@ No asset generation, audio generation, paid calls, full production, publish,
 or deploy is authorized.
 
 ---
+
+## 2026-08-01 — Script revision round 3: enhancement-cue ownership/timing fix only
+
+Chris identified that 16 of the script's 31 `enhancement_cues` had drifted
+outside their owning section's `[start_seconds, end_seconds]` window,
+including the single Signal reveal cue in `climax-1` and the KAIROS callout
+in `climax-2b`. Root cause: earlier revision rounds edited section text
+(shifting computed section boundaries) but enhancement-cue timestamps were
+hand-picked absolute numbers, only partially re-patched after each edit.
+
+Chris scoped this explicitly as a targeted fix only: cue timing/ownership,
+nothing else. Fixed systemically in the script generator rather than by hand:
+each section's own cues are now deterministically redistributed evenly within
+that section's own `[start, end]` window, preserving original list order
+(narrative intent order preserved).
+
+Verified by diffing the complete before/after `script.json`: the only field
+that changed anywhere is `enhancement_cues[].timestamp_seconds`. `text`,
+`start_seconds`/`end_seconds`, `total_duration_seconds` (280s), word counts
+(627/672, unchanged), `voice_performance`, `delivery_cues`, `source_ref`,
+`pronunciation_guides`, and every approved decision are byte-for-byte
+identical to the pre-fix artifact. All 31 cues now fall within their owning
+section's bounds. Re-ran the full 10-item `SCRIPT_RULES.md` Part 4
+self-review plus the 3 revision-round-2 checks — all still pass. Script
+checkpoint refreshed as `awaiting_human`, tagged revision round 3. No paid
+TTS or asset-generation call was made; no scene planning began.
+
+### Next action
+
+Chris (and Monty) re-review the script once more. Only after approval may
+Claude proceed to `scene_plan`. The existing voice recording's role/path and
+the two `aepoch-symbolic.yaml` WCAG contrast findings remain open regardless.
+No asset generation, audio generation, paid calls, full production, publish,
+or deploy is authorized.
+
+---

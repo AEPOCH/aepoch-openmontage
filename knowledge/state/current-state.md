@@ -715,8 +715,24 @@ revision-specific checks pass. Script checkpoint refreshed `awaiting_human`
 (revision round 2). Full detail: `knowledge/log.md`, 2026-08-01 "Script
 revision round 2 executed" entry.
 
-**Immediate next action:** Chris and Monty re-review the revised script. Only
-after approval may Claude proceed to `scene_plan`. The existing voice
+**Update 2026-08-01 (revision round 3 -- targeted cue-timing fix only):** Chris
+identified that 16 of 31 `enhancement_cues` had drifted outside their owning
+section's `[start_seconds, end_seconds]` window (root cause: text edits in
+earlier rounds shifted section boundaries; cue timestamps were hand-picked
+and only partially re-patched). Fixed systemically in the generator: each
+section's cues are now deterministically redistributed evenly within that
+section's own window, preserving order. Verified by full before/after diff:
+the ONLY changed field anywhere is `enhancement_cues[].timestamp_seconds` --
+text, durations, word counts (627/672), voice direction, claims, and all
+approved decisions are byte-for-byte identical. All 31 cues now in bounds.
+Re-validated against all 10 `SCRIPT_RULES.md` Part 4 items plus the 3
+revision-round-2 checks -- all pass. Script checkpoint refreshed
+`awaiting_human` (revision round 3). Full detail: `knowledge/log.md`,
+2026-08-01 "Script revision round 3: enhancement-cue ownership/timing fix
+only" entry.
+
+**Immediate next action:** Chris and Monty re-review the script once more.
+Only after approval may Claude proceed to `scene_plan`. The existing voice
 recording's role/path and the two `aepoch-symbolic.yaml` WCAG contrast
 findings remain open regardless. No asset generation, audio generation, paid
 calls, full production, publish, or deploy is authorized.
