@@ -650,13 +650,20 @@ music collection. Their paths and the recording's intended role (performance
 reference versus final narration) must be resolved before the audio plan is
 locked.
 
-**Immediate next action:** Resolve the two audio-input facts with Chris. Claude
-then appends the approved proposal decisions using the existing decision
-subjects, completes the proposal checkpoint correctly, fixes and validates
-the custom playbook without changing the shared schema, and executes the
-`script` stage only. Claude writes the script checkpoint as `awaiting_human`,
-updates durable knowledge, and stops. No asset generation, paid calls, full
-production, publish, or deploy is authorized.
+**Audio clarification 2026-08-01:** Chris withdrew the large music collection
+from scope because it is too broad to inventory and OpenMontage does not have
+permission to use it. Chris may later identify a suitable track from artists
+he knows and can license directly. Music is deferred and remains unlocked;
+Claude must not scan the collection or assume permission. OpenAI TTS remains
+only a later sample option, not authorization for an audio-generation call.
+
+**Immediate next action:** Claude appends the approved proposal decisions using
+the existing decision subjects, completes the proposal checkpoint correctly,
+fixes and validates the custom playbook without changing the shared schema,
+and executes the `script` stage only with music left deferred. Claude writes
+the script checkpoint as `awaiting_human`, updates durable knowledge, and
+stops. No asset generation, audio generation, paid calls, full production,
+publish, or deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 

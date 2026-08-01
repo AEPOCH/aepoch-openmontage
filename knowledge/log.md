@@ -1479,3 +1479,23 @@ executes the script stage only, checkpoints it `awaiting_human`, updates
 knowledge, and stops. No asset generation or paid call is authorized.
 
 ---
+
+## 2026-08-01 — Music collection withdrawn from scope; music deferred
+
+Chris clarified that his large music collection is too broad to inventory and
+OpenMontage does not have permission to use it. The collection is excluded
+from scope: agents must not scan, index, copy, or select from it. Chris may
+later identify a suitable track from artists he knows and can license.
+
+The script stage proceeds without a locked music track. Pixabay search is not
+required now, and OpenAI TTS remains only a later sample option. No audio or
+paid generation is authorized in the next tranche.
+
+### Next action
+
+Claude records the approved proposal decisions, completes the proposal
+checkpoint, fixes `aepoch-symbolic.yaml` against the existing schema, executes
+the script stage only with music deferred, checkpoints the script as
+`awaiting_human`, updates knowledge, and stops.
+
+---
