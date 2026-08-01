@@ -1610,3 +1610,25 @@ capability, and whether KAIROS is named once adjacent to the verbatim protected
 `knowledge/wiki/reports/phase-16-script-gate-review.md`.
 
 ---
+
+## 2026-08-01 — Chris resolved the Proof of Life and KAIROS script decisions
+
+Chris clarified that Proof of Life is a core mechanism of the ÆPOCH protocol,
+not a mechanism limited to the pilot. The script must not narrow or qualify it
+as pilot-only. This supersedes Monty's recommendation to frame the mechanism
+as something confined to pilot testing.
+
+Chris approved naming KAIROS once adjacent to the verbatim protected phrase
+“the protocol's native token.” An existing public “What is KAIROS?” post
+supports that terminology.
+
+### Next action
+
+Claude revises the script using these decisions and fixes the independent
+executive-producer findings: US-adult statistic scope, unsupported survey
+inference, `c7` traceability, prohibited app-logo cue, and word-count metadata.
+Claude revalidates, refreshes the script checkpoint as `awaiting_human`,
+updates knowledge, and stops. No scene plan, audio/assets, or paid calls are
+authorized.
+
+---

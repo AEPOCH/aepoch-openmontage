@@ -690,6 +690,16 @@ recommends pilot/design framing and naming KAIROS once. Full findings:
 `knowledge/wiki/reports/phase-16-script-gate-review.md`. No scene plan,
 audio/assets, or paid calls are authorized.
 
+**Chris decision 2026-08-01:** Proof of Life is the mechanism of the ÆPOCH
+protocol, not merely a pilot mechanism. The script must not limit, qualify, or
+recast Proof of Life as pilot-only. Chris approved naming KAIROS once adjacent
+to the preserved “protocol's native token” wording; an existing public “What
+is KAIROS?” post supports the name. Claude is authorized to revise the script
+accordingly and to correct the separate statistic-scope, survey-inference,
+claim-traceability, unbranded-visual, and word-count metadata findings. Claude
+must refresh the script checkpoint as `awaiting_human`, update knowledge, and
+stop. No scene plan, audio/assets, or paid calls are authorized.
+
 ## Verification Criteria for Phase 15 Start
 
 Phase 15 may begin when:
