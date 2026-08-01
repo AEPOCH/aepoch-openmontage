@@ -1499,3 +1499,24 @@ the script stage only with music deferred, checkpoints the script as
 `awaiting_human`, updates knowledge, and stops.
 
 ---
+
+## 2026-08-01 — Capability investment audit identifies audio as the weak link
+
+Ran a fresh registry and installed-package audit while the Phase 16 script
+tranche was in progress. Confirmed local `faster-whisper==1.2.1`,
+`youtube-transcript-api`, and `yt-dlp`; analysis is 9/13 and source ingestion
+1/1. Image generation is 7/13 and video generation 7/21, with fal.ai already
+unlocking the approved FLUX path plus several premium video models.
+
+The material gaps are TTS breadth (1/7), music generation (0/3), and secondary
+music/SFX search. Recommended priority is a small ElevenLabs pay-as-you-go
+balance because one key unlocks expressive TTS, music, and sound effects;
+second priority is a modest fal.ai retry reserve for the approved illustration
+batch. Google credentials are a broad optional upgrade, mainly for Chirp TTS
+and Lyria music, while additional video-provider access has low marginal value
+for the current illustration-led pilot.
+
+Full audit:
+`knowledge/wiki/reports/phase-16-capability-investment-audit.md`.
+
+---
