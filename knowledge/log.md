@@ -1500,6 +1500,76 @@ the script stage only with music deferred, checkpoints the script as
 
 ---
 
+## 2026-08-01 — Proposal formally approved; playbook fixed; script stage executed
+
+Executed Chris's approval and Monty's follow-on instruction in full.
+
+**Decision log:** Appended 7 new entries (`d-008`-`d-014`), reusing the same
+`category`/`subject` pairs as the originals per the binding re-log rule
+(`AGENT_GUIDE.md`), rather than mutating the superseded entries. `render_runtime`
+(remotion), `composition_mode` (atelier), `provider_selection` (flux_image), and
+`concept_selection` (c1) are now `user_approved: true`. `voice_selection`
+remains `user_approved: false` -- OpenAI TTS is only provisional, and the
+disclosed existing voice recording's role/path are recorded as still
+unresolved, not silently assumed. `music_source` now reflects Chris's explicit
+withdrawal of his personal collection from scope entirely (must not be
+scanned/indexed/used) and defers music with no track locked.
+
+**Proposal completed:** `proposal_packet.json`'s `approval.status` is now
+`approved` (`approved_budget_usd: 2.0`), `selected_concept` confirms Chris's
+choice of C1, and `production_plan.voice_selection`/`music_source` reflect the
+above. Checkpoint rewritten as `completed`/`human_approved=True`.
+
+**`styles/aepoch-symbolic.yaml` fixed against the existing schema** (Chris's
+explicit choice over expanding the shared schema): Signal (`#6B5FED`) folded
+into the existing `color_palette.accent` array with a `quality_rules` note
+restricting it to once-per-episode (the other two accents have no such
+restriction); Void (`#0C0B0A`) documented as a `quality_rules` narrative-color-
+shift note since the schema has no second background slot -- an honest,
+disclosed limitation (not machine-enforceable) rather than a workaround;
+`identity.pace` fixed from the non-enum `measured` to `deliberate`;
+`identity.category` fixed from `symbolic-editorial-animation` to `custom`.
+Verified: `styles.playbook_loader.load_playbook('aepoch-symbolic')` now loads
+and schema-validates cleanly. A separate accessibility linter (not a schema
+check) flags two WCAG contrast issues using locked brand colors (muted-on-
+background, the Signal-colored key_term overlay) -- not changed unilaterally,
+flagged for author awareness.
+
+**Script stage executed** (`skills/pipelines/explainer/script-director.md` +
+`brands/aepoch/SCRIPT_RULES.md` Parts 2-4): Wrote "The Realness Tax" script,
+16 sections across the five-stage arc (`hook-1/2`, `setup-1/2`, `build-1..7`,
+`climax-1..3`, `landing-1/2`), 637 words against a 672-word target (94.8%,
+within +/-10%), 30 enhancement cues spaced ~8-10s (one 14s outlier). All five
+protected `source_extraction` fields (`existing_reality`, `tension`,
+`aepoch_reframe`, `human_consequence`, `closing_statement`) appear verbatim as
+substrings; `closing_statement` is the exact, unchanged final line with
+nothing after it. ÆPOCH is named for the first time at `climax-1`, with a
+`pronunciation_guides` entry on that first use; "KAIROS" is never introduced
+(the source itself never names it either, so no substitution was needed).
+Claims `c1`-`c7` are traced via `source_ref`; `c8` (pilot status) and `c9`
+(systemic economic critique) are deliberately and transparently left untraced
+in `script.metadata.claim_traceability_note` -- `c8` belongs to a publish-stage
+CTA, not narrated text, and adding it after the closing statement would
+violate the "no recap after closing_statement" rule. The contested
+"every monetary system required extraction" claim (`c5`/`c6`, flagged in
+research as contested by Graeber's debt theory) is deliberately hedged as
+illustrative framing ("systems we're used to"), not asserted as settled
+history. Self-reviewed against all 10 items in `SCRIPT_RULES.md` Part 4 --
+all pass. No paid TTS or asset-generation call was made. Script checkpoint
+written as `awaiting_human`.
+
+### Next action
+
+Chris reviews the script (arc, word count, claim traceability, ÆPOCH-naming
+placement, closing line) and either approves it, requests revision, or flags a
+concern. Two threads remain genuinely open regardless of this review: the
+disclosed existing voice recording's role/path, and the two WCAG contrast
+findings in `aepoch-symbolic.yaml`. Only after script approval may Claude
+proceed to `scene_plan`. No asset generation, audio generation, paid calls,
+full production, publish, or deploy is authorized.
+
+---
+
 ## 2026-08-01 — Capability investment audit identifies audio as the weak link
 
 Ran a fresh registry and installed-package audit while the Phase 16 script

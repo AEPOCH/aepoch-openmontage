@@ -657,13 +657,34 @@ he knows and can license directly. Music is deferred and remains unlocked;
 Claude must not scan the collection or assume permission. OpenAI TTS remains
 only a later sample option, not authorization for an audio-generation call.
 
-**Immediate next action:** Claude appends the approved proposal decisions using
-the existing decision subjects, completes the proposal checkpoint correctly,
-fixes and validates the custom playbook without changing the shared schema,
-and executes the `script` stage only with music left deferred. Claude writes
-the script checkpoint as `awaiting_human`, updates durable knowledge, and
-stops. No asset generation, audio generation, paid calls, full production,
-publish, or deploy is authorized.
+**Update 2026-08-01 (executed):** Appended decision_log entries `d-008`-`d-014`
+(re-log pattern, same category/subject as originals) marking render_runtime
+(remotion), composition_mode (atelier), provider_selection (flux_image), and
+concept_selection (c1) as `user_approved: true`; voice_selection stays
+`user_approved: false` (OpenAI TTS provisional, existing recording's role/path
+unresolved); music_source reflects the personal collection's explicit
+withdrawal from scope. `proposal_packet.json` completed
+(`approval.status: "approved"`, `approved_budget_usd: 2.0`); checkpoint
+rewritten `completed`/`human_approved=True`. Fixed `styles/aepoch-symbolic.yaml`
+against the existing schema (Signal folded into `color_palette.accent` with a
+once-per-episode `quality_rules` note; Void documented as a `quality_rules`
+narrative note since the schema has no second background slot; `pace` and
+`category` enum values corrected) — verified it now loads and validates
+cleanly. Two WCAG contrast findings remain (locked brand colors, not changed
+unilaterally). Wrote the "The Realness Tax" `script` artifact (16 sections,
+five-stage arc, 637/672 words, 30 enhancement cues, all 5 protected fields
+verbatim, ÆPOCH named only from climax onward with pronunciation guide, claims
+c1-c7 traced with c8/c9 transparently left untraced) — self-reviewed against
+all 10 `SCRIPT_RULES.md` Part 4 items, all pass. Script checkpoint written
+`awaiting_human`. Full detail: `knowledge/log.md`, 2026-08-01 "Proposal
+formally approved; playbook fixed; script stage executed" entry.
+
+**Immediate next action:** Chris reviews the script and either approves it,
+requests revision, or flags a concern. The existing voice recording's
+role/path and the two WCAG contrast findings remain open regardless. Only
+after script approval may Claude proceed to `scene_plan`. No asset generation,
+audio generation, paid calls, full production, publish, or deploy is
+authorized.
 
 ## Verification Criteria for Phase 15 Start
 
