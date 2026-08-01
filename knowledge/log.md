@@ -1196,3 +1196,21 @@ and stop for Chris's explicit approval. No paid generation, full production,
 publish, or deployment is authorized.
 
 ---
+
+## 2026-08-01 — Phase 16 next action corrected to honor extraction gate
+
+Executive-producer review caught that the broad Phase 16 first-session
+sequence cannot be executed as one uninterrupted tranche. The binding
+`animated-explainer` manifest sets `extraction` to
+`human_approval_default: true`; under the checkpoint protocol, Claude must end
+its turn after writing the schema-valid `source_extraction` and an
+`awaiting_human` extraction checkpoint.
+
+The immediate next action is therefore workspace initialization, recorded
+preflight, and authoritative extraction only. Verification/enrichment,
+benchmark analysis, research, and proposal work follow only after Chris
+approves the extraction artifact. This correction supersedes the broader next
+action stated in the immediately preceding log entry; no production work had
+started.
+
+---

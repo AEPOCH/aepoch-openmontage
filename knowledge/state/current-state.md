@@ -583,14 +583,14 @@ files/cleanup. See TR-030 in `knowledge/operations/troubleshooting.md` and
 
 ## Immediate Next Action
 
-Claude initializes a new Phase 16 workspace and executes the authorized
-pre-production tranche: record the fresh preflight, extract the live blog as
-authoritative source, verify/enrich without rewriting it, analyze a grounded
-representative benchmark-video set, and prepare 2-3 differentiated proposals.
-The proposals must present Remotion and HyperFrames, templated and atelier,
-provider/model options, cost, narration, music, and benchmark-parity rubrics.
-Claude then stops at the proposal checkpoint for Chris's explicit approval.
-No paid generation, full production, publish, or deploy is authorized.
+Claude initializes a new Phase 16 workspace, records the fresh preflight, and
+executes the live-blog `extraction` stage only. Claude produces a schema-valid
+`source_extraction`, writes the binding extraction checkpoint as
+`awaiting_human`, updates the knowledge tree, and stops for Chris's explicit
+approval. Only after that approval may Claude proceed to source verification/
+enrichment, grounded benchmark analysis, research, and differentiated
+proposals. No paid generation, full production, publish, or deploy is
+authorized.
 
 ## Verification Criteria for Phase 15 Start
 

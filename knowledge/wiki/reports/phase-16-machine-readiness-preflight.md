@@ -114,9 +114,11 @@ sampling.
 
 ## Next action
 
-Authorize Claude to initialize a new Phase 16 project workspace and execute
-the first real pre-production tranche: fresh recorded preflight, live-blog
-authoritative extraction, source verification/enrichment, grounded benchmark
-video analysis, and 2-3 differentiated proposals. Claude must maintain
-canonical artifacts, checkpoints, decision history, cost disclosure, and the
-knowledge tree, then stop at the proposal approval gate for Chris.
+Authorize Claude to initialize a new Phase 16 project workspace, record the
+fresh preflight, and execute the live-blog `extraction` stage only. Because
+`pipeline_defs/animated-explainer.yaml` marks extraction as
+`human_approval_default: true`, Claude must produce the schema-valid
+`source_extraction`, write the extraction checkpoint as `awaiting_human`,
+update the knowledge tree, and stop for Chris. Verification/enrichment,
+benchmark-video analysis, research, and proposals remain the following
+authorized scope but cannot begin until Chris approves the extraction gate.
