@@ -1159,3 +1159,40 @@ and an explicit benchmark-parity definition of production readiness. No paid
 provider call, production render, publish, or deployment was performed.
 
 ---
+
+## 2026-08-01 — New-machine Phase 16 readiness preflight passed
+
+Following migration to a new machine, Claude executed the bounded environment
+bootstrap and readiness-preflight assignment under the historical role split:
+Chris as author/approver, ChatGPT (Monty) as executive producer/orchestrator,
+and Claude as implementation/execution agent.
+
+Rebuilt `.venv`, restored Remotion dependencies with `npm ci`, installed the
+documented local ingestion/transcription dependencies, and ran HyperFrames
+doctor. FFmpeg, Remotion, and HyperFrames now report available. The current
+capability envelope includes image generation 7/13, video generation 7/21,
+TTS 1/7, source ingest 1/1, music search 1/2, and no configured music generator
+or local music library.
+
+All zero-cost baseline checks passed: contracts 642 passed/7 skipped, QA
+test_08 38/0, test_09 24/0, test_10 47/0, and real-Remotion test_11 28/0;
+TypeScript remains at the known 15-diagnostic baseline. The real Remotion QA
+render completed at 1920x1080/61.06s with clean local-asset staging and no
+runtime swap.
+
+Recorded watch items: Python 3.14 is newer than the prior documented runtime;
+`faster-whisper`, `yt-dlp`, and `youtube-transcript-api` are not yet pinned in
+tracked requirements; Deno is absent and real YouTube acquisition remains to
+be proven; audio-provider breadth is thin. Full evidence and the readiness
+verdict are in
+`knowledge/wiki/reports/phase-16-machine-readiness-preflight.md`.
+
+### Next action
+
+Claude may begin the first real Phase 16 pre-production tranche: initialize a
+new workspace, record preflight, perform authoritative extraction and
+verification/enrichment, analyze the benchmark videos, prepare 2-3 proposals,
+and stop for Chris's explicit approval. No paid generation, full production,
+publish, or deployment is authorized.
+
+---

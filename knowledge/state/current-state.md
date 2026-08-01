@@ -547,6 +547,14 @@ the 2026-07-31 baseline audit
 snapshot should still be taken immediately before any real production
 proposal, since providers/keys may change between now and then.
 
+**Update 2026-08-01 (closed):** The new-machine environment was rebuilt and
+the full zero-cost Phase 15 baseline passed: contracts 642/7, QA test_08 38/0,
+test_09 24/0, test_10 47/0, and real-Remotion test_11 28/0. FFmpeg, Remotion,
+and HyperFrames are available; source ingestion and the local reference-analysis
+toolchain are configured. Python 3.14 and the untracked installation of
+`faster-whisper`/`yt-dlp`/`youtube-transcript-api` remain disclosed watch
+items. See `knowledge/wiki/reports/phase-16-machine-readiness-preflight.md`.
+
 ### Blocker 3 — A bounded representative dry run has not passed
 
 A short blog-sourced fixture must reach validated artifacts and a local
@@ -575,11 +583,14 @@ files/cleanup. See TR-030 in `knowledge/operations/troubleshooting.md` and
 
 ## Immediate Next Action
 
-Execute the Phase 16 handoff through fresh capability preflight, authoritative
-source extraction, verification/enrichment, grounded reference-video analysis,
-and 2–3 production proposals. Present runtime, authoring mode, provider/model,
-cost, narration, music, and benchmark-parity rubric, then stop for explicit
-author approval before paid generation or full production.
+Claude initializes a new Phase 16 workspace and executes the authorized
+pre-production tranche: record the fresh preflight, extract the live blog as
+authoritative source, verify/enrich without rewriting it, analyze a grounded
+representative benchmark-video set, and prepare 2-3 differentiated proposals.
+The proposals must present Remotion and HyperFrames, templated and atelier,
+provider/model options, cost, narration, music, and benchmark-parity rubrics.
+Claude then stops at the proposal checkpoint for Chris's explicit approval.
+No paid generation, full production, publish, or deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 
