@@ -1632,3 +1632,56 @@ updates knowledge, and stops. No scene plan, audio/assets, or paid calls are
 authorized.
 
 ---
+
+## 2026-08-01 — Script revision round 2 executed
+
+Executed Monty's required corrections and Chris's two source-ambiguity
+decisions in full (`knowledge/wiki/reports/phase-16-script-gate-review.md`).
+
+**Fixes:**
+- `hook-1`: restored the 85% statistic's real US-adult population scope
+  ("Eighty-five percent of US adults..."); removed the unsupported "nine out
+  of ten people you scroll past today" inference, which was not what the
+  survey measured.
+- `build-3`: removed the CBDC stat-card enhancement cue and the `c7` claim
+  reference, since no CBDC content is actually narrated in this concept —
+  replaced the cue with one that matches what the section actually says
+  (extraction/ledger/attention icons). `c7` now joins `c8`/`c9` as
+  deliberately, transparently untraced in `script.metadata.claim_traceability_note`.
+- `setup-2`: replaced a cue requesting "app logos" (a brand-guideline
+  violation) with unbranded generic symbols (a stylized building, a plain
+  rounded-rectangle, a plain key shape).
+- Reconciled the stale 632/637 word-count metadata mismatch — both were
+  hand-typed figures written at different points; `word_count_actual` and the
+  tail-hold note are now computed directly from the sections in the
+  generator script, not typed by hand, so they cannot drift again.
+
+**Chris's two decisions, applied:**
+- **Proof of Life stays the protocol's actual mechanism, not pilot-only** —
+  Chris's ruling supersedes Monty's recommendation to soften the framing.
+  `climax-2`'s verbatim `aepoch_reframe` text was never touched either way,
+  since it's a protected field; no hedging language was added anywhere else.
+- **KAIROS named once** — added a new section `climax-2b` ("That native
+  token has a name: KAIROS.") immediately adjacent to `climax-2`, without
+  modifying `climax-2`'s protected verbatim text. A `pronunciation_guides`
+  entry ("KY-ross") is attached on this first use, per `SCRIPT_RULES.md`'s
+  locked pronunciation table. Downstream cue timestamps shifted by ~3s to
+  stay aligned with the new section's added duration.
+
+**Result:** 627 words against the 672-word target (93.3%, within +/-10%,
+down slightly from 637 due to the net word changes above), 31 enhancement
+cues (up from 30). Re-ran the full 10-item `SCRIPT_RULES.md` Part 4
+self-review plus 3 new revision-specific checks (US-adult scope present,
+"scroll past" inference absent, no "app logos" cue anywhere) — all pass.
+Script checkpoint refreshed as `awaiting_human`, tagged revision round 2. No
+paid TTS or asset-generation call was made.
+
+### Next action
+
+Chris (and Monty) re-review the revised script. Only after approval may
+Claude proceed to `scene_plan`. The existing voice recording's role/path and
+the two `aepoch-symbolic.yaml` WCAG contrast findings remain open regardless.
+No asset generation, audio generation, paid calls, full production, publish,
+or deploy is authorized.
+
+---

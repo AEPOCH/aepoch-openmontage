@@ -700,6 +700,27 @@ claim-traceability, unbranded-visual, and word-count metadata findings. Claude
 must refresh the script checkpoint as `awaiting_human`, update knowledge, and
 stop. No scene plan, audio/assets, or paid calls are authorized.
 
+**Update 2026-08-01 (revision round 2 executed):** Fixed all five independent
+findings and applied both of Chris's decisions. `hook-1` now says "US adults";
+the unsupported "scroll past" inference is removed; `build-3`'s CBDC cue/`c7`
+reference was removed (no CBDC content is narrated) and `c7` now joins
+`c8`/`c9` as transparently untraced; `setup-2`'s app-logo cue was replaced
+with unbranded symbols; word-count metadata is now computed directly from the
+sections, not hand-typed (so it can't drift again). Added a new `climax-2b`
+section naming KAIROS once, adjacent to (not modifying) `climax-2`'s protected
+verbatim text, with a pronunciation guide ("KY-ross"); downstream cue
+timestamps shifted ~3s to stay aligned. Re-validated: 627/672 words (93.3%),
+31 enhancement cues, all 10 `SCRIPT_RULES.md` Part 4 items plus 3
+revision-specific checks pass. Script checkpoint refreshed `awaiting_human`
+(revision round 2). Full detail: `knowledge/log.md`, 2026-08-01 "Script
+revision round 2 executed" entry.
+
+**Immediate next action:** Chris and Monty re-review the revised script. Only
+after approval may Claude proceed to `scene_plan`. The existing voice
+recording's role/path and the two `aepoch-symbolic.yaml` WCAG contrast
+findings remain open regardless. No asset generation, audio generation, paid
+calls, full production, publish, or deploy is authorized.
+
 ## Verification Criteria for Phase 15 Start
 
 Phase 15 may begin when:
