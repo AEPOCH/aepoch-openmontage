@@ -204,7 +204,7 @@ begins.
 | Pause, after a line | `delivery_cues.pause_after_seconds` | seconds, e.g. `1.5` |
 | Emphasis | `delivery_cues.emphasis_words` | list of the exact words to stress, e.g. `["never"]` |
 | SSML-ready delivery | `delivery_cues.provider_text` | narration text with break tags, e.g. `<break time="0.6s"/>` |
-| Pronunciation | `pronunciation_guides` | `{word: "ÆPOCH", phonetic: "AY-pock"}`, on first use of the term in the whole script |
+| Pronunciation | `pronunciation_guides` | `{word: "ÆPOCH", phonetic: "A-pock"}`, on first use of the term in the whole script |
 | Fact-check flag | `source_ref` | claim_inventory id(s) used in that section's narration |
 | Scene beat / cut | `enhancement_cues`, `type: overlay` | e.g. `description: "cut from phone screen to open hand"` — the enum has no `transition` value; use `overlay` for a cue marking a cut or visual-beat change |
 
@@ -214,7 +214,7 @@ Keep pause, emphasis, and pronunciation attached to the section that contains th
 
 | Term | Say it as |
 |---|---|
-| ÆPOCH | AY-pock |
+| ÆPOCH | A-pock -- IPA `/ˈeɪ.pɒk/`; exactly two syllables; first syllable is the spoken letter-name "A" (as in "angle"); never pronounce a separate "Y" sound or expand to three syllables. Corrected 2026-08-01 after a real ElevenLabs audition mispronounced the prior "AY-pock" guide as "A-Y-POCK." |
 | Kairos | KY-ross (rhymes with "eye-ross," not "care-ee-os") |
 | KAIROS (the token, spoken) | same as above |
 | Pulses | as spelled, normal English |

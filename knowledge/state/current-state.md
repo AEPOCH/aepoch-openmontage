@@ -811,17 +811,32 @@ that doesn't yet exist (no voice chosen) -- rather than fabricate one,
 in `metadata.partial_progress`. Full detail: `knowledge/log.md`, 2026-08-01
 "ElevenLabs voice-audition samples generated; sample gate reached" entry.
 
-**Immediate next action:** Chris listens to the three samples under
-`projects/aepoch-blog-pilot-what-is-aepoch/assets/audio/samples/` and tells
-Claude which voice to select (George / Bill / River), or requests a
-different shortlist/settings. Only after that may Claude write canonical
-voice-selection fields and proceed toward batch narration (a separate,
-later, explicitly authorized handoff). The disclosed `climax-2b-scene`
-pacing exception, the two `aepoch-symbolic.yaml` WCAG contrast findings, and
-the checkpoint schema's assets-stage `asset_manifest` requirement (a real
-gap, not yet fixed) remain outstanding. No voice selection, batch narration,
-other asset generation, paid calls, full production, publish, or deploy is
-authorized.
+**Update 2026-08-01 (Bill selected; pronunciation defect found and fixed):**
+Chris selected Bill (`pqHfZKP75CvOlQylNhV4`) after listening to the audition
+samples, but all voices exposed a pronunciation defect -- the guide
+`AY-pock` was read as three syllables. Chris clarified the correct
+pronunciation: `A-pock`, IPA `/ˈeɪ.pɒk/`, two syllables. Claude recorded
+Bill's selection (`decision_log.json` `d-017`, distinct subject from
+`d-016`'s provider decision), corrected the `pronunciation_guides` phonetic
+spelling in `script.json` and the reference table in
+`brands/aepoch/SCRIPT_RULES.md` (canonical narrated `"ÆPOCH"` text
+unchanged), and generated one new Bill correction sample via the registered
+`elevenlabs_tts` tool with the corrected `A-pock` spelling in the provider
+request only -- saved as a new file, not overwriting the original
+mispronounced evidence file. Real cost confirmed $0 against the account's
+monthly PAYG quota. Full detail: `knowledge/log.md`, 2026-08-01 "Bill
+pronunciation-fix tranche executed" entry.
+
+**Immediate next action:** Chris listens to
+`climax-audition_bill_pqHfZKP75CvOlQylNhV4_pronunciation-fix-1.mp3` and
+confirms whether the pronunciation is now correct. If approved, Claude may
+write canonical voice-selection fields and proceed toward batch narration
+(a separate, later, explicitly authorized handoff); if not, another
+correction attempt is needed. The disclosed `climax-2b-scene` pacing
+exception, the two `aepoch-symbolic.yaml` WCAG contrast findings, and the
+checkpoint schema's assets-stage `asset_manifest` requirement (a real gap,
+still not fixed) remain outstanding. No batch narration, other asset
+generation, paid calls, full production, publish, or deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 

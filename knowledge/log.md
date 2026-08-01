@@ -2071,3 +2071,92 @@ checkpoint schema's assets-stage `asset_manifest` requirement (a real gap,
 not yet fixed) remain outstanding.
 
 ---
+
+## 2026-08-01 — Bill selected; ÆPOCH pronunciation correction required
+
+Chris selected Bill as the winning ElevenLabs narration voice. All audition
+voices exposed an ambiguity in the existing written pronunciation guide: the
+provider spoke it as “A-Y-POCK.” Chris clarified that ÆPOCH is exactly two
+syllables: **A-pock**, IPA `/ˈeɪ.pɒk/`; the first syllable is the spoken
+letter-name A, as at the start of “angle,” and there is no separately spoken Y.
+
+The next tracked handoff is
+`docs/aepoch-production-playbook/prompts/phase-16-bill-pronunciation-fix.md`:
+record Bill and its real account voice ID, correct the active pronunciation
+guides, preserve the failed auditions as evidence, generate one Bill-only
+correction sample, checkpoint `assets` `awaiting_human`, and stop. Batch
+narration and visual generation remain unauthorized.
+
+---
+
+## 2026-08-01 — Bill pronunciation-fix tranche executed
+
+Executed `docs/aepoch-production-playbook/prompts/phase-16-bill-pronunciation-fix.md`.
+
+**Voice recorded.** Appended `decision_log.json` `d-017`
+(`voice_selection` / "ElevenLabs narration voice (voice ID)") selecting Bill
+(`pqHfZKP75CvOlQylNhV4`), with George and River recorded as considered-but-
+not-chosen. This is a distinct `subject` from `d-016`'s "Narration TTS
+provider" (which locked ElevenLabs/`eleven_multilingual_v2` as the provider)
+-- the finer-grained voice-ID decision gets its own subject per
+`AGENT_GUIDE.md`'s re-log rule ("keeping distinct decisions in one category
+is exactly why the pair, not the category alone, is the key"). `d-005`,
+`d-012`, `d-015`, `d-016` verified unmutated.
+
+**Pronunciation guides corrected.** The only `ÆPOCH` `pronunciation_guides`
+entry in the script (`climax-1`) had `phonetic: "AY-pock"`, which ElevenLabs
+read as three syllables. Corrected to `phonetic: "A-pock"` in
+`script.json` (schema-revalidated; canonical narrated text `"ÆPOCH"`
+unchanged; confirmed no stale `AY-pock`/`A-Y-POCK` spelling remains anywhere
+in the artifact). Also corrected the two relevant lines in
+`brands/aepoch/SCRIPT_RULES.md` (Part 2's inline-notation example and the
+"Pronunciation reference" table), adding the IPA and syllable-count
+clarification so the defect isn't reintroduced in a future script.
+
+**Correction sample generated via the registered `elevenlabs_tts` tool.**
+Same voice/model/other settings as the original audition
+(`eleven_multilingual_v2`, `stability: 0.62, similarity_boost: 0.85,
+style: 0.25, speed: 0.95, use_speaker_boost: true, output_format:
+mp3_44100_128` -- the tier-forced format from the prior tranche still
+applies). Same exact climax passage, with the provider request text updated
+to spell ÆPOCH as `A-pock` (both occurrences) instead of `AY-pock`; `KY-ross`
+for KAIROS unchanged. Saved as a new, distinct file --
+`assets/audio/samples/climax-audition_bill_pqHfZKP75CvOlQylNhV4_pronunciation-fix-1.mp3`
+(30.33s, verified via `ffprobe`: mp3, 44100 Hz, mono, 128 kbps) -- without
+touching or overwriting the original mispronounced evidence file
+(`climax-audition_bill_pqHfZKP75CvOlQylNhV4.mp3`, confirmed unchanged by
+checksum). Pronunciation success is **not** claimed from the file's
+existence; it is left for Chris to hear and judge.
+
+**Cost.** Tool-formula estimate/actual: $0.1065 (355-char request), recorded
+in `cost_log.json` (`budget_spent_usd` now $0.4278 across all 4 samples to
+date). Direct account inspection (`GET /v1/user/subscription`, free,
+read-only) confirmed real usage this time: `character_count` rose to
+392/37,472 monthly quota, `current_overage` still $0 -- real out-of-pocket
+cost remains $0, well within the monthly PAYG allowance.
+
+**Checkpoint gap recurred, same disclosed handling as the prior tranche:**
+`assets`/`awaiting_human` still requires a canonical `asset_manifest` that
+can't honestly exist yet (pronunciation not yet Chris-approved). Rather than
+fabricate one, `checkpoint_assets.json` stays `in_progress` with the full
+pronunciation-fix state (selected voice, both sample files, settings, real
+cost, listening instructions) under `metadata.partial_progress`.
+
+No batch narration was generated. No image, diagram, music, sound effect, or
+review still was generated. No composition, render, publish, or deploy
+occurred.
+
+### Next action
+
+Chris listens to the new correction sample
+(`climax-audition_bill_pqHfZKP75CvOlQylNhV4_pronunciation-fix-1.mp3`) and
+confirms whether `ÆPOCH` now reads as a clean two-syllable "A-pock" rather
+than the prior three-syllable defect. If approved, Claude may write the
+canonical voice-selection fields into the `asset_manifest` and proceed
+toward batch narration under a separate, later, explicitly authorized
+handoff. If not, another correction attempt is needed. The disclosed
+`climax-2b-scene` pacing exception, the two `aepoch-symbolic.yaml` WCAG
+contrast findings, and the checkpoint schema's assets-stage `asset_manifest`
+requirement (a real gap, still not fixed) remain outstanding.
+
+---
