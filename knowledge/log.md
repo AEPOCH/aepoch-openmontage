@@ -1721,3 +1721,96 @@ No asset generation, audio generation, paid calls, full production, publish,
 or deploy is authorized.
 
 ---
+
+## 2026-08-01 — Durable knowledge and tracked handoffs confirmed as the coordination system
+
+Chris confirmed the full operating model for excellence and repeatability:
+the knowledge tree preserves what the team tries, learns, rejects, fixes, and
+verifies; tracked execution prompts keep Monty and Claude synchronized without
+depending on chat history. Chat is the interface, not the source of truth.
+
+Recorded the policy as ADR-029. Run-specific Claude briefs now belong under
+`docs/aepoch-production-playbook/prompts/`, and Claude should be directed to
+the repository path. Every meaningful execution tranche must leave durable
+checkpoints, evidence, decisions, lessons, and an exact next action so a fresh
+session can resume with minimal reprompting and context-token overhead.
+
+The first handoff following this rule is
+`docs/aepoch-production-playbook/prompts/phase-16-scene-plan-tranche.md`.
+
+---
+
+## 2026-08-01 — Scene-plan tranche executed per `phase-16-scene-plan-tranche.md`
+
+Executed the handoff exactly, stage by stage, stopping at its hard stop.
+
+**Script checkpoint completed:** Rewrote `checkpoint_script.json` as
+`completed`/`human_approved=True` (Chris's approval through revision round
+3), preserving checkpoint history. `get_next_stage()` confirmed `scene_plan`
+is next. Wrote an initial `in_progress` scene_plan checkpoint before planning.
+
+**Art direction (`art-direction.md`, per `skills/meta/bespoke-composition.md`
+step 1/1.5):** Committed to a signature device — "The Presence Ring" — a
+circle/ring motif appearing in exactly two beats: faintly planted in
+`hook-1a` (unresolved, background detail) and paying off as the episode's
+single Signal-accent (`#6B5FED`) reveal in `climax-1` (`hero_moment: true`),
+timed to "ÆPOCH's Proof of Life." No other scene reuses it. A secondary local
+motif (a door/access icon) evolves across `build-5b`→`build-6b`→`build-7a`
+(closed → repeatedly closing → softening), resolving before climax — a
+visual rhyme for the CAPTCHA-fatigue beat, not the film's signature device.
+
+**`scene_plan.json` (31 scenes, atelier, `schemas/artifacts/scene_plan.schema.json`-valid):**
+Covers the full approved 280s timeline with zero gaps or overlaps, every
+scene mapped to a `script_section_id`, every script `enhancement_cue`
+falling within some scene's window, all approved narration timing and
+enhancement-cue intent preserved unchanged. Verified programmatically: no
+two adjacent scenes share a primary visual subject; no 3+ consecutive
+same-`type` scenes (fixed one real 3-run by reclassifying `tail-hold` from
+`text_card` to `generated`, since it's a wordless logo hold, not verbatim
+spoken text per the schema's own text-accuracy rule).
+
+**Reviewer protocol:** `lib/variation_checker.py` initially returned
+`"revise"` (score 3.6) — a real finding, not noise: 61% of scenes were
+`medium_close`, 30/31 had no camera movement, zero lighting/color-temperature
+variety. Fixed substantively, not cosmetically: shot sizes now vary by actual
+compositional reason (wide for crowd/group beats, close-up for intimate
+reveals, `extreme_close_up` reserved for the one hero moment); ~42% of scenes
+now carry purposeful `dolly_in`/`dolly_out`/`pan` movement, all under
+`VISUAL_LANGUAGE.md`'s <10%-scale restraint; `lighting_key`/`color_temperature`
+now formalize the already-designed Void→Paper narrative arc (`low_key`/cool
+for hook+setup, `natural`/neutral for the warming build, `golden_hour`/warm
+from build-4 onward) instead of being left implicit; `texture_keywords`
+added uniformly (`flat`, `clean`, `no-grain` — an accurate brand descriptor
+per `VISUAL_LANGUAGE.md`'s explicit no-texture rule, not filler). Re-run:
+variation checker "strong" (0.0), slideshow-risk "strong" (0.42 average, down
+from 0.67).
+
+Two minor, disclosed pacing exceptions remain (both suggestion-severity per
+`skills/meta/reviewer.md`, neither critical): `tail-hold` at 18.75s exceeds
+`aepoch-symbolic.yaml`'s 12.0s max scene hold (splitting it would force a
+distinctness violation instead — the ÆPOCH mark has no second distinct
+subject to split into); `climax-2b-scene` at 2.92s is 0.08s under the 3.0s
+minimum, an unavoidable consequence of preserving the approved script's exact
+section boundary verbatim.
+
+**Open audio decision carried forward, not resolved:** Per the handoff,
+ElevenLabs is now configured, making the proposal's "OpenAI is the only
+available TTS provider" statement stale. Appended `d-015` to `decision_log.json`
+under the same `voice_selection` category/subject as `d-005`/`d-012`
+(`selected: "unresolved"`) rather than silently mutating the prior entries,
+per `AGENT_GUIDE.md`'s binding re-log rule. No provider was selected and no
+audio was generated.
+
+Scene-plan checkpoint written as `awaiting_human`. No images, narration,
+music, or other assets were generated; no paid call was made; no `assets`,
+`edit`, `compose`, or `publish` work began.
+
+### Next action
+
+Chris and Monty review the scene plan (coverage, distinctness inventory,
+signature-device usage, pacing exceptions, and the still-open TTS decision).
+Only after approval may Claude proceed to `assets`. No asset generation,
+audio generation, paid calls, full production, publish, or deploy is
+authorized until then.
+
+---

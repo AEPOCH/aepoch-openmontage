@@ -731,11 +731,34 @@ revision-round-2 checks -- all pass. Script checkpoint refreshed
 2026-08-01 "Script revision round 3: enhancement-cue ownership/timing fix
 only" entry.
 
-**Immediate next action:** Chris and Monty re-review the script once more.
-Only after approval may Claude proceed to `scene_plan`. The existing voice
-recording's role/path and the two `aepoch-symbolic.yaml` WCAG contrast
-findings remain open regardless. No asset generation, audio generation, paid
-calls, full production, publish, or deploy is authorized.
+**Update 2026-08-01 (scene_plan tranche executed):** Completed
+`checkpoint_script.json` (Chris's revision-round-3 approval). Wrote
+`art-direction.md` (signature device: "The Presence Ring," planted in
+`hook-1a`, pays off as the episode's one Signal-accent reveal at `climax-1`).
+Produced `scene_plan.json` -- 31 atelier scenes covering the full 280s with
+zero gaps/overlaps, every script section and enhancement cue covered,
+verified no adjacent scenes share a primary subject and no 3+ consecutive
+same-type run. `lib/variation_checker.py` initially flagged real issues
+(shot-size dominance, no movement variety, no lighting variety, score
+3.6/"revise") -- fixed substantively (shot sizes vary by compositional
+reason, ~42% of scenes have purposeful restrained camera movement,
+lighting/color-temperature now formalize the Void-to-Paper arc); re-run:
+"strong" (0.0). Slideshow-risk: "strong" (0.42, down from 0.67). Two minor
+disclosed pacing exceptions remain (`tail-hold` over max hold, `climax-2b-scene`
+0.08s under min hold) -- both suggestion-severity, not critical, both
+explained in `scene_plan.metadata.pacing_disclosure`. Appended `d-015` to
+`decision_log.json` recording OpenAI-vs-ElevenLabs TTS as an open decision
+(ElevenLabs now configured) without mutating the prior `d-005`/`d-012`
+entries. Scene-plan checkpoint written `awaiting_human`. Full detail:
+`knowledge/log.md`, 2026-08-01 "Scene-plan tranche executed per
+phase-16-scene-plan-tranche.md" entry.
+
+**Immediate next action:** Chris and Monty review the scene plan (coverage,
+distinctness inventory, signature-device usage, pacing exceptions, and the
+still-open TTS decision). Only after approval may Claude proceed to `assets`.
+The existing voice recording's role/path and the two `aepoch-symbolic.yaml`
+WCAG contrast findings remain open regardless. No asset generation, audio
+generation, paid calls, full production, publish, or deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 

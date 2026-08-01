@@ -1305,3 +1305,67 @@ confirmed that its existing research remains authoritative.
 ### Revisit condition
 
 If the author changes the pilot source, benchmark set, or source-authority rule.
+
+---
+
+## ADR-029 — Use durable knowledge and tracked handoffs as the agent coordination system
+
+**Date:** 2026-08-01
+**Status:** confirmed
+
+### Decision
+
+Use the repository, not chat-session context, as the coordination layer
+between Chris, Monty, Claude, and any later agent.
+
+- Record attempts, evidence, decisions, failures, fixes, lessons, checkpoints,
+  and the exact next action in the appropriate `knowledge/` documents.
+- Store run-specific execution briefs under
+  `docs/aepoch-production-playbook/prompts/` and direct the execution agent to
+  the tracked prompt path instead of relying on a pasted chat-only brief.
+- Use chat as the human interface for discussion and approval, never as the
+  sole durable record of production state or instructions.
+- End meaningful tranches with enough repository evidence that a fresh agent
+  can resume without reconstructing intent from conversation history.
+
+### Context
+
+The project deliberately separates executive-producer review and orchestration
+(Monty) from implementation and execution (Claude), with Chris as author and
+approver. Chat-only handoffs risk dropped constraints, repeated prompting,
+agent divergence, token waste, and the loss of useful failed attempts when a
+session exits or compacts.
+
+### Reason
+
+A Git-backed knowledge tree plus tracked handoff prompts creates repeatability:
+agents share the same evidence, decisions, scope, stop conditions, and next
+action regardless of session context. Preserving failures and rejected paths
+also prevents the team from paying twice for the same lesson.
+
+### Consequences
+
+- Monty writes each consequential Claude handoff to the tracked prompts
+  directory before telling Claude to execute it.
+- Claude reads the prompt from disk, performs only its authorized tranche,
+  updates checkpoints and durable knowledge, and stops at the stated gate.
+- Monty reviews repository artifacts and evidence rather than trusting chat
+  summaries or commit messages alone.
+- The sentinel remains notification-only; it reports that Claude finished and
+  does not duplicate Monty's review role.
+- Session context becomes an optimization, not a dependency.
+
+### Alternatives considered
+
+- Continue passing briefs only through chat — rejected because they are not
+  durable, diffable, or reliably available to future sessions.
+- Store only successful outcomes — rejected because failures and attempted
+  approaches are essential operational knowledge.
+- Rely on one long-lived agent session — rejected because sessions terminate,
+  compact, and consume unnecessary context tokens.
+
+### Revisit condition
+
+Revisit only if the repository gains a different durable, versioned handoff
+system that preserves equivalent provenance, auditability, and fresh-session
+resumability.
