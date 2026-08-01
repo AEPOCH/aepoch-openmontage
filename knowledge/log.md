@@ -1451,3 +1451,31 @@ the proposal itself. No script, paid generation, full production, publish, or
 deploy is authorized until both reviews clear.
 
 ---
+
+## 2026-08-01 — Chris approved the recommended Phase 16 proposal package
+
+After the benchmark-evidence revision passed executive-producer review, Chris
+approved Concept C1 (“The Realness Tax”), Remotion, atelier authoring, FLUX
+illustration plates, approximately 280 seconds, the $0.77 estimate under a
+$2.00 cap, and correction of `styles/aepoch-symbolic.yaml` to the existing
+schema rather than expansion of the shared schema. The audio plan remains
+sample-gated: OpenAI TTS was the provisional available path and Pixabay search
+the provisional music path, with no batch audio generation authorized.
+
+Chris disclosed two potentially superior inputs: an existing voice recording
+and a large music collection. The recording's intended role and both local
+paths remain to be identified. Because the new blog-derived script has not yet
+been written, the executive-producer recommendation is to treat an older
+recording as voice/performance reference unless it already reads the exact new
+script, and to inspect a curated local music shortlist before relying on stock
+search.
+
+### Next action
+
+Resolve the media paths and recording role with Chris. Claude then records the
+approved decisions in the proposal artifact/decision history, completes the
+proposal checkpoint, fixes the custom playbook within the existing schema,
+executes the script stage only, checkpoints it `awaiting_human`, updates
+knowledge, and stops. No asset generation or paid call is authorized.
+
+---

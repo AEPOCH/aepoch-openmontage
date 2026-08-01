@@ -639,6 +639,25 @@ as `awaiting_human` (revision round 1). Full detail: `knowledge/log.md`,
 request" entry. No script, paid generation, full production, publish, or
 deploy is authorized.
 
+**Update 2026-08-01 — proposal approved as recommended:** Chris approved
+Concept C1 (“The Realness Tax”), Remotion, atelier authoring, FLUX
+illustration plates, the provisional OpenAI-TTS path subject to a voice
+sample, a provisional Pixabay music search subject to fit, approximately 280
+seconds, a $0.77 estimate under a $2.00 cap, and adapting
+`styles/aepoch-symbolic.yaml` to the existing schema rather than expanding the
+shared schema. Chris also disclosed an existing voice recording and a large
+music collection. Their paths and the recording's intended role (performance
+reference versus final narration) must be resolved before the audio plan is
+locked.
+
+**Immediate next action:** Resolve the two audio-input facts with Chris. Claude
+then appends the approved proposal decisions using the existing decision
+subjects, completes the proposal checkpoint correctly, fixes and validates
+the custom playbook without changing the shared schema, and executes the
+`script` stage only. Claude writes the script checkpoint as `awaiting_human`,
+updates durable knowledge, and stops. No asset generation, paid calls, full
+production, publish, or deploy is authorized.
+
 ## Verification Criteria for Phase 15 Start
 
 Phase 15 may begin when:
