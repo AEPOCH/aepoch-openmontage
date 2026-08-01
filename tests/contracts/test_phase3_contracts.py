@@ -702,6 +702,7 @@ class TestAnimatedExplainerManifest:
         manifest = load_pipeline("animated-explainer")
         stage_names = get_stage_order(manifest)
         expected = [
+            "extraction",
             "research",
             "proposal",
             "script",

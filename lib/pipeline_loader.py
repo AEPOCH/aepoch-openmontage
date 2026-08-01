@@ -149,6 +149,18 @@ def get_stage_order(
     return order
 
 
+def get_conditional_stage_names(manifest: dict) -> set[str]:
+    """Return names of top-level stages that declare a ``condition``.
+
+    These stages (e.g. ``extraction`` with ``condition: source_article_exists``)
+    are legitimately absent from a run's completed checkpoints when their
+    condition does not apply — callers resuming a run must not treat that
+    absence as an unfinished stage. See ``_condition_is_active`` for the
+    equivalent sub-stage check.
+    """
+    return {stage["name"] for stage in manifest["stages"] if stage.get("condition")}
+
+
 def get_required_tools(manifest: dict) -> set[str]:
     """Collect tools across stages, sub-stages, and reference-input analysis."""
     tools: set[str] = set()

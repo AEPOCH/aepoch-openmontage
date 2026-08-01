@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "openmontage/artifacts/source_extraction",
+  "title": "Source Extraction",
+  "description": "Authoritative narrative extraction from a source article. Downstream research may verify and enrich it but may not silently replace its thesis, angle, or intended takeaway.",
+  "type": "object",
+  "required": ["version", "source", "authority", "episode", "claim_inventory", "excluded_material"],
+  "properties": {
+    "version": {"type": "string", "const": "1.0"},
+    "source": {
+      "type": "object",
+      "required": ["title", "reference"],
+      "properties": {
+        "title": {"type": "string", "minLength": 1},
+        "reference": {"type": "string", "minLength": 1},
+        "publication_date": {"type": "string"},
+        "author": {"type": "string"},
+        "content_hash": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "authority": {
+      "type": "object",
+      "required": ["mode", "protected_fields", "research_permissions"],
+      "properties": {
+        "mode": {"type": "string", "const": "source_authoritative"},
+        "protected_fields": {
+          "type": "array",
+          "items": {"type": "string", "enum": ["central_question", "key_takeaway", "aepoch_reframe", "human_consequence", "closing_statement"]},
+          "minItems": 5,
+          "uniqueItems": true
+        },
+        "research_permissions": {
+          "type": "array",
+          "items": {"type": "string", "enum": ["verify_claims", "add_provenance", "update_stale_facts", "add_context", "identify_audience_questions", "enrich_visual_examples"]},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "change_policy": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "episode": {
+      "type": "object",
+      "required": ["working_title", "central_question", "audience", "desired_duration_seconds", "key_takeaway", "existing_reality", "tension", "aepoch_reframe", "human_consequence", "closing_statement"],
+      "properties": {
+        "working_title": {"type": "string", "minLength": 1},
+        "central_question": {"type": "string", "minLength": 1},
+        "audience": {"type": "string", "minLength": 1},
+        "desired_duration_seconds": {"type": "number", "exclusiveMinimum": 0},
+        "key_takeaway": {"type": "string", "minLength": 1},
+        "existing_reality": {"type": "string", "minLength": 1},
+        "tension": {"type": "string", "minLength": 1},
+        "aepoch_reframe": {"type": "string", "minLength": 1},
+        "human_consequence": {"type": "string", "minLength": 1},
+        "closing_statement": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "claim_inventory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "claim", "source_location", "verification_required"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "claim": {"type": "string", "minLength": 1},
+          "source_location": {"type": "string", "minLength": 1},
+          "verification_required": {"type": "boolean"},
+          "notes": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "excluded_material": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["item", "reason"],
+        "properties": {
+          "item": {"type": "string", "minLength": 1},
+          "reason": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "ambiguities": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

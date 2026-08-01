@@ -17,8 +17,18 @@ function resolveAsset(src: string): string {
   if (src.startsWith("http://") || src.startsWith("https://") || src.startsWith("data:")) {
     return src;
   }
-  // Strip any file:// prefix
-  const clean = src.replace(/^file:\/\/\/?/, "");
+  // Strip exactly the file:// scheme prefix (two slashes). Do NOT also
+  // consume an optional third slash here: for a POSIX absolute-path URI
+  // ("file:///home/foo" -> "/home/foo") that third slash IS the path's
+  // own leading slash and must survive, or the result silently becomes a
+  // public/-relative path (e.g. "home/foo") that 404s instead of loading
+  // the real file. Only a Windows drive-letter URI ("file:///C:/foo")
+  // has a genuinely extra separator slash to strip, handled explicitly
+  // below after the scheme prefix is gone.
+  let clean = src.replace(/^file:\/\//, "");
+  if (/^\/[A-Za-z]:[\\/]/.test(clean)) {
+    clean = clean.slice(1);
+  }
   // Absolute paths (Unix: /foo, Windows: C:\foo or C:/foo) — convert to file:// URI
   // staticFile() only accepts relative paths within public/, so absolute paths must bypass it
   if (clean.startsWith("/") || /^[A-Za-z]:[\\/]/.test(clean)) {
@@ -27,6 +37,22 @@ function resolveAsset(src: string): string {
     // gives exactly three slashes. Windows drive paths (C:/...) need the
     // extra slash added explicitly. Do not merge these branches — adding
     // "file:///" unconditionally double-slashes POSIX paths (file:////...).
+    //
+    // KNOWN LIMITATION (Phase 15 readiness closure, 2026-07-31): this
+    // produces a technically-correct file:// URI, but @remotion/renderer's
+    // asset-download step for OffthreadVideo/Img (assets/read-file.js ->
+    // getClient) rejects it outright — "Can only download URLs starting
+    // with http:// or https://". A bare absolute path (no scheme) was
+    // also tested and fails differently: OffthreadVideo prepends the
+    // local dev-server origin and 404s, since only public/-relative paths
+    // (via staticFile()) are actually served over HTTP. There is currently
+    // no supported way to pass an arbitrary absolute filesystem path
+    // through this non-atelier render path — see
+    // knowledge/wiki/reports/phase-15-readiness-verdict.md (TR-030) for
+    // the full finding. A real fix needs `_remotion_render()` in
+    // tools/video/video_compose.py to pass `--public-dir` pointing at (or
+    // stage assets into) a directory `staticFile()` can serve, matching
+    // the pattern `_render_via_atelier`'s `public_dir` field already uses.
     if (posix.startsWith("/")) {
       return `file://${posix}`;
     }

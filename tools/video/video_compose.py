@@ -32,10 +32,13 @@ from __future__ import annotations
 
 import json
 import logging
+import os
+import shutil
 import subprocess
 import time
+import uuid
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 
 from tools.base_tool import (
     BaseTool,
@@ -48,6 +51,13 @@ from tools.base_tool import (
     ToolStability,
     ToolTier,
 )
+
+
+class RemotionAssetStagingError(ValueError):
+    """Raised when local assets referenced by Remotion render props cannot
+    be validated (missing, not a file, unreadable) before staging. The
+    message lists every problem found, not just the first, so a caller can
+    fix all of them in one pass instead of one failure at a time."""
 
 
 class VideoCompose(BaseTool):
@@ -393,10 +403,36 @@ class VideoCompose(BaseTool):
         Handles video sources only. Still images and animated scene types
         are routed to Remotion via the render operation — call compose
         directly only for pure video pipelines (e.g. talking-head).
+
+        TR-029: interprets `cuts[].in_seconds`/`out_seconds` as an
+        in-source trim range per clip (`-ss in_seconds -t (out-in)`),
+        concatenated in list order — the historical FFmpeg convention.
+        This is `edit_decisions.cut_timing_mode: "source_trim"`, the
+        default when the field is absent (so existing callers are
+        unaffected). Remotion's `Explainer.tsx` interprets the *same*
+        field pair as an absolute output-timeline position instead; mixing
+        the two conventions up silently produces a broken render rather
+        than an error, so `cut_timing_mode: "timeline"` is explicitly
+        rejected here rather than silently reinterpreted as a trim range.
+        See `skills/pipelines/explainer/edit-director.md`.
         """
         edit_decisions = inputs.get("edit_decisions")
         if not edit_decisions:
             return ToolResult(success=False, error="edit_decisions required for compose")
+
+        cut_timing_mode = edit_decisions.get("cut_timing_mode", "source_trim")
+        if cut_timing_mode != "source_trim":
+            return ToolResult(
+                success=False,
+                error=(
+                    f"cut_timing_mode={cut_timing_mode!r} is not supported by the FFmpeg "
+                    "compose path, which always interprets cuts[].in_seconds/out_seconds "
+                    "as an in-source trim range ('source_trim'). 'timeline' mode (absolute "
+                    "output-timeline placement) is implemented for render_runtime='remotion' "
+                    "only. Set cut_timing_mode='source_trim' (or omit it) for FFmpeg, or use "
+                    "render_runtime='remotion' for timeline-mode cuts. (TR-029)"
+                ),
+            )
 
         output_path = Path(inputs.get("output_path", "composed_output.mp4"))
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1670,15 +1706,135 @@ class VideoCompose(BaseTool):
 
         return render_result
 
+    def _stage_local_assets_for_remotion(
+        self, props: dict[str, Any], public_root: Path
+    ) -> tuple[dict[str, Any], Optional[Path], list[dict[str, str]]]:
+        """Stage local absolute-path assets referenced in Remotion render
+        props into a collision-safe, per-render directory under
+        `public_root` (normally `remotion-composer/public/`), rewriting the
+        corresponding fields to `public/`-relative paths `staticFile()` can
+        serve.
+
+        TR-030: @remotion/renderer's asset-download step rejects `file://`
+        sources outright and a bare absolute path 404s (OffthreadVideo/Img
+        only resolve `public/`-relative paths over the real dev-server HTTP
+        route). This is the general fix — copy the referenced files into
+        `public/_render_staging/<uuid>/` and point props at the relative
+        path, instead of relying on a URI scheme the renderer won't accept.
+
+        Scans `cuts[].source`, `cuts[].backgroundImage`,
+        `cuts[].backgroundVideo`, `cuts[].images[]`, `audio.narration.src`,
+        and `audio.music.src` — the asset-bearing fields
+        `remotion-composer/src/Explainer.tsx`'s `ExplainerProps` actually
+        reads. Values that are already `http(s)://` URLs, `data:` URIs, or
+        already-relative strings (assumed already `public/`-relative, e.g.
+        an existing `demo-props/foo.png`-style reference) are left
+        untouched.
+
+        Returns `(rewritten_props, staging_dir, provenance)`. `staging_dir`
+        is `None` and `props` is returned unchanged (no directory created)
+        when there is nothing local to stage. Raises
+        `RemotionAssetStagingError` — listing every problem found, not just
+        the first — if any referenced local asset is missing, not a
+        regular file, or unreadable; nothing is staged or written to disk
+        in that case.
+        """
+        props = json.loads(json.dumps(props))  # deep copy — never mutate the caller's dict
+
+        refs: list[tuple[Callable[[str], None], str]] = []
+
+        def register(container: dict[str, Any], key: str) -> None:
+            value = container.get(key)
+            if isinstance(value, str) and value:
+                refs.append((lambda v, c=container, k=key: c.__setitem__(k, v), value))
+
+        for cut in props.get("cuts", []) or []:
+            if not isinstance(cut, dict):
+                continue
+            register(cut, "source")
+            register(cut, "backgroundImage")
+            register(cut, "backgroundVideo")
+            images = cut.get("images")
+            if isinstance(images, list):
+                for i, img in enumerate(images):
+                    if isinstance(img, str) and img:
+                        refs.append((lambda v, lst=images, idx=i: lst.__setitem__(idx, v), img))
+
+        audio_cfg = props.get("audio") or {}
+        register(audio_cfg.get("narration") or {}, "src")
+        register(audio_cfg.get("music") or {}, "src")
+
+        def is_local_absolute(value: str) -> bool:
+            if value.startswith(("http://", "https://", "data:", "file://")):
+                return False
+            return Path(value).is_absolute()
+
+        stageable = [(setter, value) for setter, value in refs if is_local_absolute(value)]
+        if not stageable:
+            return props, None, []
+
+        # Validate everything up front. Fail fast and clearly; stage
+        # nothing and touch no directory on the filesystem if anything is
+        # wrong, rather than staging some assets and failing mid-render.
+        problems: list[str] = []
+        for _setter, value in stageable:
+            p = Path(value)
+            if not p.exists():
+                problems.append(f"missing: {value}")
+            elif not p.is_file():
+                problems.append(f"not a regular file: {value}")
+            elif not os.access(p, os.R_OK):
+                problems.append(f"unreadable (permission denied): {value}")
+        if problems:
+            raise RemotionAssetStagingError(
+                f"Cannot stage local assets for Remotion render — {len(problems)} "
+                "problem(s) found (nothing was staged):\n"
+                + "\n".join(f"  - {p}" for p in problems)
+            )
+
+        # UUID-scoped directory: collision-safe across concurrent or
+        # repeated renders. Only created because there's something to
+        # stage — never touches any pre-existing content under public/.
+        staging_dir = public_root / "_render_staging" / uuid.uuid4().hex
+        staging_dir.mkdir(parents=True, exist_ok=False)
+
+        provenance: list[dict[str, str]] = []
+        for index, (setter, value) in enumerate(stageable):
+            original = Path(value)
+            # Index-prefixed so two different source assets sharing a
+            # basename (e.g. two scenes each producing "narration.wav" in
+            # their own directory) can never collide within one staging
+            # directory — verified by test coverage, not just by
+            # construction.
+            staged_name = f"{index:03d}_{original.name}"
+            staged_path = staging_dir / staged_name
+            shutil.copy2(original, staged_path)
+            relative = f"_render_staging/{staging_dir.name}/{staged_name}"
+            setter(relative)
+            provenance.append({"original_path": str(original), "staged_path": relative})
+
+        return props, staging_dir, provenance
+
     def _remotion_render(self, inputs: dict[str, Any]) -> ToolResult:
         """Render via Remotion (requires Node.js + npx).
 
         Handles compositions with still images, animated scenes, component
         types, and transitions using React-based frame-accurate rendering.
         Accepts edit_decisions (with resolved file paths) or raw composition_data.
-        """
-        import shutil
 
+        TR-029: requires `cut_timing_mode: "timeline"` explicitly —
+        Remotion interprets `cuts[].in_seconds`/`out_seconds` as absolute
+        placement on the output timeline, not an in-source trim range (that
+        FFmpeg's `_compose` convention). See
+        `skills/pipelines/explainer/edit-director.md`.
+
+        TR-030: local absolute-path assets (the common case for
+        locally-generated TTS/image/video files) are staged into
+        `remotion-composer/public/_render_staging/<uuid>/` for the
+        duration of this render — see `_stage_local_assets_for_remotion` —
+        and the staging directory is removed afterward regardless of
+        whether the render succeeded.
+        """
         if not shutil.which("npx"):
             return ToolResult(
                 success=False,
@@ -1692,41 +1848,26 @@ class VideoCompose(BaseTool):
                 error="edit_decisions or composition_data required for remotion_render",
             )
 
+        cut_timing_mode = composition_data.get("cut_timing_mode")
+        if cut_timing_mode != "timeline":
+            return ToolResult(
+                success=False,
+                error=(
+                    "edit_decisions.cut_timing_mode must be 'timeline' to render via "
+                    f"Remotion — got {cut_timing_mode!r}. Remotion interprets "
+                    "cuts[].in_seconds/out_seconds as absolute placement on the output "
+                    "timeline (Sequence from/durationInFrames), not an in-source trim "
+                    "range like FFmpeg's compose path does. Use cuts[].source_in_seconds "
+                    "(default 0) for the in-source trim start. This must be set "
+                    "explicitly by the edit stage — see "
+                    "skills/pipelines/explainer/edit-director.md. (TR-029)"
+                ),
+            )
+
         output_path = Path(inputs.get("output_path", "renders/remotion_output.mp4"))
         output_path.parent.mkdir(parents=True, exist_ok=True)
         # Absolutise so the CLI can resolve the output regardless of cwd.
         output_path = output_path.resolve()
-
-        # Deep-copy props so we don't mutate the original
-        props = json.loads(json.dumps(composition_data))
-
-        # Convert absolute file paths to file:// URIs for Remotion's
-        # Img and OffthreadVideo components
-        for cut in props.get("cuts", []):
-            source = cut.get("source", "")
-            if source and not source.startswith(("http://", "https://", "file://")):
-                resolved = Path(source).resolve()
-                if resolved.exists():
-                    posix = resolved.as_posix()
-                    cut["source"] = f"file:///{posix}" if not posix.startswith("/") else f"file://{posix}"
-
-        # Build a custom themeConfig from the playbook's actual colors.
-        # This ensures every video gets a unique visual identity derived
-        # from its production decisions — not picked from a preset menu.
-        if "themeConfig" not in props:
-            playbook_name = (
-                props.get("playbook")
-                or props.get("theme")
-                or props.get("metadata", {}).get("playbook")
-            )
-            theme_config = self._build_theme_from_playbook(playbook_name, composition_data)
-            if theme_config:
-                props["themeConfig"] = theme_config
-
-        # Write props to temp file for Remotion CLI
-        props_path = output_path.parent / ".remotion_props.json"
-        with open(props_path, "w", encoding="utf-8") as f:
-            json.dump(props, f)
 
         # remotion-composer lives at project root
         composer_dir = Path(__file__).resolve().parent.parent.parent / "remotion-composer"
@@ -1736,94 +1877,144 @@ class VideoCompose(BaseTool):
                 error=f"Remotion composer project not found at {composer_dir}",
             )
 
-        # Route to the correct Remotion composition based on renderer_family.
-        # This prevents all pipelines from collapsing into the Explainer visual grammar.
-        renderer_family = (composition_data or {}).get("renderer_family", "explainer-data")
-        composition_id = self._get_composition_id(renderer_family)
-
-        cmd = [
-            "npx", "remotion", "render",
-            str(composer_dir / "src" / "index.tsx"),
-            composition_id,
-            str(output_path),
-            # Use the `--props=<path>` equals form rather than two separate
-            # args. On Windows, passing `--props` and the path separately makes
-            # Remotion mis-parse the value (quote escaping differs), failing
-            # with "neither valid JSON nor a file path". The equals form is the
-            # API Remotion recommends for file paths and is cross-platform safe.
-            f"--props={props_path}",
-        ]
-
-        # Apply media profile dimensions
-        profile_name = inputs.get("profile")
-        if profile_name:
-            try:
-                from lib.media_profiles import get_profile
-                p = get_profile(profile_name)
-                cmd.extend(["--width", str(p.width), "--height", str(p.height)])
-            except (ImportError, ValueError):
-                pass
-
-        # Optional creator-facing render timeout. Remotion's `--timeout` (ms)
-        # governs headless-browser setup and delayRender(); on slow machines or
-        # restricted networks the default 30s browser setup times out with an
-        # opaque failure. Pass it through and give the subprocess enough headroom
-        # so run_command() does not kill Remotion before its own timeout fires.
-        remotion_timeout_ms = inputs.get("remotion_timeout_ms")
-        subprocess_timeout = 600
-        if remotion_timeout_ms:
-            try:
-                ms = int(remotion_timeout_ms)
-                cmd.append(f"--timeout={ms}")
-                subprocess_timeout = max(subprocess_timeout, ms // 1000 + 60)
-            except (TypeError, ValueError):
-                pass
-
+        # TR-030: stage local absolute-path assets under public/ before
+        # anything else touches the filesystem for this render.
         try:
-            # Invoke from inside the composer dir so npx can resolve the
-            # local remotion binary via node_modules/.bin. Without this,
-            # Windows npx cannot locate the CLI and returns "could not
-            # determine executable to run".
-            self.run_command(cmd, timeout=subprocess_timeout, cwd=composer_dir)
-        except subprocess.CalledProcessError as e:
-            # run_command uses check=True + capture_output, so the useful
-            # Remotion diagnostics live in stderr/stdout — surface the tail
-            # instead of the bare "returned non-zero exit status 1".
-            detail = (e.stderr or e.stdout or "").strip()
-            tail = "\n".join(detail.splitlines()[-25:]) if detail else "(no output captured)"
-            return ToolResult(
-                success=False,
-                error=f"Remotion render failed (exit {e.returncode}):\n{tail}",
+            props, staging_dir, staged_assets = self._stage_local_assets_for_remotion(
+                composition_data, composer_dir / "public"
             )
-        except subprocess.TimeoutExpired as e:
+        except RemotionAssetStagingError as e:
+            return ToolResult(success=False, error=str(e))
+
+        props_path = output_path.parent / ".remotion_props.json"
+        try:
+            # Build a custom themeConfig from the playbook's actual colors.
+            # This ensures every video gets a unique visual identity derived
+            # from its production decisions — not picked from a preset menu.
+            if "themeConfig" not in props:
+                playbook_name = (
+                    props.get("playbook")
+                    or props.get("theme")
+                    or props.get("metadata", {}).get("playbook")
+                )
+                theme_config = self._build_theme_from_playbook(playbook_name, composition_data)
+                if theme_config:
+                    props["themeConfig"] = theme_config
+
+            # Write props to temp file for Remotion CLI
+            with open(props_path, "w", encoding="utf-8") as f:
+                json.dump(props, f)
+
+            # Route to the correct Remotion composition based on renderer_family.
+            # This prevents all pipelines from collapsing into the Explainer visual grammar.
+            renderer_family = (composition_data or {}).get("renderer_family", "explainer-data")
+            composition_id = self._get_composition_id(renderer_family)
+
+            cmd = [
+                "npx", "remotion", "render",
+                str(composer_dir / "src" / "index.tsx"),
+                composition_id,
+                str(output_path),
+                # Use the `--props=<path>` equals form rather than two separate
+                # args. On Windows, passing `--props` and the path separately makes
+                # Remotion mis-parse the value (quote escaping differs), failing
+                # with "neither valid JSON nor a file path". The equals form is the
+                # API Remotion recommends for file paths and is cross-platform safe.
+                f"--props={props_path}",
+            ]
+
+            # Apply media profile dimensions
+            profile_name = inputs.get("profile")
+            if profile_name:
+                try:
+                    from lib.media_profiles import get_profile
+                    p = get_profile(profile_name)
+                    cmd.extend(["--width", str(p.width), "--height", str(p.height)])
+                except (ImportError, ValueError):
+                    pass
+
+            # Optional creator-facing render timeout. Remotion's `--timeout` (ms)
+            # governs headless-browser setup and delayRender(); on slow machines or
+            # restricted networks the default 30s browser setup times out with an
+            # opaque failure. Pass it through and give the subprocess enough headroom
+            # so run_command() does not kill Remotion before its own timeout fires.
+            remotion_timeout_ms = inputs.get("remotion_timeout_ms")
+            subprocess_timeout = 600
+            if remotion_timeout_ms:
+                try:
+                    ms = int(remotion_timeout_ms)
+                    cmd.append(f"--timeout={ms}")
+                    subprocess_timeout = max(subprocess_timeout, ms // 1000 + 60)
+                except (TypeError, ValueError):
+                    pass
+
+            try:
+                # Invoke from inside the composer dir so npx can resolve the
+                # local remotion binary via node_modules/.bin. Without this,
+                # Windows npx cannot locate the CLI and returns "could not
+                # determine executable to run".
+                self.run_command(cmd, timeout=subprocess_timeout, cwd=composer_dir)
+            except subprocess.CalledProcessError as e:
+                # run_command uses check=True + capture_output, so the useful
+                # Remotion diagnostics live in stderr/stdout — surface the tail
+                # instead of the bare "returned non-zero exit status 1".
+                detail = (e.stderr or e.stdout or "").strip()
+                tail = "\n".join(detail.splitlines()[-25:]) if detail else "(no output captured)"
+                return ToolResult(
+                    success=False,
+                    error=f"Remotion render failed (exit {e.returncode}):\n{tail}",
+                )
+            except subprocess.TimeoutExpired as e:
+                return ToolResult(
+                    success=False,
+                    error=(
+                        f"Remotion render timed out after {e.timeout}s. If the headless "
+                        "browser is slow to start, raise remotion_timeout_ms (ms)."
+                    ),
+                )
+            except Exception as e:
+                return ToolResult(success=False, error=f"Remotion render failed: {e}")
+            finally:
+                if props_path.exists():
+                    props_path.unlink()
+
+            if not output_path.exists():
+                return ToolResult(
+                    success=False,
+                    error=f"Remotion render completed but output file missing: {output_path}",
+                )
+
             return ToolResult(
-                success=False,
-                error=(
-                    f"Remotion render timed out after {e.timeout}s. If the headless "
-                    "browser is slow to start, raise remotion_timeout_ms (ms)."
-                ),
+                success=True,
+                data={
+                    "operation": "remotion_render",
+                    "output": str(output_path),
+                    "profile": profile_name,
+                    "staged_assets": staged_assets,
+                },
+                artifacts=[str(output_path)],
             )
-        except Exception as e:
-            return ToolResult(success=False, error=f"Remotion render failed: {e}")
         finally:
-            if props_path.exists():
-                props_path.unlink()
-
-        if not output_path.exists():
-            return ToolResult(
-                success=False,
-                error=f"Remotion render completed but output file missing: {output_path}",
-            )
-
-        return ToolResult(
-            success=True,
-            data={
-                "operation": "remotion_render",
-                "output": str(output_path),
-                "profile": profile_name,
-            },
-            artifacts=[str(output_path)],
-        )
+            # TR-030: always clean up the staged copies, success or
+            # failure. `staging_dir` is a freshly-created uuid-named
+            # directory (or None) — this can never touch pre-existing
+            # content under public/.
+            if staging_dir is not None:
+                try:
+                    shutil.rmtree(staging_dir)
+                    # Tidy up the shared "_render_staging" parent too, but
+                    # only if it's now empty — os.rmdir() refuses on any
+                    # non-empty directory, so a concurrent render's
+                    # in-progress uuid subdirectory is never at risk.
+                    try:
+                        staging_dir.parent.rmdir()
+                    except OSError:
+                        pass  # not empty (concurrent render) or already gone — fine either way
+                except OSError as e:
+                    logging.getLogger("video_compose").warning(
+                        "Failed to clean up Remotion asset staging directory %s: %s",
+                        staging_dir, e,
+                    )
 
     # ------------------------------------------------------------------
     # Final self-review — mandatory post-render inspection

@@ -761,3 +761,401 @@ grep -RniE \
 git diff --check -- knowledge/
 git diff --stat -- knowledge/
 ```
+## 2026-07-31 — Episode 001 moved to manual production; Phase 15 authorized
+
+### Human decision
+
+- Lee will edit the author's narration and video directly and produce Episode
+  001 manually.
+- OpenMontage will not wait for those recordings or execute Phase 14B.1 on
+  the current path.
+- Development returns to the core goal of producing videos from blog posts.
+
+### State changes
+
+- Phase 14B.1 marked superseded, not completed.
+- Phase 14B retained as internal technical and workflow evidence only.
+- Recording pause lifted by the scope change; the media remains outside the
+  active OpenMontage scope.
+- Phase 15, blog-to-video production readiness, authorized for audit and local
+  or zero-cost validation.
+
+### Handoff
+
+Created:
+
+```text
+docs/aepoch-production-playbook/prompts/phase-15-blog-video-readiness.md
+```
+
+The previous Phase 14B.1 prompt now carries an explicit superseded warning.
+Paid calls, publishing, deployment, and real public production remain
+unauthorized pending Phase 15 evidence and author review.
+
+---
+
+## 2026-07-31 — Phase 15 baseline audit run; paused for scope decision
+
+### What ran
+
+Executed Phase 15 execution-sequence steps 1-4 and part of step 5: baseline
+state, capability preflight, zero-cost QA/contract tests, and a first pass
+at the research/proposal/script contract matrix.
+
+### Evidence captured
+
+- `test_08_end_to_end.py`: 38/38 passed (full synthetic 8-stage run, real
+  ffmpeg render, current stage order `research -> proposal -> script ->
+  scene_plan -> assets -> edit -> compose -> publish`).
+- `tests/contracts/` (phase0-3, runtime presentation, taste governance):
+  275/275 passed.
+- All three composition runtimes (ffmpeg, Remotion, HyperFrames) available.
+- No test or fixture anywhere exercises `brands/aepoch/SCRIPT_RULES.md`.
+
+### Finding
+
+`brands/aepoch/SCRIPT_RULES.md` (the ÆPOCH blog-to-script adapter) claims its
+`script` output is directly acceptable at the `animated-explainer` pipeline's
+script stage. The live manifest requires `proposal_packet` there, and
+`skills/pipelines/explainer/script-director.md` still opens with stale v1.0
+(`brief`/"Idea Explorer") language unaware of the adapter. Full detail, exact
+file/line evidence, and three repair options:
+`knowledge/wiki/reports/phase-15-baseline-contract-audit.md`. Logged as
+TR-025 (`knowledge/operations/troubleshooting.md`) and ADR-023
+(`knowledge/state/decisions.md`).
+
+### Anomaly flagged, not touched
+
+`README.md` and `diagram.png` at the repository root are currently
+overwritten with the contents of an unrelated "Phase 10C asset pack"
+distribution bundle (working-tree state, unrelated to Phase 15). Left as-is
+for the operator to address separately.
+
+### Decision
+
+Per the human operator, stopped here rather than choosing a repair approach
+unilaterally. Knowledge tree updated; handing back to the plan coordinator
+to scope the correct work. No manifest, schema, skill, or artifact file was
+modified.
+
+### Handoff
+
+Next session should read
+`knowledge/wiki/reports/phase-15-baseline-contract-audit.md`, get a scoped
+repair decision, then resume Phase 15 at execution-sequence step 5.
+
+---
+
+## 2026-07-31 — Authoritative blog extraction contract implemented
+
+### Human decision
+
+The source blog remains authoritative. OpenMontage research may verify and
+enrich it but may not silently change its thesis or intended conclusion.
+
+### Implementation
+
+- Added `source_extraction` schema and checkpoint registration.
+- Added a conditional extraction stage before research.
+- Added source-authority rules to extraction, research, proposal, and script.
+- Reframed `brands/aepoch/SCRIPT_RULES.md` around the live route.
+- Corrected stale script-director `brief`/Idea Explorer language.
+- Added a representative blog fixture and focused authority contracts.
+- Renumbered the duplicate adapter troubleshooting entry to TR-026; the
+  original TR-025 retry-cost entry remains unchanged.
+
+### Verification
+
+```text
+.venv/bin/python -m pytest tests/contracts -q
+566 passed, 7 skipped
+```
+
+### Next action
+
+Run the representative fixture agent-first through extraction, research, and
+proposal. Confirm protected fields survive unchanged before continuing to the
+zero-cost production dry run.
+
+---
+
+## 2026-07-31 — Blog-source dry run passed; one regression found and fixed
+
+### What ran
+
+Resumed Phase 15 per operator instruction: ran
+`tests/fixtures/blog/authoritative-source.md` through extraction,
+source-authoritative research, and proposal using the real checkpoint/schema
+machinery (new `tests/qa/test_09_blog_source_dry_run.py`, not a documentation
+check). Stopped before `script` per instruction.
+
+### Results
+
+- `test_09_blog_source_dry_run.py`: 24/24 passed.
+- Protected fields (`central_question`, `key_takeaway`, `aepoch_reframe`,
+  `human_consequence`, `closing_statement`) verified byte-for-byte identical
+  from `source_extraction` through `research_brief` and `proposal_packet`.
+- All three `proposal_packet.concept_options` verified to share one
+  identical `core_message` (thesis) while `title`/`hook`/`narrative_structure`/
+  `visual_approach`/`target_platform`/`tone` all differ (presentation).
+- `tests/contracts/`: 567 passed, 7 skipped (unchanged).
+- `tests/qa/test_08_end_to_end.py`: 38/38 passed after a fix (see below);
+  was 36/2 failed immediately after the ADR-024 implementation, before this
+  session's fix.
+
+### Regression found and fixed
+
+Re-running the zero-cost suite (routine verification, not something the ADR-024
+implementation session had done) surfaced that adding the conditional
+`extraction` stage broke `get_next_stage()` for any run that never produces
+`source_extraction` — it got stuck returning `"extraction"` forever instead
+of resuming correctly. Fixed in `lib/pipeline_loader.py`
+(`get_conditional_stage_names`) and `lib/checkpoint.py` (`get_next_stage`).
+Logged as ADR-025 and TR-027. Fixed directly rather than escalated — small,
+evidenced, immediately testable, not a production-architecture choice.
+
+### Evidence
+
+`knowledge/wiki/reports/phase-15-blog-dry-run-results.md`.
+
+### Next action
+
+Author review. Then either extend the dry run through `script` (Blocker 3
+remainder) or hand off a real-production brief. No paid calls, provider
+generation, or public production without new explicit authorization.
+
+---
+
+## 2026-07-31 — Full dry run (extraction through compose) passed; four readiness verdicts recorded
+
+### What ran
+
+Extended the approved fixture through `script`, `scene_plan`, local/zero-cost
+`assets`, `edit`, and `compose`
+(`tests/qa/test_10_blog_source_production_dry_run.py`, 47/47 passed), using
+real local tools throughout: `AudioMixer` (duck mix), `VideoCompose`
+(ffmpeg-path render), `SubtitleGen` (deterministic SRT from real script
+timings, no ASR), `ffprobe` technical validation, and real frame sampling
+for a `final_review` visual spotcheck. Produced a real 1920x1080/60.0s
+h264+aac `.mp4`. Stopped before `publish`.
+
+### Script validated against SCRIPT_RULES.md Parts 2-4, programmatically
+
+Word count (144 vs. 144 target), cue density (8 cues, max gap 12s),
+five-stage arc in order with no gaps, concrete voice-performance/delivery
+cues, AEPOCH pronunciation on first use only (climax), every claim traceable
+via `source_ref`, landing ends with `closing_statement` verbatim — and all
+five protected fields plus `existing_reality`/`tension` appear verbatim in
+the script text, no paraphrase drift from extraction through script.
+
+### Findings
+
+- **TR-028 (open):** `SCRIPT_RULES.md` Part 2's illustrative YAML still uses
+  field names (`arc_stage`, `pause_emphasis`, `voice_performance_plan`,
+  `pronunciation_notes`, `verify_flags`, cue type `transition`) that don't
+  exist in the live `script.schema.json` — caught by a real validation
+  failure during this run. Worked around using the schema's real fields
+  (satisfies SCRIPT_RULES.md's substance per its own stated precedence);
+  document itself still needs the rewrite.
+- The proposal's locked `render_runtime` ("remotion") was not actually
+  exercised — this dry run rendered via ffmpeg mechanics only. Disclosed
+  explicitly in `final_review.checks.promise_preservation`
+  (`runtime_swap_detected: true`), not silent. `final_review.status` is
+  `"revise"` because of this plus placeholder-asset limitations.
+
+### Four readiness verdicts
+
+Recorded in `knowledge/wiki/reports/phase-15-readiness-verdict.md`:
+
+- Contract readiness: **PASS**
+- Blog-adaptation quality: **CONDITIONAL PASS** (substance verified; TR-028 open; one fixture, one pass, no author review yet)
+- Local-render readiness: **CONDITIONAL** (ffmpeg mechanics proven; Remotion/HyperFrames untested; placeholder assets)
+- Real-production readiness: **NO** (author approval, real render test, real research, TR-028 fix, second fixture all still needed)
+
+### Next action
+
+Author review of the readiness verdict report. No paid calls, provider
+generation, publish, or real production without new explicit authorization.
+
+---
+
+## 2026-07-31 — Phase 15 readiness closure: TR-028 fixed, real Remotion render proven
+
+### What ran
+
+Per operator instruction: (1) fixed TR-028 by rewriting
+`brands/aepoch/SCRIPT_RULES.md` Parts 2-4 field-for-field against the live
+`schemas/artifacts/script.schema.json`; (2) re-ran the approved fixture
+through the proposal-locked Remotion runtime for real — no ffmpeg
+substitution (`tests/qa/test_11_blog_source_remotion_render.py`, 24/24
+passed); (3) ran all regression suites; (4) issued updated verdicts.
+
+### TR-028 fix
+
+`SCRIPT_RULES.md` Parts 2-4 now use the schema's real field names
+(`voice_performance`, `delivery_cues`, `pronunciation_guides`, `source_ref`,
+the real `enhancement_cues.type` enum) and an explicit "arc-stage
+convention" (id/label prefix) since the schema has no `arc_stage` field.
+Verified via `test_10`'s script, built with exactly these names, validating
+and passing all ten Part 4 checklist items.
+
+### Building the real Remotion render found two more issues
+
+- **TR-030 (partially fixed):** `Explainer.tsx`'s `resolveAsset()` had a
+  regex bug silently mis-stripping `file://` prefixes for POSIX absolute
+  paths, routing local assets to a 404. Fixed and verified (TypeScript
+  diagnostic count unchanged from the TR-024 baseline of 15). Deeper
+  limitation found and left open: `@remotion/renderer`'s asset-download
+  step rejects `file://` and bare absolute paths both — there's no
+  supported way for `_remotion_render()` to serve local absolute-path
+  assets by default today. Proved the render otherwise works by staging
+  assets into a project-scoped `remotion-composer/public/` subdirectory
+  (test-scoped workaround, not a fix to shared code) — see ADR-026 for why
+  the general fix was deliberately not attempted this session.
+- **TR-029 (documented only):** `cuts[].in_seconds`/`out_seconds` mean an
+  in-source trim range under FFmpeg's compose path but an absolute timeline
+  position under Remotion's `Explainer.tsx`. Both conventions verified
+  correct for their engine; the field pair's dual meaning isn't documented
+  anywhere.
+
+### Real Remotion render result
+
+`npx remotion render` succeeded for real: 1920x1080, 61.06s, h264+aac,
+independently verified via `ffprobe`. `final_review` (built by the tool's
+own `_run_final_review()`, not hand-rolled): `render_runtime_used:
+"remotion"`, `runtime_swap_detected: false`, `runtime_swap_check: "ok —
+proposal and edit agree"`, 4 real sampled frames with no black frames,
+subtitles present. First real, successful, non-ffmpeg Remotion render for
+this project via the `operation="render"` high-level entry point.
+
+### Regression suites (all green)
+
+```text
+tests/contracts/                                    567 passed, 7 skipped
+tests/qa/test_08_end_to_end.py                        38 passed, 0 failed
+tests/qa/test_09_blog_source_dry_run.py               24 passed, 0 failed
+tests/qa/test_10_blog_source_production_dry_run.py    47 passed, 0 failed
+tests/qa/test_11_blog_source_remotion_render.py       24 passed, 0 failed
+remotion-composer: npx tsc --noEmit                   15 errors (unchanged baseline)
+```
+
+### Updated verdicts
+
+Recorded in `knowledge/wiki/reports/phase-15-readiness-closure.md`
+(supersedes `phase-15-readiness-verdict.md`):
+
+- Contract readiness: **PASS** (unchanged)
+- Blog-adaptation quality: **PASS** (upgraded from CONDITIONAL PASS — TR-028 resolved)
+- Local-render readiness: **CONDITIONAL** (real Remotion proven capable; TR-030's general fix still needed for it to work without pre-staging)
+- Real-production readiness: **NO** (TR-030 fix, real research/providers, author review, second fixture)
+
+### Next action
+
+Author review. TR-030's general fix recommended as the highest-priority
+next step — it blocks every real local-asset Remotion production, not just
+blog-sourced ones. No paid calls, provider generation, publish, deploy,
+stage, or commit without new explicit authorization.
+
+---
+
+## 2026-07-31 — Final renderer hardening: TR-030 general fix, TR-029 resolved, all Phase 15 engineering blockers closed
+
+### What ran
+
+Per operator instruction: implemented the general, production-safe TR-030
+fix in `VideoCompose._remotion_render()` itself (replacing the prior
+round's test-scoped workaround); resolved TR-029 with an explicit
+`cut_timing_mode` field; added regression coverage for images, audio,
+video, repeated filenames, missing files, cleanup, and both render
+runtimes; reran all Phase 15 suites; issued updated verdicts. No paid
+providers, real production material, publish, deploy, stage, or commit.
+
+### TR-030 general fix
+
+Added `VideoCompose._stage_local_assets_for_remotion()` to
+`tools/video/video_compose.py`, called from inside `_remotion_render()`.
+Scans `cuts[].source`, `cuts[].backgroundImage`, `cuts[].backgroundVideo`,
+`cuts[].images[]`, `audio.narration.src`, `audio.music.src`; validates
+every local absolute-path reference up front (all problems reported at
+once, nothing staged if any fail); stages into a UUID-scoped,
+collision-safe `remotion-composer/public/_render_staging/<uuid>/`
+(index-prefixed filenames prevent repeated-basename collisions); rewrites
+props to `staticFile()`-relative paths; returns provenance in
+`ToolResult.data["staged_assets"]`; cleans up unconditionally (success or
+failure) in a `finally` block, plus a polish pass removing the shared
+parent directory once empty. No caller-side pre-staging needed anymore.
+
+### TR-029 resolution
+
+Added `edit_decisions.cut_timing_mode` (`"source_trim"` default |
+`"timeline"`) and `cuts[].source_in_seconds` to the schema.
+`_compose()` rejects `"timeline"` explicitly (unchanged default behavior
+otherwise — `test_08_end_to_end.py` unaffected, 38/0 unmodified).
+`_remotion_render()` now requires `"timeline"` explicitly and rejects
+anything else, including it being absent. `edit-director.md` rewritten
+with a "Cut Timing Mode" subsection and worked examples for both engines.
+
+### Regression coverage added
+
+`tests/contracts/test_remotion_asset_staging_contract.py` — 16 tests,
+0.15s: staging (video/image/audio/anime-scene-images), no-op for
+http(s)/relative sources, repeated-filename collision safety, missing/
+not-a-file/unreadable rejection (all problems reported, not just first),
+cleanup after success and after subprocess failure (both driven through
+the real `_remotion_render()` against the real `remotion-composer/public/`,
+subprocess mocked), `cut_timing_mode` validation for both engines
+including the backward-compatible default.
+
+### Real Remotion render re-verified using only the general fix
+
+`tests/qa/test_11_blog_source_remotion_render.py`: 28/28 passed (up from
+24/24 — 4 new checks for staging/provenance/cleanup). Real
+`npx remotion render` succeeded with zero manual staging in the test
+itself. Independently verified via `ffprobe` (1920x1080, 61.056s,
+h264/aac) and a `remotion-composer/public/` directory listing diff
+(identical before/after — no leftover staging artifacts).
+
+### Full regression sweep (all green)
+
+```text
+tests/contracts/                                       583 passed, 7 skipped
+tests/qa/test_08_end_to_end.py                           38 passed, 0 failed
+tests/qa/test_09_blog_source_dry_run.py                  24 passed, 0 failed
+tests/qa/test_10_blog_source_production_dry_run.py       47 passed, 0 failed
+tests/qa/test_11_blog_source_remotion_render.py          28 passed, 0 failed
+remotion-composer: npx tsc --noEmit                      15 errors (unchanged baseline)
+```
+
+### Updated verdicts
+
+Recorded in `knowledge/wiki/reports/phase-15-renderer-hardening.md`
+(supersedes `phase-15-readiness-closure.md`):
+
+- Contract readiness: **PASS** (unchanged)
+- Blog-adaptation quality: **PASS** (unchanged)
+- Local-render readiness: **PASS** (upgraded from CONDITIONAL — TR-030 general fix closes the gap)
+- Real-production readiness: **NO** (real research/providers, author review, second fixture — no engineering blockers remain)
+
+### Next action
+
+Author review. TR-028, TR-029, and TR-030 are all resolved. No paid calls,
+provider generation, publish, deploy, stage, or commit without new explicit
+authorization.
+
+---
+
+## 2026-08-01 — Phase 15 accepted; real “What is ÆPOCH?” blog pilot queued
+
+The author accepted the Phase 15 readiness direction and selected the live
+“What is ÆPOCH?” post as the actual production test, with the ÆPOCH Protocol
+YouTube channel as the required quality bar. The author confirmed that the
+blog's prior research remains authoritative: downstream research may verify
+and enrich, not rewrite.
+
+Created the Phase 16 handoff prompt with source-authority protections,
+reference-video analysis, capability and cost disclosure, Remotion versus
+HyperFrames and templated versus atelier proposal decisions, approval gates,
+and an explicit benchmark-parity definition of production readiness. No paid
+provider call, production render, publish, or deployment was performed.
+
+---

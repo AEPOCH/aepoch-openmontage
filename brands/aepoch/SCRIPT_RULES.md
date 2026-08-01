@@ -1,8 +1,28 @@
 # ÆPOCH Blog-to-Script Adapter
 
-Companion document to `SERIES_BIBLE.md`. The bible defines what the series is. This document defines how a blog post becomes a `script` artifact that the `animated-explainer` pipeline can accept at the script stage without a send-back.
+Companion document to `SERIES_BIBLE.md`. The bible defines what the series is.
+This document defines how a blog post first becomes a canonical
+`source_extraction` artifact and later constrains the `script` produced by the
+`animated-explainer` pipeline.
 
-This version is aligned to `animated-explainer.yaml` v2.0. Where the pipeline's own terms and this document's earlier terms disagreed, the pipeline wins. Notably: the narrative arc is five stages, not four (hook → setup → build → climax → landing). Cues are called `enhancement_cues`, not a generic marker. And a voice performance plan is its own artifact, not a note scribbled next to a line of narration.
+The live route is:
+
+`blog source → source_extraction → research → proposal → script`
+
+The source article remains authoritative for the thesis and intended story.
+Research verifies and enriches; it does not silently replace the article's
+central question, takeaway, ÆPOCH reframe, human consequence, or closing.
+
+This version is aligned to `animated-explainer.yaml` v2.0 and to the live
+`schemas/artifacts/script.schema.json`, field for field — not just in the
+surrounding prose. Where the pipeline's own terms and this document's
+earlier terms disagreed, the pipeline wins. Notably: the narrative arc is
+five stages, not four (hook → setup → build → climax → landing). Cues are
+called `enhancement_cues`, not a generic marker, and their `type` is
+constrained to the schema's enum (`overlay`, `broll`, `diagram`, `stat_card`,
+`code_snippet`, `animation` — there is no `transition` type). And a voice
+performance plan is a dedicated top-level `voice_performance` object in the
+script artifact, not a note scribbled next to a line of narration.
 
 The script stage's review will check this document's output against its own `review_focus` and `success_criteria`. Nothing in this adapter should require the reviewer to infer anything the schema expects explicitly.
 
@@ -18,21 +38,39 @@ Test before writing a line of script: can you say what this episode is about in 
 
 ---
 
-## Part 1 — Extraction sheet
+## Part 1 — Canonical source extraction
 
-Every source article gets one extraction sheet before any script is written.
+Every source article gets one `source_extraction` artifact before research or
+script writing. Validate it against
+`schemas/artifacts/source_extraction.schema.json`.
 
 ```yaml
 source:
   title:
-  file:
+  reference:
   publication_date:
+
+authority:
+  mode: source_authoritative
+  protected_fields:
+    - central_question
+    - key_takeaway
+    - aepoch_reframe
+    - human_consequence
+    - closing_statement
+  research_permissions:
+    - verify_claims
+    - add_provenance
+    - update_stale_facts
+    - add_context
+    - identify_audience_questions
+    - enrich_visual_examples
 
 episode:
   working_title:
   central_question:
   audience:
-  desired_duration:
+  desired_duration_seconds:
   key_takeaway:
   existing_reality:
   tension:
@@ -41,8 +79,9 @@ episode:
   closing_statement:
 
 claim_inventory:
-  - claim:
-    source:
+  - id:
+    claim:
+    source_location:
     verification_required:
 
 excluded_material:
@@ -74,7 +113,7 @@ excluded_material:
 
 **episode.closing_statement** — The line the episode ends on. Lands on a specific idea or open question, not a call to arms and not a recap.
 
-**claim_inventory** — Every factual, historical, or comparative claim, listed individually with a traceable source and a verification note. These carry forward as `verify_flags` on the specific sections that use them.
+**claim_inventory** — Every factual, historical, or comparative claim, listed individually with a traceable source and a verification note. These carry forward via each script section's `source_ref`, which names the claim id(s) it draws on.
 
 **excluded_material** — Everything cut from the source post, with the reason, so a later episode doesn't reopen the same ground by accident.
 
@@ -82,51 +121,68 @@ excluded_material:
 
 ## Part 2 — The script artifact
 
-The script stage produces one artifact called `script`. It has to be schema-valid, hit `+/-10%` of the duration target in word count, carry enhancement cue density of roughly one per 8–10 seconds, show the five-stage arc, carry speaker directions for TTS, and include a voice performance plan with concrete pacing, pause, emphasis, and sample cues. The structure below produces all of that in one pass.
+The script stage produces one artifact called `script`, validated against
+`schemas/artifacts/script.schema.json`. It has to be schema-valid, hit
+`+/-10%` of the duration target in word count, carry enhancement cue density
+of roughly one per 8–10 seconds, show the five-stage arc, carry speaker
+directions for TTS, and include a voice performance plan with concrete
+pacing, pause, emphasis, and a sample section. The structure below is the
+schema's actual field shape — it produces all of that in one pass, and
+nothing in it needs translation before it validates.
 
 ```yaml
 script:
+  version: "1.0"
   title:
-  source_reference: [source.file from the extraction sheet]
-  audience: [episode.audience]
-  duration_target_seconds:
-  word_count_target:        # duration_target_seconds × target words-per-second, see Part 3
-  word_count_actual:
+  total_duration_seconds:
 
-  voice_performance_plan:
-    voice_id:                # which configured TTS voice/character this script assumes
-    overall_tone:             # one line, drawn from the series bible's voice section
-    pacing_notes:             # general delivery guidance across the whole script
-    sample_cues:
-      - line_reference:       # which section/line this sample demonstrates
-        direction:            # concrete performance note: "flat, unhurried, no rising inflection"
+  voice_performance:
+    performance_intent:      # one line: what the narration should feel like, and why
+    pacing_profile:           # contemplative | conversational | energetic | technical | cinematic | custom
+    energy_curve:              # how energy should move across the piece
+    pause_policy:              # where pauses matter most, in plain language
+    sample_section_id:        # id of the section to use for TTS sample approval
+    provider_notes:            # optional: free-form per-provider notes, e.g. {tts_selector: "..."}
 
   sections:
-    - id: hook-1
-      arc_stage: hook
-      speaker: narrator
-      narration: >
+    - id: hook-1               # see "The arc-stage convention" below
+      label: Hook
+      text: >
         The line as written to be heard, not read.
-      pause_emphasis:
-        - "(beat) after 'the line'"
-        - "*emphasis* on 'never'"
+      start_seconds: 0
+      end_seconds: 8
+      speaker_directions:       # prose fallback; prefer delivery_cues below
+      delivery_cues:
+        pace:                   # slow | measured | conversational | brisk | fast | custom
+        energy:
+        emphasis_words: []
+        pause_before_seconds:
+        pause_after_seconds:
+        delivery_note:
+        provider_text:           # SSML-ready text, e.g. with <break time="0.6s"/>
       enhancement_cues:
-        - offset_seconds: 0
-          type: visual
+        - type: overlay          # overlay | broll | diagram | stat_card | code_snippet | animation
           description:
-        - offset_seconds: 8
-          type: on_screen_text
-          description:
-      on_screen_text:
-      visual_intent:
-      pronunciation_notes:
-      verify_flags:
-        - claim:
-          source:
-          status: unverified | verified
+          timestamp_seconds: 0
+      pronunciation_guides:
+        - word:
+          phonetic:
+      source_ref:                # claim_inventory id(s) this section's claims trace to, e.g. "claim-2" or "claim-2, claim-3"
 
-    # repeat for setup, build, climax, landing sections
+    # repeat for setup, build (as many sections as the content needs), climax, landing
 ```
+
+### The arc-stage convention
+
+The schema has no dedicated `arc_stage` field. Encode it explicitly through
+`id` and `label` instead: prefix every section's `id` with its arc stage
+(`hook-1`, `setup-1`, `build-1`, `build-2`, ...) and set `label` to the
+capitalized stage name (`Hook`, `Setup`, `Build`, `Climax`, `Landing`). A
+section can be one narration line or several — what matters is that the
+id/label prefix makes the stage unambiguous, so the scene-director stage
+downstream can check "no gaps" against the full five-stage sequence by
+reading labels in order, not guessing where one stage ends and the next
+begins.
 
 ### Section-by-section, mapped to the five-stage arc
 
@@ -140,18 +196,17 @@ script:
 
 **landing** — `episode.human_consequence` and `episode.closing_statement`. No recap. No call to arms. One idea, held, and then the video ends.
 
-A section can be one narration line or several. What matters is that every section declares its `arc_stage` explicitly, so the scene-director stage downstream can check "no gaps" against the full five-stage sequence rather than guessing where one stage ends and the next begins.
-
 ### Inline notation used inside a section
 
 | Element | Where it lives | Notation |
 |---|---|---|
-| Pause, short | `pause_emphasis` | `(beat)` |
-| Pause, longer | `pause_emphasis` | `(pause – 1.5s)` |
-| Emphasis | `pause_emphasis`, referencing the word in `narration` | `*word*` |
-| Pronunciation | `pronunciation_notes` | `[SAY "ÆPOCH" as "AY-pock"]`, on first use of the term in the whole script |
-| Fact-check flag | `verify_flags` | one entry per claim used in that section's narration |
-| Scene transition | `enhancement_cues`, `type: transition` | e.g. `description: "cut from phone screen to open hand"` |
+| Pause, before a line | `delivery_cues.pause_before_seconds` | seconds, e.g. `0.6` |
+| Pause, after a line | `delivery_cues.pause_after_seconds` | seconds, e.g. `1.5` |
+| Emphasis | `delivery_cues.emphasis_words` | list of the exact words to stress, e.g. `["never"]` |
+| SSML-ready delivery | `delivery_cues.provider_text` | narration text with break tags, e.g. `<break time="0.6s"/>` |
+| Pronunciation | `pronunciation_guides` | `{word: "ÆPOCH", phonetic: "AY-pock"}`, on first use of the term in the whole script |
+| Fact-check flag | `source_ref` | claim_inventory id(s) used in that section's narration |
+| Scene beat / cut | `enhancement_cues`, `type: overlay` | e.g. `description: "cut from phone screen to open hand"` — the enum has no `transition` value; use `overlay` for a cue marking a cut or visual-beat change |
 
 Keep pause, emphasis, and pronunciation attached to the section that contains the line they modify. A reviewer checking one section shouldn't have to cross-reference a different part of the document to find out how a line is supposed to sound.
 
@@ -173,9 +228,9 @@ Add a term here once it's been said correctly on record, so the next script does
 
 The script stage checks word count against duration within 10%, and enhancement cue density at roughly one per 8–10 seconds. Both are arithmetic, not judgment calls, so do the math before submitting rather than after a send-back.
 
-**Word count target** — Use 2.3 to 2.5 words per second as the baseline for narrator-voiced explainer pacing (roughly 140–150 words per minute, which is a measured, unhurried conversational read, slower than average speech). `word_count_target = duration_target_seconds × 2.4`. Write to that number, then check the actual draft's word count against it and adjust before calling the script done.
+**Word count target** — Use 2.3 to 2.5 words per second as the baseline for narrator-voiced explainer pacing (roughly 140–150 words per minute, which is a measured, unhurried conversational read, slower than average speech). Target word count = `total_duration_seconds × 2.4`. This is a tracked quantity, not a schema field — the schema only stores `sections[].text`; count words directly from the concatenation of every section's `text` and check that sum against the target before calling the script done.
 
-**Enhancement cue count** — `duration_target_seconds ÷ 9` gives a rough target cue count (9 as the midpoint of the 8–10 second window). Count the actual `enhancement_cues` entries across all sections against that target. A script that's cue-light in the build section and cue-heavy in the hook will pass the average check and still fail the review, since density is checked as spacing, not just total count. Spread cues where the sentence structure already wants a break, not evenly by force.
+**Enhancement cue count** — `total_duration_seconds ÷ 9` gives a rough target cue count (9 as the midpoint of the 8–10 second window). Count the actual `enhancement_cues` entries across all sections against that target. A script that's cue-light in the build section and cue-heavy in the hook will pass the average check and still fail the review, since density is checked as spacing, not just total count — check the gaps between consecutive `enhancement_cues[].timestamp_seconds` values, not just the total. Spread cues where the sentence structure already wants a break, not evenly by force.
 
 **Arc proportion** — There's no fixed ratio from the pipeline spec, but as a starting point: hook and setup together should not exceed a third of total duration, climax should not be compressed into a single line, and landing should be the shortest stage. If the climax is being rushed to protect a longer hook, that's a sign the extraction sheet's `existing_reality` field is doing too much work and needs trimming.
 
@@ -186,12 +241,12 @@ The script stage checks word count against duration within 10%, and enhancement 
 This list mirrors the pipeline's own `review_focus` and `success_criteria` for the script stage, so nothing here should surprise that review.
 
 1. Does the extraction sheet name one story, checkable in a single sentence without "and"?
-2. Is `word_count_actual` within 10% of `word_count_target`?
-3. Are `enhancement_cues` spaced at roughly one per 8–10 seconds, checked section by section, not just averaged across the whole script?
-4. Does every section declare an `arc_stage`, and do the five stages appear in order with no gaps?
-5. Does `voice_performance_plan` include concrete pacing, pause, emphasis, and at least one sample cue tied to an actual line?
-6. Does every locked term match `SERIES_BIBLE.md` exactly, with pronunciation marked on first use?
-7. Does every claim in `claim_inventory` appear as a `verify_flag` on the section that uses it, with a real status, not left blank?
+2. Is the total word count across all `sections[].text` within 10% of `total_duration_seconds × 2.4`?
+3. Are `enhancement_cues` spaced at roughly one per 8–10 seconds, checked section by section (consecutive `timestamp_seconds` gaps), not just averaged across the whole script?
+4. Does every section's `id`/`label` declare its arc stage explicitly (see "The arc-stage convention" in Part 2), and do the five stages appear in order with no gaps?
+5. Does `voice_performance` include concrete `performance_intent`/`pacing_profile`/`pause_policy`, and does `sample_section_id` reference an actual section id?
+6. Does every locked term match `SERIES_BIBLE.md` exactly, with a `pronunciation_guides` entry on first use?
+7. Does every claim in `claim_inventory` appear in at least one section's `source_ref`, not left blank?
 8. Does the hook avoid naming ÆPOCH before the viewer has recognized the existing reality as their own?
 9. Does the landing section match `episode.closing_statement`, unchanged, without a recap added underneath it?
-10. Does `excluded_material` account for everything cut from the source post?
+10. Does `source_extraction.excluded_material` account for everything cut from the source post?

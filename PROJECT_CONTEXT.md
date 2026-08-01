@@ -46,7 +46,7 @@ Each tool's `agent_skills[]` field bridges Layer 1 → Layer 3. See `skills/INDE
 
 ## Key Patterns
 
-- **Pipeline state machine:** `idea -> script -> scene_plan -> assets -> edit -> compose -> publish`
+- **Pipeline state machine:** topic-led explainers use `research -> proposal -> script -> scene_plan -> assets -> edit -> compose -> publish`; blog-sourced explainers prepend `extraction`
 - **Instruction-driven stages:** Each stage has a director skill (MD) that teaches the agent HOW
 - **Pipeline manifests:** Declarative YAML defining stages, skills, tools, review focus, approval gates
 - **Capability-first tool design:** Each major family should expose a selector tool plus explicit provider tools

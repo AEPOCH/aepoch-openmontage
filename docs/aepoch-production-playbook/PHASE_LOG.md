@@ -677,4 +677,58 @@ Remotion render, image generation, or episode build should run during that
 recording session. Phase 14B.1 begins only after the author explicitly
 signals the recording session is complete.
 
-**Next phase:** Phase 14B.1 itself, once the recording pause ends.
+**Disposition (2026-07-31):** Superseded. Lee is editing the author's
+narration and video directly and will deliver Episode 001 manually. The
+eight findings remain valid historical review evidence, but OpenMontage
+will not execute this correction phase on the current path.
+
+**Next system phase:** Phase 15 — blog-to-video production readiness.
+
+---
+
+## Phase 15 — Blog-to-video production readiness
+
+**Status:** Authorized for audit and local validation
+
+**Purpose:** Return focus to OpenMontage's core repeatable workflow: turn a
+source blog post into a validated animated-explainer production package and
+review output without relying on Episode 001 media or chat context.
+
+**Scope:**
+
+1. Audit the live pipeline, director skills, artifact schemas, tool registry,
+   checkpoints, and cost controls.
+2. Reconcile `brands/aepoch/SCRIPT_RULES.md` with the live contracts.
+3. Exercise a representative blog fixture through canonical artifacts.
+4. Use local or zero-cost execution paths first.
+5. Record failures, repairs, commands, evidence, and a readiness verdict.
+6. Produce the next real-production handoff for author approval.
+
+**Not authorized:** paid provider calls, publishing, deployment, Episode 001
+work, or a public-readiness claim.
+
+**Completion (2026-07-31):** Contract PASS, blog-adaptation PASS, and
+local-render PASS. The authoritative extraction contract, checkpoint behavior,
+FFmpeg dry run, real Remotion render, local-asset staging, provenance, cleanup,
+and explicit cut-timing semantics are implemented and tested. See
+`knowledge/wiki/reports/phase-15-renderer-hardening.md`.
+
+---
+
+## Phase 16 — “What is ÆPOCH?” real blog pilot
+
+**Status:** Authorized for preflight, extraction, verification/enrichment,
+reference analysis, and proposal. Paid generation awaits explicit approval.
+
+**Authoritative source:** `https://aepoch.xyz/blog/post/what-is-aepoch`
+
+**Quality benchmark:** `https://www.youtube.com/@AepochProtocol`
+
+The blog's existing research remains authoritative. Research verifies and
+enriches; it does not silently rewrite the source. This is the real production
+test: production readiness requires a completed video that passes technical,
+creative, brand, factual, and public review and is judged by the author to be
+on par with the grounded benchmark set.
+
+**Handoff:**
+`prompts/phase-16-what-is-aepoch-real-blog-pilot.md`

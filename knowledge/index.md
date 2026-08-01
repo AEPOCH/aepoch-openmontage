@@ -36,12 +36,13 @@ Chat history is not the authoritative project record.
 - **Current episode:** `001-what-is-aepoch`
 - **Working title:** `What is ÆPOCH?`
 - **Last completed production phase:** Phase 14B
-- **Next production phase:** Phase 14B.1
-- **Phase 14B.1 status:** Not started
-- **Production state:** Paused pending new human video and clean narration
+- **Completed system phase:** Phase 15 — blog-to-video production readiness
+- **Current system phase:** Phase 16 — “What is ÆPOCH?” real blog pilot
+- **Episode 001:** Manual edit and delivery owned by Lee outside OpenMontage
+- **Phase 14B.1:** Superseded
 - **Phase 14B proof:** Internal pipeline demonstration only
 - **Public-ready:** No
-- **Full Episode 001 production:** Blocked until Phase 14B.1 passes review
+- **OpenMontage Episode 001 production:** Superseded by Lee's manual delivery path
 
 The authoritative live status is:
 
@@ -169,7 +170,7 @@ Contains:
 - Provider-specific limitations
 - Output-format normalization
 - Paid-call policy
-- Current Phase 14B.1 provider requirements
+- Historical Phase 14B.1 provider requirements (superseded)
 
 ### Troubleshooting register
 
@@ -517,19 +518,11 @@ projects/aepoch-episodes/001-what-is-aepoch/inputs/phase-14b-proof-word-timings.
 
 ## Current Immediate Next Action
 
-Production work remains paused.
-
-After the author explicitly confirms the recording session is complete:
-
-1. Record the clean narration path.
-2. Record the human-video path.
-3. Inspect both files with `file` and `ffprobe`.
-4. Preserve original media.
-5. Capture terminal evidence.
-6. Verify narration against the approved script.
-7. Inspect Phase 14B runtime asset paths.
-8. Reproduce the existing Phase 14B proof.
-9. Begin only the eight approved Phase 14B.1 corrections.
+Run the Phase 16 handoff in
+`docs/aepoch-production-playbook/prompts/phase-16-what-is-aepoch-real-blog-pilot.md`.
+Use the live “What is ÆPOCH?” blog as authoritative source, verify and enrich
+without rewriting it, analyze the ÆPOCH Protocol videos as a grounded quality
+benchmark, produce 2–3 proposals, and stop for approval before paid generation.
 
 ## Open Knowledge Tasks
 
@@ -538,8 +531,8 @@ After the author explicitly confirms the recording session is complete:
 - Capture a deeper Phase 14A.1 candidate inventory
 - Reverify the historical missing-`pytest` incident
 - Create a machine-readable production asset index
-- Define source-media directories for the new recordings
-- Add Phase 14B.1 evidence after production resumes
+- Real web research and provider selection for a real-production brief
+  (pending author authorization)
 - Evaluate a sandboxed wiki compiler only after the manual knowledge system is stable
 
 ## Git Scope

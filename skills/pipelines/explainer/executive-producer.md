@@ -40,8 +40,9 @@ EP_STATE:
   budget_spent_usd: 0.0
   budget_remaining_usd: <budget_total>
 
-  # Accumulated from each stage (8 stages)
+  # Accumulated from each stage (9 stages for blog-sourced work)
   artifacts:
+    extraction: null    # → source_extraction (conditional on source article)
     research: null      # → research_brief
     proposal: null      # → proposal_packet (includes approval gate)
     script: null        # → script
@@ -77,9 +78,14 @@ EP_STATE:
 
 ### Phase 1: Execute Stages Serially
 
-For each stage in order: `research → proposal → script → scene_plan → assets → edit → compose → publish`
+For blog-sourced work, execute:
+`extraction → research → proposal → script → scene_plan → assets → edit → compose → publish`.
 
-**Pre-production stages (research, proposal)** run before any money is spent:
+For topic-led work without a source article, skip the conditional extraction
+stage and begin at `research`.
+
+**Pre-production stages (extraction when applicable, research, proposal)** run before any money is spent:
+- **extraction** preserves the author-provided source's narrative authority
 - **research** gathers raw data via web search — zero cost, no tools
 - **proposal** presents concepts and costs to the user — zero cost, but contains the **approval gate**
 - The pipeline MUST NOT proceed past proposal without `approval.status == "approved"` or `"approved_with_changes"`

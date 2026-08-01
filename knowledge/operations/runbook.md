@@ -54,7 +54,7 @@ The current production state is:
 - Phase 14B.1 not started
 - Phase 14B proof is internal only
 - Full Episode 001 production is blocked
-- Production remains paused until the author explicitly confirms that the new recordings are complete
+- The former recording pause is superseded; Episode 001 delivery is outside OpenMontage
 
 During the pause, do not run:
 
@@ -598,7 +598,12 @@ Do not add:
 
 unless the phase explicitly authorizes audio processing.
 
-## Current Phase 14B.1 Entry Procedure
+## Superseded Phase 14B.1 Entry Procedure
+
+**Status:** Superseded on 2026-07-31. Retained for historical context only.
+Episode 001 delivery is now owned by Lee's manual production workflow. Do
+not execute the procedure below unless the author explicitly restores this
+scope.
 
 Do not begin until the author explicitly lifts the recording pause.
 

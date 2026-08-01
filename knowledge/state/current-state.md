@@ -33,10 +33,11 @@ sources:
 - **Episode type:** Pre-launch countdown, Video 1
 - **Working title:** `What is ÆPOCH?`
 - **Last completed production phase:** Phase 14B
-- **Next production phase:** Phase 14B.1
-- **Phase 14B.1 status:** Not started
-- **Full Episode 001 production:** Blocked pending Phase 14B.1 approval
-- **Production state:** Paused for new human-video recording and clean narration recording
+- **Next system phase:** Phase 15 — blog-to-video production readiness
+- **Phase 15 status:** Authorized for planning, audit, and local validation
+- **Episode 001 production:** Handed to Lee for manual editing and delivery outside OpenMontage
+- **Phase 14B.1 status:** Superseded; it will not be executed on the current path
+- **Production state:** OpenMontage development resumed with a blog-sourced-video focus
 
 ## Repository and Git Policy
 
@@ -393,21 +394,111 @@ The Phase 14B proof is suitable only as an internal pipeline demonstration.
 
 It is not approved for public release.
 
-The full Episode 001 build must not begin from this proof without completing and approving Phase 14B.1.
+The full Episode 001 build must not begin from this proof. Delivery has moved
+to Lee's manual workflow, and Phase 14B.1 is superseded.
 
-## Current Phase — Phase 14B.1
+## Current Phase — Phase 16: “What is ÆPOCH?” Real Blog Pilot
 
-**Status:** Not started
+**Status:** Authorized for preflight, authoritative extraction, verification/enrichment, reference analysis, and proposal; paid generation and full production await explicit proposal approval
 
-Phase 14B.1 is a polish pass on the existing 47-second proof.
+The immediate objective is to make OpenMontage reliably accept an ÆPOCH
+blog post and carry it through the `animated-explainer` pipeline using the
+existing blog-to-script adapter, canonical artifacts, capability preflight,
+checkpoints, and review gates.
 
-It is not:
+This phase is system readiness work. It is not Episode 001 production and it
+does not authorize paid generation, publishing, deployment, or an unattended
+full-cost production run.
 
-- A new proof from scratch
-- A full Episode 001 build
-- An episode-scale asset-generation phase
+A baseline and capability audit ran on 2026-07-31 and found a real contract
+mismatch between `brands/aepoch/SCRIPT_RULES.md` (the blog-to-script adapter)
+and the live `script` stage contract in `pipeline_defs/animated-explainer.yaml`
+and `skills/pipelines/explainer/script-director.md`. Full findings:
+`knowledge/wiki/reports/phase-15-baseline-contract-audit.md`. The operator
+selected an authoritative source-extraction stage before research (ADR-024),
+implemented and contract-tested (567 passed, 7 skipped).
 
-## Required Phase 14B.1 Corrections
+The representative fixture (`tests/fixtures/blog/authoritative-source.md`)
+has since been run end to end through extraction, source-authoritative
+research, and proposal using the real checkpoint/schema machinery
+(`tests/qa/test_09_blog_source_dry_run.py`, 24/24 passed). Protected
+narrative fields verified unchanged byte-for-byte across all three
+artifacts; the three proposal concepts verified to vary presentation
+(title/hook/narrative_structure/visual_approach/target_platform/tone) while
+sharing one identical thesis (`core_message`). A regression in
+`get_next_stage()` introduced by the ADR-024 stage addition was found and
+fixed along the way (TR-027) — both zero-cost regression suites stayed green
+throughout. Full results: `knowledge/wiki/reports/phase-15-blog-dry-run-results.md`.
+
+The run was then extended through `script`, `scene_plan`, local/zero-cost
+`assets`, `edit`, and `compose`
+(`tests/qa/test_10_blog_source_production_dry_run.py`, 47/47 passed),
+producing a real rendered `.mp4`, a real deterministic `final_review`, and a
+real `render_report` — all schema-valid. The script was validated
+programmatically against `brands/aepoch/SCRIPT_RULES.md` Parts 2-4 (word
+count, cue density, five-stage arc, protected-field verbatim preservation,
+pronunciation-on-first-use, claim traceability, hook/landing rules); a
+residual documentation drift in SCRIPT_RULES.md Part 2 (field names that
+don't match the live `script.schema.json`) was found and logged as TR-028.
+The proposal's locked `render_runtime` ("remotion") was **not** actually
+exercised in that round — it rendered via the ffmpeg mechanics path only,
+disclosed explicitly in `final_review` (`runtime_swap_detected: true`)
+rather than silently.
+
+**Readiness closure round (2026-07-31, later same day):** Per operator
+instruction, fixed TR-028 by rewriting `SCRIPT_RULES.md` Parts 2-4
+field-for-field against the live schema, then re-ran the fixture through the
+**proposal-locked Remotion runtime for real — no ffmpeg substitution**
+(`tests/qa/test_11_blog_source_remotion_render.py`, 24/24 passed): a genuine
+`npx remotion render` produced a real 1920x1080, 61.06s, h264+aac `.mp4`
+with `runtime_swap_detected: false`. Building that render surfaced two more
+findings: TR-030 (a real bug in `Explainer.tsx`'s asset-path resolution,
+fixed, plus a deeper limitation in how `_remotion_render()` serves local
+absolute-path assets, still open — the most significant remaining
+real-production blocker) and TR-029 (documented, not code-fixed: `cuts[]`
+`in_seconds`/`out_seconds` mean different things to FFmpeg vs. Remotion).
+All five zero-cost regression suites green throughout (contracts 567/7,
+test_08 38/0, test_09 24/0, test_10 47/0, test_11 24/0). Updated verdicts —
+contract PASS, blog-adaptation PASS (upgraded), local-render CONDITIONAL
+(evidence substantially strengthened), real-production NO — recorded in
+`knowledge/wiki/reports/phase-15-readiness-closure.md`, which supersedes the
+prior `phase-15-readiness-verdict.md`.
+
+**Final renderer hardening round (2026-07-31, later same day):** Per
+operator instruction, implemented the general TR-030 fix inside
+`VideoCompose._remotion_render()` itself — `_stage_local_assets_for_remotion()`
+detects local absolute-path assets (video/image/audio, including
+`backgroundImage`/`backgroundVideo`/`images[]`), validates them up front
+with clear rejection of every missing/unreadable input at once, stages them
+into a UUID-scoped collision-safe directory under
+`remotion-composer/public/`, rewrites props, preserves provenance, and
+cleans up unconditionally without ever touching pre-existing content. This
+replaces the prior round's test-scoped workaround; no caller-side
+pre-staging is needed anymore. Also resolved TR-029 by adding
+`edit_decisions.cut_timing_mode` (`"source_trim"` default | `"timeline"`)
+and `cuts[].source_in_seconds` to the schema, with `_compose()` and
+`_remotion_render()` each explicitly rejecting the mode they don't
+implement rather than silently reinterpreting the same fields. New fast
+regression suite `tests/contracts/test_remotion_asset_staging_contract.py`
+(16 tests, 0.15s) plus a re-run of the real Remotion render using only the
+general fix (`test_11_blog_source_remotion_render.py`, 28/28, up from
+24/24 — 4 new checks for staging/provenance/cleanup, independently verified
+via `ffprobe` and a `remotion-composer/public/` listing diff). Full sweep
+green: contracts 583/7, test_08 38/0, test_09 24/0, test_10 47/0, test_11
+28/0, TypeScript diagnostics unchanged (15). Updated verdicts — contract
+PASS, blog-adaptation PASS, local-render **PASS** (upgraded from
+CONDITIONAL), real-production NO — recorded in
+`knowledge/wiki/reports/phase-15-renderer-hardening.md`, which supersedes
+`phase-15-readiness-closure.md`.
+
+**Phase 15 is complete.** Its contract, blog-adaptation, and local-render
+readiness verdicts are PASS. The first real pilot is the live “What is ÆPOCH?”
+blog post, benchmarked against the existing ÆPOCH Protocol YouTube channel.
+The source is authoritative; research may verify and enrich it but may not
+rewrite its thesis or protected narrative fields. The executable handoff is
+`docs/aepoch-production-playbook/prompts/phase-16-what-is-aepoch-real-blog-pilot.md`.
+
+## Historical Phase 14B.1 Corrections (Superseded)
 
 1. Begin with one dominant human and reveal synthetic echoes progressively.
 2. Treat Beats 1 and 2 as one continuous echoes composition.
@@ -418,75 +509,99 @@ It is not:
 7. Continue using Lee's recording only as the timing reference.
 8. Replace Lee's reference audio with a clean recording of the approved script for final production.
 
-## Current Production Pause
+## Episode 001 Disposition
 
-Production is paused while the author records:
+The recording dependency and Phase 14B.1 correction path are no longer part
+of the active OpenMontage plan. Lee is editing the author's narration and
+video directly and will produce the Episode 001 video manually.
 
-- New human video
-- A clean narration performance of the approved script
-
-During the recording session, do not run:
-
-- Claude production sessions
-- Remotion renders
-- Image generation
-- Image editing
-- Episode builds
-
-Phase 14B.1 begins only after the author explicitly confirms that the recording session is complete.
+OpenMontage must not wait for, ingest, or modify that media unless the author
+later creates a new explicit scope. The Phase 14B proof remains preserved as
+internal workflow evidence and is not public-ready.
 
 ## Active Blockers
 
-### Blocker 1 — New recording dependency
+### Blocker 1 — Blog-source intake has not been validated end to end
 
-Phase 14B.1 requires the author to complete the clean narration recording and new human-video capture.
+The repository contains `brands/aepoch/SCRIPT_RULES.md`, but the current
+blog-post-to-canonical-artifact path must be audited against the live
+`animated-explainer` manifest and schemas.
 
-### Blocker 2 — Creative correction approval
+**Update 2026-07-31:** Audited. Confirmed real: `SCRIPT_RULES.md` claims its
+`script` output is directly acceptable at the pipeline's script stage, but
+`animated-explainer.yaml` requires `proposal_packet` there and
+`script-director.md` still opens with stale v1.0 (`brief`/"Idea Explorer")
+language with no mention of the adapter. See
+`knowledge/wiki/reports/phase-15-baseline-contract-audit.md` and ADR-023.
+Resolved structurally by ADR-024 and TR-026, and now verified by a real
+extraction → research → proposal dry run (24/24 passed). **Closed** for the
+extraction/research/proposal scope; script stage onward not yet exercised.
 
-The eight Phase 14B.1 corrections must be implemented and reviewed before the proof can become public-ready.
+### Blocker 2 — Production preflight needs a current evidence run
 
-### Blocker 3 — Full-episode authorization
+Available providers, render runtimes, local dependencies, and zero-cost test
+paths must be rediscovered and recorded before a new production proposal.
+Composition-runtime and capability-preflight evidence was captured during
+the 2026-07-31 baseline audit
+(`knowledge/wiki/reports/phase-15-baseline-contract-audit.md`); a fresh
+snapshot should still be taken immediately before any real production
+proposal, since providers/keys may change between now and then.
 
-Full Episode 001 production is explicitly blocked until Phase 14B.1 passes review.
+### Blocker 3 — A bounded representative dry run has not passed
 
-### Blocker 4 — Final audio replacement
+A short blog-sourced fixture must reach validated artifacts and a local
+review output before the system is called ready for a real blog episode.
 
-Lee's reference recording cannot be used as final production audio.
+**Update 2026-07-31 (closed):** Passed end to end, extraction through
+compose, with a real rendered output and a real deterministic `final_review`
+— first via ffmpeg mechanics, then via a genuine, proposal-locked Remotion
+render with no substitution. See
+`knowledge/wiki/reports/phase-15-readiness-closure.md`. Remaining gaps
+before real-production readiness are listed in that report's verdict
+section (TR-030's general fix, real research, real provider selection, a
+second fixture), not blockers to calling this dry-run scope complete.
+
+### Blocker 4 — `_remotion_render()` cannot serve local absolute-path assets by default (TR-030)
+
+Opened 2026-07-31 while building the real Remotion render.
+
+**Update 2026-07-31 (closed):** General fix implemented in
+`_remotion_render()` itself (`_stage_local_assets_for_remotion`) — no
+caller-side pre-staging required anymore. Verified by re-running the real
+Remotion render using only the general fix (28/28 passed) plus 16 fast
+regression tests covering images/audio/video/repeated-filenames/missing-
+files/cleanup. See TR-030 in `knowledge/operations/troubleshooting.md` and
+`knowledge/wiki/reports/phase-15-renderer-hardening.md`.
 
 ## Immediate Next Action
 
-The author must explicitly signal that the recording session is complete and identify the repository or filesystem locations of:
+Execute the Phase 16 handoff through fresh capability preflight, authoritative
+source extraction, verification/enrichment, grounded reference-video analysis,
+and 2–3 production proposals. Present runtime, authoring mode, provider/model,
+cost, narration, music, and benchmark-parity rubric, then stop for explicit
+author approval before paid generation or full production.
 
-1. The clean narration recording
-2. The new human-video recording
+## Verification Criteria for Phase 15 Start
 
-After those inputs are available, begin Phase 14B.1 by validating the media files and updating the proof timing against the clean narration.
+Phase 15 may begin when:
 
-## Verification Criteria for Phase 14B.1 Start
+- The agent has read the repository guide and current knowledge state
+- The active scope is system readiness, not Episode 001 production
+- Existing unrelated working-tree changes are preserved
+- No paid provider call is made without a new explicit authorization
 
-Phase 14B.1 may begin only when:
+## Verification Criteria for Phase 15 Completion
 
-- The recording pause has been explicitly lifted
-- The clean narration file exists and is readable
-- The human-video source exists and is readable
-- The clean narration matches the approved script closely enough for timing alignment
-- The existing Phase 14B proof remains reproducible
-- The correction scope remains limited to the existing 47-second proof
+Phase 15 is complete only when:
 
-## Verification Criteria for Phase 14B.1 Completion
-
-Phase 14B.1 is complete only when:
-
-- All eight required corrections have been implemented
-- The proof uses the clean narration recording
-- Beats 1 and 2 read as one continuous composition
-- Beats 3 and 4 read as one continuous composition
-- Synthetic multiplication uses an approved visual vocabulary
-- Manufactured Consensus is legible at normal playback size
-- Technical validation passes
-- Word-level synchronization passes
-- Creative review passes
-- The author explicitly approves the proof as public-ready or records a new correction phase
+- A blog source can be transformed into schema-valid research/proposal/script
+  and scene-plan artifacts with traceable claims and exclusions
+- Capability preflight reports the actual available tools and render runtimes
+- The chosen local or zero-cost test path reaches a deterministic review output
+- Checkpoint, cost, and human-approval boundaries behave as documented
+- Failures, fixes, exact commands, and evidence are recorded
+- A follow-on real-production brief can be handed off without relying on chat context
+- The author reviews the readiness report and authorizes the next production phase
 
 ## Relevant Files
 
@@ -524,6 +639,7 @@ The earlier conversational assumption that the project was near the end of Phase
 Repository and production-playbook evidence confirms that:
 
 - Phase 14B is complete
-- Phase 14B.1 is next
-- The full Episode 001 build has not been authorized
+- Phase 14B.1 has been superseded
+- Episode 001 is being produced manually by Lee outside OpenMontage
+- Phase 15 blog-to-video production readiness is next
 - The current production proof is not public-ready

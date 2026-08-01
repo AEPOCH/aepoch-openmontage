@@ -721,7 +721,9 @@ projects/aepoch-episodes/<episode>/reference/
 
 The current repository uses `reference/` for Lee's material.
 
-New author-owned camera and narration recordings should receive a clear source-media directory before Phase 14B.1 begins.
+If author-owned camera or narration recordings are brought back into a future
+OpenMontage scope, they should receive a clear source-media directory first.
+The former Phase 14B.1 recording dependency is superseded.
 
 Do not place large media in `knowledge/`.
 

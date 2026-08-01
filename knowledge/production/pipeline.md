@@ -893,21 +893,29 @@ After every meaningful phase:
 
 ## Current Immediate Production Boundary
 
-The project is presently between Phase 14B and Phase 14B.1.
+Episode 001 delivery has moved to Lee's manual workflow. Phase 14B.1 is
+superseded, and the Phase 14B proof remains internal evidence only.
 
-Production remains paused while the author records:
+The next executable system action is Phase 15 blog-to-video production
+readiness:
 
-- New human video
-- Clean narration of the approved script
+1. Audit the live `animated-explainer` manifest, director skills, artifact
+   schemas, registry capabilities, checkpoints, and cost controls. **Done
+   2026-07-31** — see `knowledge/wiki/reports/phase-15-baseline-contract-audit.md`.
+2. Reconcile `brands/aepoch/SCRIPT_RULES.md` with those live contracts.
+   **Mismatch found, repair not yet scoped** — `SCRIPT_RULES.md` promises
+   direct blog-to-script entry that `animated-explainer.yaml`'s
+   `required_artifacts_in: [proposal_packet]` and the stale v1.0 language in
+   `script-director.md` do not support. See TR-025 and ADR-023.
+3. Select or create a small representative blog-source fixture. **Not
+   started** — blocked on step 2's scope decision.
+4. Carry it through the canonical artifacts using local or zero-cost paths.
+5. Validate deterministic review output and all approval boundaries.
+6. Record a readiness verdict, blockers, exact evidence, and the next
+   production handoff.
 
-The next executable production action is not a render or generation call.
+Steps 3-6 are paused pending a plan coordinator decision on the step 2 repair
+approach (three options recorded in the audit report above).
 
-The next executable production action is:
-
-1. Confirm the recording pause is lifted.
-2. Identify the source media paths.
-3. Inspect the media.
-4. Capture metadata.
-5. Align the clean narration.
-6. Reproduce Phase 14B.
-7. Begin only the eight scoped Phase 14B.1 corrections.
+No paid generation, publishing, or real public episode is authorized by
+this readiness phase.

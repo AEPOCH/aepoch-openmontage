@@ -18,7 +18,7 @@ from schemas.artifacts import ARTIFACT_NAMES, validate_artifact
 
 # All known stages across all pipelines (used only for artifact name lookup).
 ALL_KNOWN_STAGES = frozenset([
-    "research", "proposal", "idea", "script", "scene_plan",
+    "extraction", "research", "proposal", "idea", "script", "scene_plan",
     "assets", "edit", "compose", "publish",
 ])
 
@@ -28,6 +28,7 @@ STAGES = ["research", "proposal", "idea", "script", "scene_plan",
           "assets", "edit", "compose", "publish"]
 
 CANONICAL_STAGE_ARTIFACTS = {
+    "extraction": "source_extraction",
     "research": "research_brief",
     "proposal": "proposal_packet",
     "idea": "brief",
@@ -527,10 +528,30 @@ def get_next_stage(
 
     Uses pipeline-specific stage order so that pipelines with different
     stage sequences (e.g. cinematic vs explainer) progress correctly.
+
+    Conditional stages (e.g. ``extraction``, gated by
+    ``condition: source_article_exists``) are skipped when resuming a run
+    that already completed a later stage — that later completion proves the
+    condition did not apply and the stage was legitimately bypassed, not
+    left unfinished.
     """
     stages = get_pipeline_stages(pipeline_type) if pipeline_type else STAGES
     completed = set(get_completed_stages(pipeline_dir, project_id, pipeline_type))
-    for stage in stages:
-        if stage not in completed:
-            return stage
+
+    conditional_stages: set[str] = set()
+    if pipeline_type:
+        try:
+            from lib.pipeline_loader import load_pipeline_readonly, get_conditional_stage_names
+            conditional_stages = get_conditional_stage_names(
+                load_pipeline_readonly(pipeline_type)
+            )
+        except Exception:
+            conditional_stages = set()
+
+    for i, stage in enumerate(stages):
+        if stage in completed:
+            continue
+        if stage in conditional_stages and completed.intersection(stages[i + 1:]):
+            continue
+        return stage
     return None

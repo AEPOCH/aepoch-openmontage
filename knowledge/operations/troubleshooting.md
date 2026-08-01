@@ -1089,6 +1089,451 @@ print(json.dumps(registry.support_envelope()['recraft_image'], indent=2))
 git status --short --untracked-files=all -- knowledge/
 ```
 
+## TR-026 — SCRIPT_RULES.md blog-to-script adapter contract disagrees with the live script stage
+
+**Status:** resolved 2026-07-31; representative agent-led dry run passed
+
+### Symptom
+
+`brands/aepoch/SCRIPT_RULES.md` states a blog-sourced `script` artifact is
+acceptable at the `animated-explainer` pipeline's script stage without a
+send-back. Following the pipeline literally, it is not: the stage's own
+contract and director skill disagree with that claim.
+
+### Environment
+
+Branch `aepoch-series`, HEAD `9cb05cf`. Static/documentation audit — no
+runtime error, no test failure. Confirmed by `grep`/`read` inspection, not
+by attempting a live run.
+
+### Exact evidence
+
+- `pipeline_defs/animated-explainer.yaml`: `script` stage
+  `required_artifacts_in: [proposal_packet]` — a blog-sourced script per
+  SCRIPT_RULES.md has no `proposal_packet` (no `research`/`proposal` stage ran).
+- `skills/pipelines/explainer/script-director.md:5`: *"You have a `brief`
+  artifact from the Idea Explorer."* — stale v1.0 language; the current
+  manifest has no `idea` stage. Its own Prerequisites table two lines later
+  correctly names `proposal_packet`, contradicting the opening line.
+- `skills/pipelines/explainer/idea-director.md` (produces `brief` per
+  `schemas/artifacts/brief.schema.json`) is not referenced by
+  `animated-explainer.yaml`'s `stages` or `required_skills` — orphaned for
+  this pipeline (still legitimately used by other pipelines).
+- `required_artifacts_in` is not enforced in `lib/checkpoint.py` or
+  `lib/pipeline_loader.py` (confirmed by grep) — it is an agent-honored
+  contract, not a hard code gate, so nothing crashes; an agent following
+  Rule Zero literally simply cannot satisfy the stage's documented
+  prerequisites from a blog source alone.
+- Zero test/fixture coverage of `SCRIPT_RULES.md` exists in `tests/`.
+
+### Cause
+
+Documentation drift. `SCRIPT_RULES.md` was written assuming direct
+blog-to-script injection was already wired into the pipeline; the pipeline
+manifest and script-director skill were never updated to expose that entry
+path, and script-director.md itself still carries pre-v2.0 wording.
+
+### Resolution
+
+Added a conditional extraction stage before research with a canonical
+`source_extraction` artifact. The source article's central question, key
+takeaway, ÆPOCH reframe, human consequence, and closing are protected.
+Research may verify and enrich but may not silently change them. Research,
+proposal, and script directors now encode this boundary. See ADR-024.
+
+### Verification
+
+The complete contract suite passed after implementation: 566 passed, 7
+skipped. A representative blog fixture and focused authority tests exist.
+
+**2026-07-31, later same day:** Ran the representative fixture
+(`tests/fixtures/blog/authoritative-source.md`) through extraction,
+source-authoritative research, and proposal for real, using the actual
+checkpoint/schema machinery — `tests/qa/test_09_blog_source_dry_run.py`,
+24/24 checks passed. Confirmed mechanically:
+
+- All five protected fields (`central_question`, `key_takeaway`,
+  `aepoch_reframe`, `human_consequence`, `closing_statement`) are identical,
+  byte-for-byte, from `source_extraction` through `research_brief` and
+  `proposal_packet`.
+- All three `angles_discovered` in the research brief are `grounded_in` the
+  extraction's claims rather than proposing a competing thesis.
+- All three `proposal_packet.concept_options` share one identical
+  `core_message` (the protected thesis) while their `title`, `hook`,
+  `narrative_structure`, `visual_approach`, `target_platform`, and `tone`
+  all differ — presentation varies, thesis does not, exactly as ADR-024
+  requires.
+- Full contract suite (567 passed, 7 skipped) and `test_08_end_to_end.py`
+  (38/38) both stayed green alongside this run.
+
+Discovered and fixed one regression along the way — see TR-027. Full
+evidence: `knowledge/wiki/reports/phase-15-blog-dry-run-results.md`.
+
+### Related files
+
+- `brands/aepoch/SCRIPT_RULES.md`
+- `pipeline_defs/animated-explainer.yaml`
+- `skills/pipelines/explainer/script-director.md`
+- `skills/pipelines/explainer/idea-director.md`
+- `schemas/artifacts/brief.schema.json`, `schemas/artifacts/proposal_packet.schema.json`
+- `tests/qa/test_09_blog_source_dry_run.py`
+- `knowledge/wiki/reports/phase-15-baseline-contract-audit.md`
+- `knowledge/wiki/reports/phase-15-blog-dry-run-results.md`
+
+---
+
+## TR-027 — Conditional pipeline stages broke `get_next_stage` resume logic
+
+**Status:** resolved 2026-07-31
+
+### Symptom
+
+After the ADR-024 `extraction` stage (conditional: `source_article_exists`)
+was added to `animated-explainer.yaml`, re-running the existing zero-cost
+regression test regressed: `tests/qa/test_08_end_to_end.py` went from 38
+passed/0 failed to 36 passed/2 failed.
+
+### Environment
+
+Branch `aepoch-series`. `.venv/bin/python tests/qa/test_08_end_to_end.py`
+(non-blog, topic-led synthetic run — never produces a `source_extraction`).
+
+### Exact error
+
+```text
+[FAIL] Next stage after proposal
+...
+[FAIL] Next stage is None (done)
+```
+
+### Cause
+
+`lib/pipeline_loader.py`'s `get_stage_order()` already filtered conditional
+*sub*-stages (`_condition_is_active`) but applied no such filter to
+top-level stages — it unconditionally appended every `manifest["stages"]`
+entry, including `extraction`. `lib/checkpoint.py`'s `get_next_stage()`
+walks that order looking for the first stage without a completed
+checkpoint. For any run that legitimately never executes `extraction`
+(the ordinary topic-led explainer path — the majority of animated-explainer
+productions), `get_next_stage` got permanently stuck returning
+`"extraction"` instead of resuming at the real next stage, even after
+`research`/`proposal`/.../`publish` all completed.
+
+`required_artifacts_in`-style declarative fields are agent-honored, not
+code-enforced (confirmed by grep, see TR-026), so nothing crashed — this
+would have silently confused any caller (a real orchestrator run, not just
+the test) that asks "what's next" after skipping a conditional stage.
+
+### Resolution
+
+- Added `get_conditional_stage_names(manifest)` to `lib/pipeline_loader.py`
+  — returns the set of top-level stage names that declare a `condition`.
+- Updated `get_next_stage()` in `lib/checkpoint.py`: when walking stages in
+  order, a not-yet-completed conditional stage is skipped if any stage
+  *after* it in the order is already completed (proof the condition did not
+  apply and the stage was legitimately bypassed, not left unfinished).
+
+### Verification
+
+```bash
+.venv/bin/python tests/qa/test_08_end_to_end.py   # 38 passed, 0 failed (was 36/2)
+.venv/bin/python -m pytest tests/contracts/ -q    # 567 passed, 7 skipped, unchanged
+.venv/bin/python tests/qa/test_09_blog_source_dry_run.py  # 24 passed, 0 failed
+```
+
+Confirmed the fix holds for both the conditional-stage-skipped path
+(non-blog explainer runs) and the conditional-stage-completed path
+(blog-sourced runs, via test_09).
+
+### Related files
+
+- `lib/pipeline_loader.py`
+- `lib/checkpoint.py`
+- `tests/qa/test_08_end_to_end.py`
+- `tests/qa/test_09_blog_source_dry_run.py`
+
+---
+
+## TR-028 — SCRIPT_RULES.md Part 2 field names still don't match `script.schema.json`
+
+**Status:** resolved 2026-07-31
+
+### Symptom
+
+`brands/aepoch/SCRIPT_RULES.md` Part 2's illustrative YAML for the `script`
+artifact uses field names that do not exist in
+`schemas/artifacts/script.schema.json`: `arc_stage`, `pause_emphasis`,
+`voice_performance_plan` (top-level fields per section), `pronunciation_notes`,
+`verify_flags`, `on_screen_text`, `visual_intent`, `offset_seconds`, and an
+`enhancement_cues` type value of `transition`. The schema's actual fields are
+`delivery_cues`, top-level `voice_performance`, `pronunciation_guides`,
+`source_ref`, `enhancement_cues[].timestamp_seconds`, and no `transition` in
+the cue-type enum (`overlay`, `broll`, `diagram`, `stat_card`,
+`code_snippet`, `animation`).
+
+### Environment
+
+Branch `aepoch-series`. Discovered via a real validation failure during
+`tests/qa/test_10_blog_source_production_dry_run.py`'s first run.
+
+### Exact error
+
+```text
+jsonschema.exceptions.ValidationError: 'transition' is not one of
+['overlay', 'broll', 'diagram', 'stat_card', 'code_snippet', 'animation']
+...
+On instance['sections'][3]['enhancement_cues'][1]['type']: 'transition'
+```
+
+### Cause
+
+ADR-024's implementation reconciled SCRIPT_RULES.md Part 1 (extraction) with
+`source_extraction.schema.json` and updated the document's introduction to
+claim alignment with `animated-explainer.yaml` v2.0's real terms
+(`enhancement_cues`, a standalone voice-performance artifact), but Part 2's
+actual YAML block was not updated to match — it still reflects an earlier,
+never-implemented schema shape.
+
+### Resolution
+
+`brands/aepoch/SCRIPT_RULES.md` Parts 2-4 rewritten field-for-field against
+the live `script.schema.json`: `voice_performance` (top-level object),
+per-section `delivery_cues`, `pronunciation_guides`, `source_ref`, and the
+real `enhancement_cues.type` enum (no `transition` — documented as
+`overlay`). Added an explicit "arc-stage convention" section since the
+schema has no dedicated `arc_stage` field (encoded via `id`/`label` prefix
+instead, e.g. `hook-1`/`Hook`). Part 3's word-count/cue-density math and
+Part 4's ten-item checklist were updated to reference the real fields
+(`sections[].text`, `enhancement_cues[].timestamp_seconds`,
+`source_extraction.excluded_material`) rather than the old fictional ones.
+The intro's "voice performance plan is its own artifact" claim was also
+corrected to "a dedicated top-level `voice_performance` object in the
+script artifact" — it was never a separate artifact.
+
+### Verification
+
+```bash
+.venv/bin/python tests/qa/test_10_blog_source_production_dry_run.py
+# 47 passed, 0 failed -- script built using exactly the rewritten Part 2
+# field names, validates against schemas/artifacts/script.schema.json,
+# and satisfies all ten Part 4 checklist items programmatically.
+.venv/bin/python -m pytest tests/contracts/test_blog_source_extraction_contract.py -q
+# 6 passed -- test_directors_encode_source_authority and
+# test_blog_adapter_points_to_live_route_and_schema both still pass against
+# the rewritten document.
+```
+
+### Related files
+
+- `brands/aepoch/SCRIPT_RULES.md`
+- `schemas/artifacts/script.schema.json`
+- `skills/pipelines/explainer/script-director.md` (template used for the
+  Part 2 rewrite)
+- `tests/qa/test_10_blog_source_production_dry_run.py`
+- `tests/qa/test_11_blog_source_remotion_render.py`
+- `knowledge/wiki/reports/phase-15-readiness-closure.md`
+
+---
+
+## TR-029 — `cuts[].in_seconds`/`out_seconds` mean different things to FFmpeg vs. Remotion
+
+**Status:** resolved 2026-07-31
+
+### Symptom
+
+The same `edit_decisions.cuts[].in_seconds`/`out_seconds` field pair is
+interpreted two different ways depending on which engine consumes it:
+
+- FFmpeg's `_compose`/`_render_via_ffmpeg` (`tools/video/video_compose.py`)
+  treat them as an **in-source trim range per clip**, concatenated in list
+  order — e.g. `in_seconds=0, out_seconds=8` means "use this clip's first 8
+  seconds," repeated per clip regardless of its position in the final video.
+- Remotion's `Explainer.tsx` treats them as **absolute timeline placement**:
+  `Sequence from={in_seconds*fps} durationInFrames={(out_seconds-in_seconds)*fps}`.
+
+An `edit_decisions` artifact built with the FFmpeg (trim) convention for
+every cut — e.g. `in_seconds=0, out_seconds=<clip length>` repeated
+identically for six sequential scenes — renders correctly under FFmpeg but
+would place all six scenes at frame 0, fully overlapping, under Remotion.
+
+### Environment
+
+Discovered by inspection while building a real Remotion render
+(`tests/qa/test_11_blog_source_remotion_render.py`), cross-referencing
+`skills/pipelines/explainer/edit-director.md`'s own worked example (which
+uses the timeline convention: `0s-10s: scene-1 | ... | 10s-18s: scene-2 |
+...` mapped to `in_seconds: 0, out_seconds: 10` for the first cut) against
+`_compose`'s actual trim/concat behavior.
+
+### Cause
+
+Two rendering engines were built against two different informal readings of
+one schema field pair; `edit_decisions.schema.json` itself only documents
+`in_seconds`/`out_seconds` as `minimum: 0` numbers, with no semantic
+clarification of which convention applies.
+
+### Resolution
+
+Resolved option (a): `edit_decisions.schema.json` gained an explicit,
+validated `cut_timing_mode` field (`"source_trim"` | `"timeline"`, default
+`"source_trim"`) plus `cuts[].source_in_seconds` (default `0`, the
+in-source trim start under `"timeline"` mode). `_compose()` now rejects
+`cut_timing_mode="timeline"` with a clear error instead of silently
+misinterpreting it; `_remotion_render()` now *requires*
+`cut_timing_mode="timeline"` explicitly and rejects anything else
+(including it being absent) with a clear error naming the fix. Neither
+engine's actual trim/placement behavior changed — the field just makes the
+existing, previously-implicit convention explicit and enforced.
+`skills/pipelines/explainer/edit-director.md` rewritten with a "Cut Timing
+Mode" subsection and worked examples for both modes.
+
+### Verification
+
+```bash
+.venv/bin/python -m pytest tests/contracts/test_remotion_asset_staging_contract.py -q
+# 16 passed -- includes cut_timing_mode rejection tests for both engines
+# and a default-preserves-FFmpeg-behavior test.
+.venv/bin/python tests/qa/test_08_end_to_end.py            # 38 passed (no cut_timing_mode set -- default path)
+.venv/bin/python tests/qa/test_10_blog_source_production_dry_run.py  # 47 passed (source_trim, explicit)
+.venv/bin/python tests/qa/test_11_blog_source_remotion_render.py     # 28 passed (timeline, explicit, required)
+```
+
+### Related files
+
+- `schemas/artifacts/edit_decisions.schema.json`
+- `skills/pipelines/explainer/edit-director.md`
+- `tools/video/video_compose.py` (`_compose`, `_remotion_render`)
+- `tests/contracts/test_remotion_asset_staging_contract.py`
+- `tests/qa/test_10_blog_source_production_dry_run.py`, `tests/qa/test_11_blog_source_remotion_render.py`
+- `knowledge/wiki/reports/phase-15-renderer-hardening.md`
+
+---
+
+## TR-030 — Real Remotion render rejects local absolute-path assets by default
+
+**Status:** resolved 2026-07-31 (general fix implemented in `_remotion_render()`)
+
+### Symptom
+
+A real `npx remotion render` invocation via
+`tools/video/video_compose.py`'s `operation="render"` (render_runtime=
+`remotion`) fails to load any asset referenced by an absolute local
+filesystem path — the common case for locally-generated TTS/image/video
+files.
+
+### Environment
+
+Branch `aepoch-series`. Discovered building the first real, non-ffmpeg
+Remotion render for this project
+(`tests/qa/test_11_blog_source_remotion_render.py`) — apparently the first
+time `operation="render"` with `render_runtime="remotion"` had been
+exercised end to end against local absolute-path video assets.
+
+### Exact errors (two distinct bugs found in sequence)
+
+1. **Sub-bug (fixed):** `remotion-composer/src/Explainer.tsx`'s
+   `resolveAsset()` used `src.replace(/^file:\/\/\/?/, "")` to strip a
+   `file://` prefix — the optional third slash greedily consumed the
+   path's own leading slash for POSIX absolute-path URIs
+   (`file:///home/foo` → `home/foo`, not `/home/foo`), silently
+   misrouting every such asset to `staticFile()` (served under
+   `/public/home/foo`, a 404) instead of treating it as an absolute path.
+   ```text
+   404 while downloading file
+   http://localhost:3000/public/home/chris/.../scene_sc1.mp4
+   ```
+2. **Deeper limitation (not fixed):** even with the regex corrected to
+   produce a technically-valid `file:///...` URI,
+   `@remotion/renderer`'s own asset-download step
+   (`node_modules/@remotion/renderer/dist/assets/read-file.js` →
+   `getClient()`) rejects it outright:
+   ```text
+   Error: Can only download URLs starting with http:// or https://,
+   got "file:///home/chris/.../scene_sc1.mp4"
+   ```
+   A bare absolute path (no URI scheme at all) was also tested and fails
+   differently — `OffthreadVideo` prepends the local dev-server origin and
+   404s, since only `public/`-relative paths (via `staticFile()`) are
+   actually served over HTTP by the render pipeline's dev server.
+
+### Cause
+
+`_remotion_render()` (`tools/video/video_compose.py`) was written assuming
+absolute local paths could be passed through as `file://` URIs; this
+version of `@remotion/renderer`'s asset-download mechanism does not support
+that scheme at all for `OffthreadVideo`/`Img` sources during a CLI render —
+only `http(s)://` or a path already reachable under the bundle's
+`public/` directory (via `staticFile()`) work.
+
+### Resolution
+
+- **Fixed (earlier round):** the `resolveAsset()` regex bug itself
+  (independently correct regardless of the deeper limitation — see the
+  code comment left in `Explainer.tsx` documenting both).
+- **General fix implemented (this round), per explicit operator
+  authorization:** added `VideoCompose._stage_local_assets_for_remotion()`
+  to `tools/video/video_compose.py`, called from inside `_remotion_render()`
+  itself — not the caller. It scans every asset-bearing field
+  `ExplainerProps` actually reads (`cuts[].source`,
+  `cuts[].backgroundImage`, `cuts[].backgroundVideo`, `cuts[].images[]`,
+  `audio.narration.src`, `audio.music.src`), validates every local
+  absolute-path reference up front (missing / not-a-file / unreadable,
+  *all* problems reported at once, nothing staged if any fail), stages
+  validated assets into a UUID-scoped `remotion-composer/public/
+  _render_staging/<uuid>/` directory (collision-safe across concurrent
+  renders; index-prefixed filenames so repeated basenames from different
+  source directories never collide within one render), rewrites the
+  corresponding props fields to `staticFile()`-relative paths, returns
+  full provenance (`original_path` → `staged_path`) in
+  `ToolResult.data["staged_assets"]`, and removes the staging directory
+  (plus its now-empty parent) in a `finally` block — on success *and* on
+  render failure. `operation="render"` now works out of the box for local
+  absolute-path assets; no caller-side pre-staging required.
+
+This closes the gap the prior round's test-scoped workaround left open — a
+real production agent calling `operation="render"` today, without doing
+anything special, gets working local-asset support.
+
+### Verification
+
+```bash
+.venv/bin/python -m pytest tests/contracts/test_remotion_asset_staging_contract.py -q
+# 16 passed, 0.15s -- images/audio/video staging, repeated filenames,
+# missing/unreadable/not-a-file rejection (all problems reported at once),
+# cleanup after both success and subprocess failure (driven through the
+# real _remotion_render() against the real remotion-composer/public/,
+# subprocess mocked), cut_timing_mode validation for both engines.
+
+.venv/bin/python tests/qa/test_11_blog_source_remotion_render.py
+# 28 passed, 0 failed (up from 24 -- 4 new checks for the general fix).
+# Real npx remotion render succeeded using ONLY the general fix (no
+# manual test-side staging): 1920x1080 h264, 61.06s, audio present, no
+# black frames, subtitles present, staged_assets provenance present,
+# _render_staging/ fully empty afterward.
+# final_review.checks.promise_preservation.render_runtime_used == "remotion"
+# runtime_swap_detected == False
+
+npx tsc --noEmit   # (remotion-composer/) 15 errors, unchanged baseline (TR-024)
+```
+
+A real production agent calling `operation="render"` today, with local
+absolute-path TTS/image/video assets and no special handling of its own,
+now gets a working render. This closes the single most significant
+real-production blocker found in Phase 15.
+
+### Related files
+
+- `remotion-composer/src/Explainer.tsx` (`resolveAsset()`)
+- `tools/video/video_compose.py` (`_stage_local_assets_for_remotion`,
+  `_remotion_render`, `_render_via_atelier`'s `public_dir` pattern used as
+  the original reference)
+- `schemas/artifacts/edit_decisions.schema.json` (`cut_timing_mode`, TR-029)
+- `tests/contracts/test_remotion_asset_staging_contract.py`
+- `tests/qa/test_11_blog_source_remotion_render.py`
+- `knowledge/wiki/reports/phase-15-renderer-hardening.md`
+
+---
+
 ## Open Issues Summary
 
 | ID | Issue | State |
@@ -1102,6 +1547,12 @@ git status --short --untracked-files=all -- knowledge/
 | TR-022 | Multiplication plate inconsistent | Phase 14B.1 |
 | TR-023 | Consensus markers/output band too subtle | Phase 14B.1 |
 | TR-024 | Fifteen pre-existing TypeScript diagnostics | Operational limitation |
+| TR-026 | SCRIPT_RULES.md blog adapter contract disagreed with live script stage | Resolved (ADR-024), dry run passed |
+| TR-027 | Conditional stages broke `get_next_stage` resume logic | Resolved |
+| TR-028 | SCRIPT_RULES.md Part 2 field names didn't match `script.schema.json` | Resolved |
+| TR-029 | `cuts[].in_seconds`/`out_seconds` mean different things to FFmpeg vs. Remotion | Resolved (`cut_timing_mode`) |
+| TR-030 | Real Remotion render rejects local absolute-path assets by default | Resolved (general fix) |
+| TR-028 | SCRIPT_RULES.md Part 2 field names don't match `script.schema.json` | Open |
 
 ## Maintenance Rule
 

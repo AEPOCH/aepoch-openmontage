@@ -7,8 +7,10 @@
 - Tier 1 baseline commit: `a41e3fb`
 - Locked Episode 001 static baseline tag: `aepoch-e001-static-v0.1.0`
 - Current completed phase: **Phase 14B — production-quality visual proof.** Technical validation PASS. Asset-first hybrid workflow PASS. Word-level synchronization method PASS. **Creative-review verdict: CONDITIONAL PASS — not public-ready; suitable as an internal pipeline demonstration only.** See below and [`qa/phase-14b-production-proof-review.md`](../../projects/aepoch-episodes/001-what-is-aepoch/qa/phase-14b-production-proof-review.md).
-- Next phase: **Phase 14B.1** — a polish pass on the existing 47-second proof only (not a new proof, not full Episode 001). See "Phase 14B.1 — required corrections" below. **Not yet started.**
-- **Production is currently paused.** The author is recording new human video and a clean narration pass. No Claude session, Remotion render, image generation, or episode build should run during that recording session — see "Recording pause" below.
+- Completed system phase: **Phase 15 — blog-to-video production readiness.** Contract PASS, blog-adaptation PASS, and local-render PASS.
+- Current system phase: **Phase 16 — “What is ÆPOCH?” real blog pilot.** The live blog is authoritative; research verifies and enriches. The ÆPOCH Protocol YouTube channel is the quality benchmark.
+- **Episode 001 delivery has moved outside OpenMontage.** Lee is editing the author's narration and video directly and will produce the video manually.
+- **Phase 14B.1 is superseded.** The recording pause and media-entry gate no longer apply to the active system path.
 - Current episode: `001-what-is-aepoch`
 - Episode type: Pre-launch countdown, Video 1
 - Working title: `What is ÆPOCH?`
@@ -220,10 +222,14 @@ full Episode 001 must not begin yet. **Phase 14B.1** is the next production
 phase, and it will **polish the existing 47-second proof only** — not
 regenerate it from scratch, and not extend it into the full episode.
 
-**Next phase:** Phase 14B.1 — not yet started. See "Phase 14B.1 — required
-corrections" below.
+**Historical next phase:** Phase 14B.1 was planned but is now superseded. See
+the disposition below.
 
-## Phase 14B.1 — required corrections (not yet started)
+## Phase 14B.1 — required corrections (superseded)
+
+These corrections are retained as historical review findings. They are not
+the active execution plan because Episode 001 delivery has moved to Lee's
+manual workflow.
 
 Scoped corrections to the existing Phase 14B proof, per author creative
 review:
@@ -250,20 +256,19 @@ review:
    (not Lee's reference recording, which has the disclosed spoken-delivery
    deviations documented in Phase 14B's word-timings JSON).
 
-## Recording pause (current)
+## Recording pause (lifted by scope change)
 
-The author is pausing production to record new human video and a clean
-narration pass of the approved script. **No Claude session, Remotion
-render, image generation, or episode build should run during that
-recording session.** Phase 14B.1 work resumes only after the author
-explicitly signals the recording session is complete.
+The earlier pause is no longer active. OpenMontage does not await the new
+recordings because Lee owns their edit and final Episode 001 delivery.
+This does not authorize OpenMontage to use those recordings.
 
 ## Next task
 
-Paused for the author's recording session (human video + clean narration).
-Once that session completes and the author gives an explicit new phase
-prompt, begin Phase 14B.1 (polish pass on the existing 47-second proof,
-per the corrections above) — not full Episode 001 asset generation.
+Execute Phase 16 using
+`prompts/phase-16-what-is-aepoch-real-blog-pilot.md`: run fresh preflight,
+extract and verify the live authoritative blog, analyze the benchmark videos,
+and present differentiated production proposals. Stop for approval before paid
+generation or a full production render.
 
 ## Authoritative episode files
 

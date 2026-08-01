@@ -879,3 +879,429 @@ Adding indexing infrastructure now would create maintenance overhead before it s
 ### Revisit condition
 
 Revisit when the maintained corpus approaches roughly 100 substantial pages or retrieval failures become common.
+
+---
+
+## ADR-021 — Move Episode 001 delivery outside OpenMontage
+
+**Date:** 2026-07-31
+**Status:** confirmed
+
+### Decision
+
+Lee will edit the author's narration and video directly and produce the
+Episode 001 video manually. OpenMontage will not execute Phase 14B.1 on the
+current path.
+
+### Context
+
+The release schedule cannot wait for the system to reach production speed.
+The earlier recording pause and media-entry gate assumed OpenMontage would
+perform the final proof correction and episode build; that assumption no
+longer applies.
+
+### Consequences
+
+- Phase 14B.1 is superseded rather than completed.
+- Phase 14B remains preserved as internal technical and workflow evidence.
+- The Episode 001 manual edit is outside OpenMontage's current scope.
+- No media from Lee is awaited or ingested without a new explicit request.
+
+### Revisit condition
+
+Only if the author explicitly brings Episode 001 media or finishing work
+back into OpenMontage.
+
+---
+
+## ADR-022 — Prioritize blog-to-video production readiness
+
+**Date:** 2026-07-31
+**Status:** confirmed
+
+### Decision
+
+The next system phase is Phase 15: validate and repair the existing
+blog-source-to-`animated-explainer` path before starting another public
+episode.
+
+### Scope
+
+- Audit the blog-source adapter, manifest, director skills, schemas, tools,
+  checkpoints, and cost boundaries.
+- Validate a representative blog fixture through canonical artifacts.
+- Use local or zero-cost paths first.
+- Produce a durable readiness report and next-production handoff.
+
+### Restrictions
+
+- No paid provider calls without explicit authorization.
+- No publishing, deployment, or public-release claim.
+- No renewed Episode 001 work.
+- No redesign of the whole platform unless an evidenced blocker requires a
+  separately approved scope change.
+
+### Revisit condition
+
+After the Phase 15 readiness report is reviewed by the author.
+
+---
+
+## ADR-023 — Pause Phase 15 repair pending scope decision on the script-stage contract mismatch
+
+**Date:** 2026-07-31
+**Status:** confirmed
+
+### Decision
+
+Stop Phase 15 execution after the baseline audit (execution-sequence steps
+1-4 plus a partial step 5). Do not choose or implement a repair for the
+blog-adapter/script-stage contract mismatch unilaterally. Update the
+knowledge tree with the finding and hand the decision back to the plan
+coordinator to scope the correct work.
+
+### Context
+
+The audit confirmed `brands/aepoch/SCRIPT_RULES.md` promises a blog-sourced
+`script` artifact is acceptable at the `animated-explainer` script stage
+without a send-back, but the live manifest requires `proposal_packet` there
+and `script-director.md` still carries stale v1.0 (`brief`/"Idea Explorer")
+assumptions with no knowledge of the adapter. Three repair options exist
+(synthesize a minimal `proposal_packet`; relax `required_artifacts_in`; add a
+dedicated `extraction` pre-stage), each with different blast radius on a
+shared pipeline manifest used by other productions. Full detail:
+`knowledge/wiki/reports/phase-15-baseline-contract-audit.md`.
+
+### Reason
+
+This is a production-architecture choice affecting a manifest contract other
+pipelines may depend on, not a bug fix. `AGENT_GUIDE.md`'s "Ask Before Major
+Changes" and the Phase 15 brief's own stop conditions ("stop if the live
+architecture contradicts this brief in a way that would require redesign
+rather than a bounded repair") both point to escalating rather than deciding
+silently. The human operator explicitly directed a pause and hand-off rather
+than picking one of the three options.
+
+### Consequences
+
+- No manifest, schema, skill, or artifact file was modified.
+- Phase 15 completion (fixture run, readiness verdicts, next-production
+  handoff) is deferred until the repair scope is agreed.
+- `knowledge/state/current-state.md` Blocker 1 and Immediate Next Action
+  updated to reflect the pause.
+
+### Alternatives considered
+
+- Pick the smallest-blast-radius option (synthesize a minimal
+  `proposal_packet`) and proceed unilaterally — rejected because it still
+  edits a shared pipeline contract without operator sign-off.
+- Continue the full Phase 15 sequence and only flag the mismatch in the
+  final readiness report — rejected because the operator asked to stop now.
+
+### Revisit condition
+
+When the plan coordinator returns a scoped repair approach for the
+script-stage contract mismatch.
+
+**Resolution (2026-07-31):** Resolved by ADR-024.
+
+---
+
+## ADR-024 — Add an authoritative source-extraction stage before research
+
+**Date:** 2026-07-31
+**Status:** confirmed
+
+### Decision
+
+For blog-sourced animated explainers, use:
+
+```text
+blog source → source_extraction → research → proposal → script
+```
+
+The source article remains authoritative for the central question, key
+takeaway, ÆPOCH reframe, human consequence, and closing statement.
+
+### Research boundary
+
+Research may verify claims, add provenance, update stale factual values, add
+context, identify audience questions, and enrich visual examples. It may not
+silently replace the thesis, angle, mechanism, intended human consequence, or
+conclusion. Material contradictions require author review.
+
+### Implementation
+
+- Added the canonical `source_extraction` schema and artifact registration.
+- Added a conditional explainer extraction stage and director.
+- Passed the extraction into research, proposal, and script.
+- Updated all four director contracts to preserve source authority.
+- Corrected stale `brief`/Idea Explorer wording in the script director.
+- Added focused contract and representative blog-fixture coverage.
+
+### Alternatives rejected
+
+- A synthesized minimal proposal is neither valid nor minimal: the schema
+  requires three concepts, production planning, cost, and approval.
+- Relaxing the proposal prerequisite would bypass research, cost/runtime
+  planning, and the human approval gate.
+
+### Revisit condition
+
+Only if a real blog dry run shows that this boundary distorts the source's
+intended meaning.
+
+**Update 2026-07-31:** The real blog dry run ran
+(`tests/qa/test_09_blog_source_dry_run.py`, 24/24 passed). It did not
+distort the source's meaning: protected fields verified unchanged
+byte-for-byte and all three proposal concepts verified to vary only
+presentation. No revisit needed on that basis. See
+`knowledge/wiki/reports/phase-15-blog-dry-run-results.md`.
+
+---
+
+## ADR-025 — Skip conditional pipeline stages when a later stage already completed
+
+**Date:** 2026-07-31
+**Status:** confirmed
+
+### Decision
+
+`get_next_stage()` (`lib/checkpoint.py`) treats a not-yet-completed
+conditional stage (one declaring a manifest `condition`, e.g. `extraction`
+with `condition: source_article_exists`) as legitimately skipped — not
+unfinished — whenever a later stage in the pipeline's order already has a
+completed checkpoint.
+
+### Context
+
+Adding the ADR-024 `extraction` stage regressed `test_08_end_to_end.py`
+(38/0 → 36/2 failed): `get_next_stage` got stuck returning `"extraction"`
+forever on any run that never produces a `source_extraction` (the ordinary
+topic-led explainer path), even after every later stage completed. Root
+cause: `get_stage_order()` already filtered conditional *sub*-stages but
+applied no such filter to top-level stages. Full detail: TR-027.
+
+### Reason
+
+A resume/"what's next" function must not permanently block on a stage a run
+was never going to produce, or every non-blog-sourced animated-explainer
+production breaks. The chosen heuristic (skip if a later stage is already
+completed) needs no runtime context threading and is provably correct for
+both directions: the skipped-conditional-stage case (`test_08_end_to_end.py`)
+and the completed-conditional-stage case
+(`tests/qa/test_09_blog_source_dry_run.py`).
+
+### Consequences
+
+- `lib/pipeline_loader.py` gained `get_conditional_stage_names(manifest)`.
+- `lib/checkpoint.py`'s `get_next_stage()` now loads the manifest (when
+  `pipeline_type` is given) to apply this check.
+- Fixed without escalation: a small, immediately-testable mechanics bug, not
+  a production-architecture decision. Consistent with Phase 15's "fix only
+  evidenced blockers" / "smallest repair" rules.
+
+### Alternatives considered
+
+- Thread a runtime `context` dict (e.g. `{"source_article_exists": bool}`)
+  through `get_pipeline_stages`/`get_completed_stages`/`get_next_stage` —
+  rejected as more invasive for no behavioral gain over the completed-stage
+  heuristic, and it would require every caller to supply context correctly.
+
+### Revisit condition
+
+If OpenMontage adds a second conditional top-level stage whose condition
+can be independently true/false from a downstream stage's completion (this
+heuristic assumes conditional stages are strictly ordered before the stages
+that would prove them skipped).
+
+---
+
+## ADR-026 — Fix the Explainer.tsx asset-path regex; do not generalize local-asset serving in `_remotion_render()` this session
+
+**Date:** 2026-07-31
+**Status:** confirmed
+
+### Decision
+
+While building the first real, non-ffmpeg Remotion render for this project
+(Phase 15 readiness closure), fix the isolated, independently-correct
+`resolveAsset()` regex bug in `remotion-composer/src/Explainer.tsx`
+directly. Do not implement a general fix for the deeper limitation it
+exposed — that `_remotion_render()` (`tools/video/video_compose.py`) has no
+supported way to serve local absolute-path assets in its default
+`operation="render"` flow. Instead, prove the render works via a narrow,
+test-scoped workaround (staging assets into a project-scoped subdirectory of
+the existing `remotion-composer/public/`, cleaned up afterward) and
+document the gap as TR-030 for a scoped decision with the author.
+
+### Context
+
+The regex bug was a self-contained, provably-correct one-line fix
+(verified: TypeScript diagnostic count unchanged from the TR-024 baseline,
+no new errors). The deeper limitation is not: `@remotion/renderer`'s
+asset-download step rejects `file://` sources and bare absolute paths both
+fail differently; a real fix requires `_remotion_render()` to auto-stage
+assets and pass `--public-dir` (mirroring `_render_via_atelier`'s existing
+`public_dir` pattern) — a genuine engineering task, not a one-liner, that
+touches the render tool shared by every pipeline in the system, not only
+blog-sourced explainers.
+
+### Reason
+
+Phase 15's own decision rules say "fix only evidenced blockers in this path"
+and "prefer the smallest repair that restores contract agreement and
+testability." The regex fix satisfies both. Generalizing the asset-serving
+fix does not: it is a bigger, riskier change to shared infrastructure that
+could affect every existing and future production, and the user's
+instruction this round was specifically scoped to fixing TR-028, producing
+real Remotion render evidence, and stopping for author review — not
+redesigning the render tool's asset pipeline.
+
+### Consequences
+
+- `remotion-composer/src/Explainer.tsx`'s `resolveAsset()` is now correct
+  for what it does (round-trips POSIX and Windows absolute-path `file://`
+  URIs properly) — but that scheme still isn't accepted by the renderer's
+  download step, so the fix alone does not unblock real production.
+- `tests/qa/test_11_blog_source_remotion_render.py` proves the render CAN
+  work, using a workaround that lives in the test, not in shared code.
+- A real production agent following the documented `operation="render"`
+  contract today, without pre-staging assets, still fails. TR-030 remains
+  open and is now flagged as the top real-production blocker.
+
+### Alternatives considered
+
+- Implement the general `--public-dir` auto-staging fix in
+  `_remotion_render()` this session — rejected: bigger blast radius, no
+  author sign-off on the approach, exceeds this round's explicit scope.
+- Leave the regex bug unfixed too, since the deeper issue blocks anyway —
+  rejected: the regex bug is real and independently wrong regardless of the
+  deeper limitation, and leaving it would misrepresent the code as correct
+  when it visibly isn't (confirmed by the first failure's exact 404 URL).
+
+### Revisit condition
+
+When the author scopes and approves the general `_remotion_render()`
+local-asset-serving fix (TR-030).
+
+**Update 2026-07-31:** The author explicitly scoped and authorized this
+fix ("Resume Phase 15 for final renderer hardening... Implement a general,
+production-safe TR-030 fix in VideoCompose._remotion_render()..."). See
+ADR-027 for the implementation decision and outcome. TR-030 is now
+resolved.
+
+---
+
+## ADR-027 — Implement the general TR-030 asset-staging fix, and resolve TR-029 with an explicit `cut_timing_mode` field
+
+**Date:** 2026-07-31
+**Status:** confirmed
+
+### Decision
+
+Per explicit operator authorization (ADR-026's revisit condition), replace
+the test-scoped TR-030 workaround with a general fix inside
+`VideoCompose._remotion_render()` itself:
+`_stage_local_assets_for_remotion()` — detects local absolute-path assets
+across every field `ExplainerProps` reads, validates them up front
+(rejecting missing/unreadable inputs clearly, all problems at once), stages
+them into a UUID-scoped, collision-safe directory under
+`remotion-composer/public/`, rewrites props to the staged relative paths,
+preserves provenance in the tool result, and cleans up unconditionally
+(success or failure) without ever touching pre-existing `public/` content.
+
+Also resolve TR-029 by adding `edit_decisions.cut_timing_mode`
+(`"source_trim"` default | `"timeline"`) and `cuts[].source_in_seconds` to
+the schema, with `_compose()` and `_remotion_render()` each validating and
+rejecting the mode they don't implement, rather than silently
+misinterpreting the same field pair.
+
+### Context
+
+ADR-026 deliberately deferred this exact fix, reasoning it was too large a
+change to make without author sign-off in an unattended session. The
+author has now explicitly scoped and requested it, including the specific
+mechanism (collision-safe staging, provenance, clear rejection of
+missing/unreadable inputs, safe cleanup) and explicit regression-coverage
+requirements (images, audio, video, repeated filenames, missing files,
+cleanup, both render runtimes).
+
+### Consequences
+
+- `_remotion_render()` now requires `cut_timing_mode="timeline"` explicitly
+  — a real behavior change for that function, but it had no prior working
+  callers to break (TR-030's own history: this was "apparently the first
+  time `operation='render'` with `render_runtime='remotion'` had been
+  exercised end to end" against local assets).
+- `_compose()`'s default (`cut_timing_mode` absent → `"source_trim"`)
+  preserves 100% backward compatibility for every existing FFmpeg caller —
+  verified by rerunning `test_08_end_to_end.py` unmodified (38/0).
+- New regression suite `tests/contracts/test_remotion_asset_staging_contract.py`
+  (16 tests, 0.15s) covers the staging helper and both engines' validation
+  in isolation; `test_11_blog_source_remotion_render.py` re-verified the
+  full real Remotion render using only the general fix (28/0, up from 24/0
+  — 4 new checks for staging/provenance/cleanup), independently confirmed
+  via `ffprobe` and a `remotion-composer/public/` listing diff.
+- `tests/qa/test_10_blog_source_production_dry_run.py` and
+  `tests/qa/test_11_blog_source_remotion_render.py` updated to set
+  `cut_timing_mode` explicitly (self-documenting; only `test_11`'s change
+  was functionally required).
+
+### Alternatives considered
+
+- Keep the test-scoped workaround and only document the general fix as a
+  future task — superseded by the author's explicit authorization this
+  round.
+- Auto-detect and silently default `cut_timing_mode` per `render_runtime`
+  rather than requiring it explicitly — rejected: defeats the purpose of
+  TR-029 (the whole point is an engine never silently assumes a cut-timing
+  convention the caller didn't state).
+
+### Revisit condition
+
+If a third composition engine is added, or if `_render_via_atelier`'s
+separate `public_dir` contract should be unified with this staging
+mechanism (currently intentionally separate — atelier bypasses the
+cut-schema entirely).
+
+---
+
+## ADR-028 — Use the live “What is ÆPOCH?” blog as the authoritative real-production pilot
+
+**Date:** 2026-08-01
+**Status:** confirmed
+
+### Decision
+
+Phase 16 will use `https://aepoch.xyz/blog/post/what-is-aepoch` as its
+authoritative source and `https://www.youtube.com/@AepochProtocol` as its
+quality benchmark set. Research may verify and enrich the blog but may not
+silently revise its thesis, narrative intent, terminology, or protected facts.
+The benchmark videos must be analyzed through the reference-video workflow;
+production readiness requires an author-reviewed finished video on par with
+that grounded benchmark, not merely a technically successful render.
+
+### Context
+
+Phase 15 closed the engineering blockers on the blog extraction-to-compose
+path. The author selected this live post as the actual production test and
+confirmed that its existing research remains authoritative.
+
+### Consequences
+
+- Phase 15 is complete and Phase 16 is the active system phase.
+- Verification conflicts are escalated rather than silently resolved.
+- Proposal approval precedes paid calls and full production.
+- Technical PASS alone cannot establish production readiness.
+
+### Alternatives considered
+
+- Use another synthetic fixture first — rejected because Phase 15 already
+  established fixture-level readiness.
+- Treat external research as free to rewrite the source — rejected because it
+  would reverse the author-approved authority model.
+
+### Revisit condition
+
+If the author changes the pilot source, benchmark set, or source-authority rule.

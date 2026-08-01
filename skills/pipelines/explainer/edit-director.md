@@ -33,25 +33,76 @@ Build a timeline map:
 
 ### Step 2: Define Cuts
 
-Each cut defines what visual is shown and when:
+Each cut defines what visual is shown and when. **First set
+`edit_decisions.cut_timing_mode`** to match the `render_runtime` locked at
+proposal — the two composition engines interpret `in_seconds`/`out_seconds`
+differently, and the field makes that choice explicit rather than leaving
+it to guesswork (TR-029, `knowledge/operations/troubleshooting.md`):
+
+- `render_runtime: "ffmpeg"` → `cut_timing_mode: "source_trim"` (also the
+  default if omitted). `in_seconds`/`out_seconds` are an **in-source trim
+  range** for that cut's own file — "play this clip from second `in_seconds`
+  to second `out_seconds`" — and cuts render back-to-back in list order.
+- `render_runtime: "remotion"` → `cut_timing_mode: "timeline"` is
+  **required**; `video_compose.py` rejects the render otherwise.
+  `in_seconds`/`out_seconds` become the cut's **absolute position on the
+  final output timeline** instead — "this cut occupies the video from
+  second `in_seconds` to second `out_seconds`" — and the in-source trim
+  start moves to a separate field, `source_in_seconds` (default `0`).
+
+`source_trim` example (FFmpeg):
 
 ```json
 {
-  "id": "cut-1",
-  "source": "img-scene-1",
-  "in_seconds": 0,
-  "out_seconds": 10,
-  "layer": "primary",
-  "transform": {
-    "scale": 1.0,
-    "position": "center",
-    "animation": "ken-burns-slow-zoom"
-  },
-  "transition_in": "fade",
-  "transition_out": "dissolve",
-  "transition_duration": 0.4
+  "cut_timing_mode": "source_trim",
+  "cuts": [
+    {
+      "id": "cut-1",
+      "source": "img-scene-1",
+      "in_seconds": 0,
+      "out_seconds": 10,
+      "layer": "primary",
+      "transform": {
+        "scale": 1.0,
+        "position": "center",
+        "animation": "ken-burns-slow-zoom"
+      },
+      "transition_in": "fade",
+      "transition_out": "dissolve",
+      "transition_duration": 0.4
+    }
+  ]
 }
 ```
+
+`timeline` example (Remotion) — same scene, same 10-second placement, but
+`in_seconds`/`out_seconds` now describe *where on the output timeline* this
+cut sits, and `source_in_seconds` says where in the source file to start
+reading from (here, the source file starts at its own beginning):
+
+```json
+{
+  "cut_timing_mode": "timeline",
+  "cuts": [
+    {
+      "id": "cut-1",
+      "source": "img-scene-1",
+      "in_seconds": 0,
+      "out_seconds": 10,
+      "source_in_seconds": 0,
+      "layer": "primary"
+    }
+  ]
+}
+```
+
+A cut placed later on the timeline (e.g. the third scene in a six-scene,
+60-second video, at 20s-30s) keeps the same `source_in_seconds: 0` if its
+own source clip is exactly that scene's footage — only `in_seconds`/
+`out_seconds` change to reflect the new timeline position. Use
+`source_in_seconds` > 0 only when trimming into a longer source file (e.g.
+seconds 30-45 of a longer interview clip placed at timeline position
+10s-25s: `in_seconds: 10, out_seconds: 25, source_in_seconds: 30`).
 
 **Layering rules:**
 - `primary` — main visual (one at a time)

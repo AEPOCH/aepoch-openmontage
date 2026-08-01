@@ -856,7 +856,11 @@ print(json.dumps(registry.support_envelope()['recraft_image'], indent=2))
 | Failed fal.ai schema-validation billing was not checked against dashboard | Unverified |
 | Full provider cost ledger is not yet maintained in `knowledge/` | Planned |
 
-## Current Phase 14B.1 Provider Requirement
+## Historical Phase 14B.1 Provider Requirement (Superseded)
+
+This section is retained for provenance only. Phase 14B.1 is not on the
+active production path; Phase 15 uses local or zero-cost validation unless
+the author explicitly approves a provider call.
 
 Phase 14B.1 should begin from:
 

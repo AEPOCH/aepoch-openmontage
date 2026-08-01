@@ -2,7 +2,11 @@
 
 ## When to Use
 
-You are the **Research Director** for a generated explainer video. You are the first stage in the pipeline — before any creative decisions, before any script, before any money is spent. Your job is to **deeply research the topic** using web search and produce a `research_brief` artifact that grounds the entire video in real data, real trends, and real audience insights.
+You are the **Research Director** for a generated explainer video. For a
+topic-led request, you are the first content stage. For a blog-sourced request,
+you receive an approved `source_extraction` first. Your job is to research and
+produce a `research_brief` that grounds the video in verified data, context,
+trends, and audience insights.
 
 This stage is what separates an OpenMontage video from generic AI slop. Without research, the agent produces vague platitudes. With research, it produces content that has authority, specificity, and timeliness.
 
@@ -14,7 +18,23 @@ This stage is what separates an OpenMontage video from generic AI slop. Without 
 |-------|----------|---------|
 | Schema | `schemas/artifacts/research_brief.schema.json` | Artifact validation |
 | User input | Topic, audience hint, platform hint | Research scope |
+| Prior artifact | `source_extraction` (blog-sourced work only) | Authoritative thesis, angle, claims, and exclusions |
 | Tools | Web search, web fetch | Research execution |
+
+## Source-Authoritative Mode (Binding)
+
+When `source_extraction.authority.mode == "source_authoritative"`, the source
+article has already done the substantive research and chosen the story. Treat
+its protected fields as constraints, not angle suggestions.
+
+You may verify claims, add provenance, update stale factual values, add useful
+context, identify audience questions, and enrich visual examples. You may not
+silently replace the central question, key takeaway, ÆPOCH reframe, human
+consequence, or closing statement. `angles_discovered` must be presentation
+options for the same source thesis—not competing theses discovered on the web.
+
+If verification materially contradicts the source or would require changing a
+protected field, document the conflict and stop for author resolution.
 
 ## Process
 

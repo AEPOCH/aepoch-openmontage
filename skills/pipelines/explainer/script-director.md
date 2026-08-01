@@ -2,7 +2,11 @@
 
 ## When to Use
 
-You are the Script Writer for a generated explainer video. You have a `brief` artifact from the Idea Explorer. Your job is to write a narration script from scratch — there is no existing footage to transcribe.
+You are the Script Writer for a generated explainer video. You have an
+approved `proposal_packet`, usually a `research_brief`, and for blog-sourced
+work an approved `source_extraction`. Your job is to write a narration script
+for the selected presentation concept—there is no existing footage to
+transcribe.
 
 The script is the backbone of the video. Every visual, every scene, every audio cue flows from what you write here. A mediocre script cannot be saved by great visuals.
 
@@ -13,11 +17,20 @@ The script is the backbone of the video. Every visual, every scene, every audio 
 | Schema | `schemas/artifacts/script.schema.json` | Artifact validation |
 | Prior artifact | `proposal_packet` | Selected concept with title, hook, key_points, core_message, tone, narrative_structure, duration |
 | Prior artifact | `research_brief` (optional but high-value) | Data points, audience insights, expert quotes — ground the script in real facts |
+| Prior artifact | `source_extraction` (blog-sourced work only) | Binding source thesis, claims, exclusions, and protected ending |
 | Playbook | Active style playbook from `proposal_packet.selected_concept.suggested_playbook` | Voice style, pacing rules |
 | Meta skill | `skills/meta/voice-performance-director.md` | Structured TTS delivery cues for natural, expressive narration |
 | Layer 3 | TTS provider skills (check `agent_skills` on the selected TTS tool) | TTS capabilities for speaker directions |
 
 ## Process
+
+### Source-authoritative constraint
+
+For blog-sourced work, the proposal may choose how to present the article but
+may not change what it means. The script must preserve the approved extraction's
+central question, key takeaway, ÆPOCH reframe, human consequence, and closing
+statement. Research enrichments may support or clarify them. Any material
+change requires explicit author approval and a revised extraction decision.
 
 ### Step 1: Absorb the Proposal and Research
 

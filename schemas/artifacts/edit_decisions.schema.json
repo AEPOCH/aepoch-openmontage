@@ -7,6 +7,12 @@
   "required": ["version", "cuts", "render_runtime"],
   "properties": {
     "version": { "type": "string", "const": "1.0" },
+    "cut_timing_mode": {
+      "type": "string",
+      "enum": ["source_trim", "timeline"],
+      "default": "source_trim",
+      "description": "TR-029 (see knowledge/operations/troubleshooting.md): how cuts[].in_seconds/out_seconds are interpreted. 'source_trim' (default) is the FFmpeg compose-path convention -- an in-source trim range per clip, concatenated in list order; every existing FFmpeg-rendered production uses this and it requires no change. 'timeline' is the Remotion Explainer.tsx convention -- absolute placement on the output timeline (Sequence from/durationInFrames), with cuts[].source_in_seconds giving the in-source trim start. render_runtime='remotion' REQUIRES 'timeline' and video_compose.py rejects the render with a clear error otherwise, rather than silently misinterpreting cut placement; render_runtime='ffmpeg' (or the FFmpeg compose path in general) rejects 'timeline' the same way, since it is not implemented there."
+    },
     "cuts": {
       "type": "array",
       "items": {
@@ -15,8 +21,14 @@
         "properties": {
           "id": { "type": "string" },
           "source": { "type": "string", "description": "Source file path or asset-manifest ID" },
-          "in_seconds": { "type": "number", "minimum": 0 },
-          "out_seconds": { "type": "number", "minimum": 0 },
+          "in_seconds": { "type": "number", "minimum": 0, "description": "Meaning depends on top-level cut_timing_mode: in-source trim start ('source_trim') or absolute output-timeline start ('timeline'). See cut_timing_mode." },
+          "out_seconds": { "type": "number", "minimum": 0, "description": "Meaning depends on top-level cut_timing_mode: in-source trim end ('source_trim') or absolute output-timeline end ('timeline'). See cut_timing_mode." },
+          "source_in_seconds": {
+            "type": "number",
+            "minimum": 0,
+            "default": 0,
+            "description": "In-source trim start, used only with cut_timing_mode='timeline' (Remotion). Ignored under 'source_trim', where in_seconds already serves this purpose. Defaults to 0 (start of the source clip)."
+          },
           "speed": { "type": "number", "minimum": 0.1, "default": 1.0 },
           "layer": {
             "type": "string",

@@ -47,6 +47,7 @@
           "name": { "type": "string" },
           "agent": { "type": "string", "description": "Legacy: class name for Python-driven stages" },
           "skill": { "type": "string", "description": "Skill path for instruction-driven stages (e.g., pipelines/explainer/idea-director)" },
+          "condition": { "type": "string", "description": "Optional agent-honored activation condition for an input-specific stage (e.g., source_article_exists)" },
           "required_artifacts_in": {
             "type": "array",
             "items": { "type": "string" },
