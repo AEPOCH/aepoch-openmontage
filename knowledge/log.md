@@ -1214,3 +1214,24 @@ action stated in the immediately preceding log entry; no production work had
 started.
 
 ---
+
+## 2026-08-01 — Chris authorized the Phase 16 extraction tranche
+
+Chris approved the executive producer's recommendation to begin the first
+real Phase 16 tranche. Authorization is limited to creating the separate pilot
+workspace, recording current preflight evidence, retrieving the live “What is
+ÆPOCH?” blog, producing and validating the canonical authoritative
+`source_extraction`, writing the extraction checkpoint as `awaiting_human`,
+and updating durable knowledge.
+
+Claude must stop at the extraction gate. This approval does not cover
+verification/enrichment, benchmark-video analysis, research, proposals, paid
+provider calls, asset generation, full production, publishing, or deployment.
+
+### Next action
+
+Claude resumes from `knowledge/state/current-state.md`, executes the authorized
+extraction-only tranche, records evidence and knowledge, and returns the
+extraction artifact for Chris's approval.
+
+---

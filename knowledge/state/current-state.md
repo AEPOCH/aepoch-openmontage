@@ -583,14 +583,14 @@ files/cleanup. See TR-030 in `knowledge/operations/troubleshooting.md` and
 
 ## Immediate Next Action
 
-Claude initializes a new Phase 16 workspace, records the fresh preflight, and
-executes the live-blog `extraction` stage only. Claude produces a schema-valid
-`source_extraction`, writes the binding extraction checkpoint as
-`awaiting_human`, updates the knowledge tree, and stops for Chris's explicit
-approval. Only after that approval may Claude proceed to source verification/
-enrichment, grounded benchmark analysis, research, and differentiated
-proposals. No paid generation, full production, publish, or deploy is
-authorized.
+**Authorized by Chris on 2026-08-01.** Claude initializes a new Phase 16
+workspace, records the fresh preflight, and executes the live-blog
+`extraction` stage only. Claude produces a schema-valid `source_extraction`,
+writes the binding extraction checkpoint as `awaiting_human`, updates the
+knowledge tree, and stops for Chris's explicit approval. Only after that
+approval may Claude proceed to source verification/enrichment, grounded
+benchmark analysis, research, and differentiated proposals. No paid
+generation, full production, publish, or deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 
