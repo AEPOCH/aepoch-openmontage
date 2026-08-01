@@ -96,3 +96,38 @@ Claude makes a scene-plan-only revision, reruns schema validation, variation,
 and slideshow-risk checks, refreshes the checkpoint as `awaiting_human`,
 updates durable knowledge, commits/pushes, and stops. No asset or audio
 generation is authorized.
+
+---
+
+## Revision Round 1 Review — 2026-08-01
+
+**Verdict: PASS — awaiting Chris's approval.**
+
+Verified against commit `7a095f2` and the live artifact:
+
+- `hook-1b` no longer contains or implies the unsupported “nine out of ten”
+  ratio; its intent now describes general feed uncertainty.
+- `build-3a` is a left-to-right linear extraction flow with no radial layout.
+- All camera-movement fields now agree with their scene prose. The earlier
+  checker-driven pans/dollies were removed, and `metadata.camera_note`
+  truthfully documents one restrained push-in at `climax-3` plus element-level
+  motion elsewhere.
+- The 18.75-second logo hold is replaced by a 12-second mark hold and a
+  distinct 6.75-second wordless Paper-to-black release.
+- Schema validation passes.
+- The 32-scene timeline covers exactly 0–280 seconds with no gaps or overlaps.
+- Variation remains `strong` (`0.6`); its camera-motion suggestion is not a
+  creative requirement because the plan uses purposeful element-level motion
+  in a flat 2D atelier treatment.
+- Slideshow risk remains `strong` (`0.42`).
+- No new critical findings were found.
+
+The sole pacing outlier remains `climax-2b-scene` at 2.92 seconds, 0.08 seconds
+under the playbook minimum. This is accepted as a non-blocking disclosed
+exception tied to the approved KAIROS narration boundary.
+
+### Current next action
+
+Chris approves or requests revision at the `scene_plan` gate. Asset and audio
+work remain unauthorized until that response. OpenAI versus ElevenLabs and the
+existing voice recording's role/path must be resolved before any audio call.

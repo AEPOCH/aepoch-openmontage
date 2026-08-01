@@ -1894,3 +1894,101 @@ regardless. No asset generation, audio generation, paid calls, full
 production, publish, or deploy is authorized.
 
 ---
+
+## 2026-08-01 — Scene plan approved; ElevenLabs voice audition authorized
+
+Chris approved the Phase 16 scene plan after revision round 1. He selected
+ElevenLabs over the provisional OpenAI TTS path because it is the better fit
+for the approved measured, warm, restrained narration and confirmed that
+credits are available. The recommended production model is
+`eleven_multilingual_v2`, sample-gated before batch narration.
+
+Chris explicitly excluded the previously disclosed existing recording from
+all use. Agents must not locate, scan, listen to, transcribe, clone, or use it
+as a performance/pacing reference.
+
+The next bounded handoff is
+`docs/aepoch-production-playbook/prompts/phase-16-elevenlabs-voice-audition.md`:
+record scene-plan approval and the revised append-only voice decision, inspect
+the account's real voice list, generate 2–3 small comparable climax-passage
+samples within a $0.05 audition cap, checkpoint `assets` `awaiting_human`, and
+stop. No batch narration or visual generation is authorized.
+
+---
+
+## 2026-08-01 — ElevenLabs voice-audition tranche executed; stopped at cost conflict, no paid call made
+
+Executed `docs/aepoch-production-playbook/prompts/phase-16-elevenlabs-voice-audition.md`.
+All five "record the approvals" steps completed: `checkpoint_scene_plan.json`
+rewritten `completed`/`human_approved: true` (Chris's approval preserved,
+`review.notes` records the approval and scope); `get_next_stage()` confirmed
+`assets` is next; `checkpoint_assets.json` created `in_progress` with the
+voice-audition scope recorded under `metadata.partial_progress` (no incomplete
+canonical `asset_manifest` written); `decision_log.json` appended `d-016`
+(`voice_selection` / "Narration TTS provider") selecting `elevenlabs_tts`,
+`user_approved: true`, retaining full history -- OpenAI (`d-005`/`d-012`)
+superseded to fallback-only, the existing recording rejected because Chris
+explicitly excluded all use of it; `d-005`, `d-012`, `d-015` verified unmutated
+before and after the append. `proposal_packet.json`'s stale OpenAI-only
+`voice_selection` and `tts_selector` tool fields (which still claimed OpenAI
+was the only configured provider) were corrected to ElevenLabs /
+`eleven_multilingual_v2`, referencing `d-016`; unrelated approved choices and
+proposal history untouched.
+
+Inspected the account's real voice list via the free, read-only
+`GET /v2/voices` endpoint (not the raw SDK, not a registered listing tool --
+none exists yet) -- 21 real premade voices returned with full metadata. Shortlisted
+three against the brief ("measured, warm, conversational, unhurried
+documentary narration; no rising inflection, sales energy, theatrical
+gravitas, or YouTuber delivery"), explicitly rejecting voices whose real
+labels/descriptions contradicted the brief (Adam: "dominant... brash...
+aggressive"; Laura/Charlie/Liam/Jessica: "quirky"/"hyped, energetic"/"energetic,
+social media creator"/"playful, cute"; Callum/Harry: "unsettling"/"fierce
+warrior", `characters_animation` use case):
+
+- **George** (`JBFqnCBsd6RMkjVDRZzb`) -- "warm, captivating storyteller,"
+  `narrative_story` use case, mature, British.
+- **Bill** (`pqHfZKP75CvOlQylNhV4`) -- "wise, mature, balanced... friendly and
+  comforting... ready to narrate your stories," older register.
+- **River** (`SAz9YHcvj6GT2YYXdXww`) -- "relaxed, neutral, informative,"
+  calm/conversational, a genuinely differentiated third option.
+
+Shortlist and full reasoning recorded in `checkpoint_assets.json`'s
+`metadata.partial_progress.shortlist`.
+
+**Cost conflict found; no paid call made.** The handoff requires estimating
+before calling and stopping to ask Chris if the estimate would exceed the
+$0.05 audition cap. The approved climax passage (`climax-1` through
+`climax-2b`, phonetic-substituted for AY-pock/KY-ross in the provider request
+only -- canonical `script.json` untouched) is 357 characters. The registered
+tool's own `estimate_cost()` (`len(text) * $0.0003`) prices one sample at
+$0.1071 -- three samples at $0.3213. Cross-checked against real 2026
+`eleven_multilingual_v2` market pricing (~$0.10/1000 characters): one sample
+$0.0357, two $0.0714, three $0.1071. **Even at the more favorable verified
+market rate, 2 or 3 full-passage samples exceed the $0.05 cap; only exactly
+one voice sample fits under it.** Recorded three `estimated` (not reserved,
+not spent) entries in a newly created, schema-valid
+`projects/aepoch-blog-pilot-what-is-aepoch/artifacts/cost_log.json`
+(`budget_spent_usd: 0`, `budget_reserved_usd: 0`). Per the handoff's explicit
+instruction and the "fallback: none" provider lock, execution stopped here --
+no ElevenLabs `text_to_speech` call was made, no sample audio exists, no voice
+was selected, and no batch narration or other asset was generated.
+
+`checkpoint_assets.json` remains `in_progress` (not `awaiting_human`, since no
+samples exist yet to gate on) with the shortlist, planned settings
+(`stability: 0.62, similarity_boost: 0.85, style: 0.25, speed: 0.95,
+use_speaker_boost: true, output_format: mp3_44100_192`, model
+`eleven_multilingual_v2`), and the cost-conflict finding recorded under
+`metadata.partial_progress`.
+
+### Next action
+
+Chris resolves the audition-budget conflict: approve a higher audition cap
+(e.g. ~$0.07-$0.11 -- still trivial against the approved $2.00 project cap),
+reduce the shortlist to fewer voices, accept a shorter passage, or another
+resolution of his choosing. Only after that resolution may Claude make any
+paid ElevenLabs call. No voice selection, batch narration, image/diagram/
+music/sound-effect/review-still generation, composition, render, publish, or
+deploy is authorized.
+
+---

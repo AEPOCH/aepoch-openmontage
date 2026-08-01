@@ -773,13 +773,34 @@ unchanged "strong"/0.42. Checkpoint refreshed `awaiting_human` (Claude did not
 self-approve). Full detail: `knowledge/log.md`, 2026-08-01 "Scene-plan
 revision round 1" entry.
 
-**Immediate next action:** Chris and Monty re-review the corrected scene plan.
-Only after approval may Claude proceed to `assets`. The disclosed
-`climax-2b-scene` pacing exception, the existing voice recording's role/path,
-the two `aepoch-symbolic.yaml` WCAG contrast findings, and the open
-OpenAI-vs-ElevenLabs TTS decision (`d-015`) all remain outstanding regardless.
-No asset generation, audio generation, paid calls, full production, publish,
-or deploy is authorized.
+**Update 2026-08-01 (scene plan approved; ElevenLabs voice-audition tranche
+executed, stopped at cost conflict):** Chris approved the scene plan and
+selected ElevenLabs (`eleven_multilingual_v2`) over the provisional OpenAI
+path, explicitly excluding the previously disclosed existing recording from
+all use. `checkpoint_scene_plan.json` completed/approved; `checkpoint_assets.json`
+opened `in_progress` (voice-audition scope only); `decision_log.json` `d-016`
+appended (ElevenLabs selected, `d-005`/`d-012`/`d-015` preserved unmutated);
+`proposal_packet.json`'s stale OpenAI-only voice fields corrected. Fetched the
+account's real 21-voice list (free, read-only) and shortlisted three against
+the "measured, warm, unhurried documentary narration" brief: George
+(`JBFqnCBsd6RMkjVDRZzb`), Bill (`pqHfZKP75CvOlQylNhV4`), River
+(`SAz9YHcvj6GT2YYXdXww`) -- reasoning in `checkpoint_assets.json`. **Stopped
+before any paid call:** the approved climax passage (357 chars) prices at
+$0.1071/voice via the tool's own estimate and $0.0357/voice via verified
+real-world market pricing -- 2-3 full-passage samples exceed the $0.05
+audition cap either way; only one voice fits under it. Three `estimated` (not
+spent) entries recorded in a new schema-valid `cost_log.json`. Full detail:
+`knowledge/log.md`, 2026-08-01 "ElevenLabs voice-audition tranche executed;
+stopped at cost conflict" entry.
+
+**Immediate next action:** Chris resolves the audition-budget conflict
+(approve a higher cap, fewer voices, a shorter passage, or another choice).
+Only after that may Claude make any paid ElevenLabs call. The disclosed
+`climax-2b-scene` pacing exception, the two `aepoch-symbolic.yaml` WCAG
+contrast findings, and this new audition-budget conflict remain outstanding.
+No voice selection, batch narration, other asset generation, paid calls
+beyond the resolved audition, full production, publish, or deploy is
+authorized.
 
 ## Verification Criteria for Phase 15 Start
 
