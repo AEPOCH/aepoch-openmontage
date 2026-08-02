@@ -892,15 +892,29 @@ longer pause, not deliberate engineering. Full detail: `knowledge/log.md`,
 2026-08-02 "Gate 4 approved; human-narration timing lock and scene retiming
 executed" entry.
 
-**Immediate next action:** Chris and Monty review the retimed storyboard
-(`scene_plan.json` against `script.json`'s new section boundaries) and
-confirm Gate 4 is fully closed. Only after that review may Claude proceed
-toward asset generation under a separate, later, explicitly authorized
-handoff. The two `aepoch-symbolic.yaml` WCAG contrast findings remain
-outstanding; the checkpoint schema's assets-stage `asset_manifest`
-requirement gap remains a known, disclosed limitation. No visual asset
-generation, audio mastering, composition, render, publish, or deploy is
-authorized.
+**Update 2026-08-02 (scene-retiming boundary correction executed):** Monty's
+review of the timing-lock tranche found 8 internal scene cuts landed inside
+spoken words (proportional scaling doesn't respect word boundaries). Claude
+corrected all 8 to the exact real word edge Monty's report identified, plus
+2 additional violations a full programmatic audit found that his manual
+review had not caught (`setup-2a`/`setup-2b`, `build-4a`/`build-4b`).
+`tail-hold-mark` now begins exactly at the real narration end (263.39s,
+confirmed no words at or after) with its original 12.0s mark-hold restored.
+Re-verified: schema-valid, exact 0-280s coverage, zero of 33 boundary points
+inside any of 627 canonical words, all cues in-bounds, all scenes within
+3.0-12.0s, and unchanged variation/slideshow-risk scores. `script.json` was
+not touched (out of scope). Full detail: `knowledge/log.md`, 2026-08-02
+"Scene-retiming boundary correction executed" entry.
+
+**Immediate next action:** Monty reviews the corrected scene boundaries
+against `knowledge/wiki/reports/phase-16-retimed-storyboard-review.md`'s
+findings and confirms Gate 4 (Timing lock) is closed. Only after that review
+may Claude proceed toward asset generation under a separate, later,
+explicitly authorized handoff. The two `aepoch-symbolic.yaml` WCAG contrast
+findings remain outstanding; the checkpoint schema's assets-stage
+`asset_manifest` requirement gap remains a known, disclosed limitation. No
+visual asset generation, audio mastering, composition, render, publish, or
+deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 

@@ -2588,3 +2588,80 @@ checkpoint schema's assets-stage `asset_manifest` requirement gap remains a
 known, disclosed limitation, not yet fixed.
 
 ---
+
+## 2026-08-02 — Retimed storyboard review found word-crossing cuts
+
+Monty independently reviewed the human-narration timing-lock tranche at commit
+`0723ad6`. Narration confirmation, section timing, exact 0-280 coverage, and
+preservation of approved creative fields passed. The internal scene retiming
+did not pass Gate 4: proportional scaling placed eight visual boundaries
+strictly inside spoken-word intervals, including `tail-hold-mark` beginning at
+261.729s while narration continues to approximately 263.39s despite that
+scene's “no narration” specification.
+
+The exact evidence and revision verdict are recorded in
+`knowledge/wiki/reports/phase-16-retimed-storyboard-review.md`. A narrow,
+tracked correction handoff was written to
+`docs/aepoch-production-playbook/prompts/phase-16-scene-retiming-correction.md`.
+No creative revision, asset generation, audio processing, composition, or
+rendering is authorized.
+
+---
+
+## 2026-08-02 — Scene-retiming boundary correction executed
+
+Executed `docs/aepoch-production-playbook/prompts/phase-16-scene-retiming-correction.md`.
+
+**Corrected all 8 boundaries Monty flagged**, each moved to the exact real
+word edge his report identified (word onset or word end, never a computed
+midpoint): `hook-2a`/`hook-2b` to the onset of "digital" (20.970s),
+`build-1a`/`build-1b` to the end of "Code" (82.030s), `build-2a`/`build-2b`
+to the onset of "not" (100.090s), `build-5a`/`build-5b` to the end of "form"
+(158.030s), `build-7a`/`build-7b` to the onset of "everyone" (191.820s),
+`climax-2-sceneA`/`climax-2-sceneB` to the end of "and" (215.080s), and
+`landing-1a`/`landing-1b` to the onset of "is" (248.170s).
+
+**`tail-hold-mark`** (described as having no narration) now begins exactly at
+the real narration end (263.39s, confirmed zero spoken words at or after
+that point) instead of the old 261.729s, which fell inside the word "and."
+Its original, already-approved 12.0s mark-hold design constant is restored
+rather than re-derived, with `tail-release` absorbing the remaining 4.61s
+(still within the playbook's 3.0-12.0s range).
+
+**A full programmatic audit of every other internal and cross-section
+boundary** -- not just Monty's 8 -- found two additional violations his
+manual review had not caught: `setup-2a`/`setup-2b` at 62.332s (inside
+"still," corrected to 62.340s, the word's end) and `build-4a`/`build-4b` at
+139.225s (inside "scroll,", corrected to 139.210s, the word's onset). Both
+corrected the same way: nearest real word/pause edge, never proportional
+scaling or equal subdivision.
+
+**Verification.** `scene_plan.json` re-validated against its schema. Exact
+0.0-280.0s coverage confirmed across 32 scenes, no gaps or overlaps. All 33
+unique scene-boundary points programmatically checked against all 627
+canonical spoken-word intervals -- zero lie strictly inside a word. Every
+enhancement cue remains within its owning section and a scene. Every scene
+falls within the aepoch-symbolic.yaml playbook's 3.0-12.0s hold range
+(`tail-hold-mark` at exactly the 12.0s maximum). Re-ran
+`lib.variation_checker` (strong / 0.6) and `lib.slideshow_risk` (strong /
+0.42) -- both unchanged, as expected for a pure boundary correction.
+`script.json` was not modified in this tranche (confirmed via mtime) --
+section boundaries, enhancement cues, and narration timing were out of
+scope for this correction and remain exactly as the prior timing-lock
+tranche left them. Scene IDs, descriptions, types, visual subjects, shot
+intent, movement, transitions, required assets, and all other non-timing
+scene-plan content verified unchanged.
+
+Updated `knowledge/wiki/reports/phase-16-retimed-storyboard-review.md` with
+the correction evidence. No audio mastering, TTS, image, diagram, music,
+sound effect, or review still was generated. No composition, render,
+publish, or deploy occurred.
+
+### Next action
+
+Monty reviews the corrected scene boundaries against his report's 8 findings
+plus the 2 additional violations the full audit found, and confirms Gate 4
+(Timing lock) is closed. No visual asset generation, audio mastering,
+composition, render, publish, or deploy is authorized until then.
+
+---
