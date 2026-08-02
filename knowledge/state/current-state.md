@@ -906,15 +906,40 @@ inside any of 627 canonical words, all cues in-bounds, all scenes within
 not touched (out of scope). Full detail: `knowledge/log.md`, 2026-08-02
 "Scene-retiming boundary correction executed" entry.
 
-**Immediate next action:** Monty reviews the corrected scene boundaries
-against `knowledge/wiki/reports/phase-16-retimed-storyboard-review.md`'s
-findings and confirms Gate 4 (Timing lock) is closed. Only after that review
-may Claude proceed toward asset generation under a separate, later,
-explicitly authorized handoff. The two `aepoch-symbolic.yaml` WCAG contrast
-findings remain outstanding; the checkpoint schema's assets-stage
-`asset_manifest` requirement gap remains a known, disclosed limitation. No
-visual asset generation, audio mastering, composition, render, publish, or
-deploy is authorized.
+**Update 2026-08-02 (Gate 4 closed):** Monty independently reproduced the
+corrected boundary audit after commit `75f26fa`: zero cuts inside canonical
+spoken words, exact 0-280s coverage with no gaps or overlaps, all 32 scenes
+within 3.0-12.0s, and the narration-free tail beginning exactly at the locked
+263.39s narration end. The human-performance timing is approved as the
+production timing source.
+
+**Update 2026-08-02 (assets stage begun; FLUX sample blocked by a real
+env-loading bug):** Chris approved beginning the assets stage. Claude fixed
+the key-term WCAG contrast error in `styles/aepoch-symbolic.yaml` (Signal
+text -> Ink `#1A1612`), documented the remaining muted-text warning as an
+accepted large-text-only constraint, locked the FLUX provider/model decision
+(`decision_log.json` `d-021`), and wrote a complete 32-scene asset inventory
+with a full CHAI prompt plan for 12 planned FLUX plates
+(`projects/aepoch-blog-pilot-what-is-aepoch/asset-inventory-and-prompts.md`).
+The one authorized paid sample (`hook-2b`) failed with HTTP 401 -- root
+cause is a real bug: `FAL_KEY` in `.env` has a trailing inline comment that
+`lib/env_loader.py`'s dotenv loading isn't stripping, corrupting the loaded
+key. No cost was incurred; no substitute provider was attempted, per the
+handoff's explicit instruction. A diagnostic command also printed a partial
+`FAL_AI_API_KEY` fragment into the conversation -- flagged to Chris with a
+rotation recommendation. Full detail: `knowledge/log.md`, 2026-08-02
+"Contrast remediated, asset inventory written; FLUX sample blocked by a real
+env-loading bug" entry.
+
+**Immediate next action:** Chris/Monty decide how to fix the `.env` parsing
+bug (patch `lib/env_loader.py` to strip inline comments from unquoted `.env`
+values, or edit the `.env` line directly to remove the trailing comment) and
+whether to rotate `FAL_AI_API_KEY` given the partial exposure. Once
+`FAL_KEY` loads correctly, the `hook-2b` sample call -- prompt already fully
+vetted -- can be retried as its own bounded action. The checkpoint schema's
+assets-stage `asset_manifest` requirement gap remains a known, disclosed
+limitation. No batch generation, other assets, audio mastering, composition,
+render, publish, or deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 

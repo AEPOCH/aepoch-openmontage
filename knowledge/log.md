@@ -2665,3 +2665,115 @@ plus the 2 additional violations the full audit found, and confirms Gate 4
 composition, render, publish, or deploy is authorized until then.
 
 ---
+
+## 2026-08-02 — Gate 4 closed after corrected-boundary re-review
+
+Monty independently reproduced the scene-boundary audit after commit
+`75f26fa`. The corrected 32-scene plan has zero boundaries strictly inside
+canonical spoken-word intervals, exact 0.0-280.0s coverage without gaps or
+overlaps, and no duration outside the active 3.0-12.0s guidance.
+`tail-hold-mark` now begins exactly at the locked 263.39s narration end and
+holds for 12.0s; the 4.61s `tail-release` is also narration-free.
+
+Final review evidence is recorded in
+`knowledge/wiki/reports/phase-16-retimed-storyboard-review.md`. Gate 4 is
+closed and the human-performance timing is approved as the production timing
+source. This approval does not authorize asset generation, audio processing,
+composition, or rendering; the next work requires a separate tracked assets-
+stage handoff.
+
+---
+
+## 2026-08-02 — FLUX assets sample tranche authorized
+
+Chris approved beginning the assets stage after Gate 4 closed. Monty prepared
+the tracked handoff
+`docs/aepoch-production-playbook/prompts/phase-16-assets-flux-sample.md`.
+
+The tranche first resolves the blocking key-term contrast error, constrains
+the remaining muted-text warning to large text/non-text use, inventories all
+asset needs, and writes auditable prompts. It then authorizes exactly one paid
+sample: registered `flux_image`, FLUX through fal.ai, model
+`flux-pro/v1.1`, 1920x1080 PNG for scene `hook-2b`, estimated at $0.05.
+The sample tests the Void background plus soft-human/sharp-system visual
+grammar. No fallback, retry, second image, batch, audio work, composition, or
+render is authorized.
+
+---
+
+## 2026-08-02 — Contrast remediated, asset inventory written; FLUX sample blocked by a real env-loading bug
+
+Executed `docs/aepoch-production-playbook/prompts/phase-16-assets-flux-sample.md`.
+
+**Contrast remediated.** Changed `overlays.key_term.text` in
+`styles/aepoch-symbolic.yaml` from Signal (`#6B5FED`) to Ink (`#1A1612`) on
+lavender (`#EDE9F7`) -- all locked brand colors preserved otherwise. Added an
+enforceable `quality_rules` entry documenting InkSoft (`#8A8480`) on Paper as
+large-text/decoration-only (3.48:1 -- passes large-text AA, fails
+normal-text AA). Re-ran `styles.playbook_loader.validate_playbook()`
+(schema-valid) and `validate_palette()`: the key-term error is gone; only the
+now-explicitly-documented muted warning remains, reported honestly rather
+than silently accepted. Appended `decision_log.json` `d-020`
+(`playbook_selection` / "Style playbook / visual identity", same pair as
+`d-003`/`d-010`, both preserved unmutated).
+
+**Image-provider decision locked.** Appended `d-021`
+(`provider_selection` / "Image generation provider for illustration plates",
+same pair as `d-004`/`d-011`) recording Chris's approval of the concrete
+`flux_image` tool and exact sample model `flux-pro/v1.1`; Recraft and
+OpenAI preserved as rejected per `d-004`; automatic fallback explicitly
+forbidden without new approval.
+
+**Complete asset inventory and CHAI prompt plan written** to
+`projects/aepoch-blog-pilot-what-is-aepoch/asset-inventory-and-prompts.md`
+before any paid call. All 32 scenes classified: 12 FLUX plate concepts
+(covering 16 scenes via 4 direct reuses -- `build-1b` reuses `build-1a`'s
+plate, `build-6b`/`build-7a` reuse `build-5b`'s door-icon plate, `climax-3`
+reuses `build-2a`'s warm-silhouette plate), 13 Remotion-native `text_card`
+scenes (never AI-generated, per `asset-director.md`'s explicit rule), 2
+scenes reusing the existing `brands/aepoch/marks/aepoch-mark-ink.svg` brand
+asset, and 1 scene (`climax-1`) reusing native ring geometry planted in
+`hook-1a` for a precise, deterministic hero-moment animation rather than a
+generated image. This stays within the approved 12-16 plate target, not one
+image per scene. A full CHAI (pre/critique/post) prompt triplet was written
+for all 12 planned plates, each translating `VISUAL_LANGUAGE.md`'s
+exclusions into affirmative visual description with no `negative_prompt`
+parameter, per `.agents/skills/flux-best-practices/SKILL.md`.
+
+**The one authorized paid sample call failed -- not attempted around.**
+Announced tool/provider/model/scene/cost, then called the registered
+`flux_image` tool for `hook-2b`'s fully-vetted prompt (model
+`flux-pro/v1.1`, 1920x1080). The call returned HTTP 401 Unauthorized.
+Root cause: `FAL_KEY` in `.env` has a trailing inline comment on the same
+line as the value, and `lib/env_loader.py`'s `load_dotenv()` call is not
+stripping it, so the loaded environment value is corrupted (confirmed via a
+diagnostic call: the loaded value starts with `# FLUX i...`, not a real
+key). This is a tool/config bug, not genuine FLUX/fal.ai unavailability.
+**No cost was incurred** (`cost_log.json` unchanged at $0.6831 of $2.00 --
+the estimate/reserve entry was reconciled as `failed`/$0.00). Per the
+handoff's explicit instruction, no substitute provider or model was
+attempted; the failure was escalated and execution stopped rather than
+worked around.
+
+**Security note, disclosed directly rather than minimized:** while
+diagnosing the 401, a `grep` command used to inspect the `.env` line
+structure used an insufficient redaction pattern and printed a partial
+fragment of the `FAL_AI_API_KEY` value into the conversation. This was
+caught immediately, flagged directly to Chris with a recommendation to
+rotate that key, and no further `.env` content was inspected afterward.
+
+No batch generation, other assets, audio processing, composition, render,
+publish, or deploy occurred.
+
+### Next action
+
+Chris/Monty decide how to fix the `.env` parsing bug (patch
+`lib/env_loader.py` to strip inline comments from unquoted `.env` values, or
+remove the trailing comment from the `FAL_KEY` line directly) and whether to
+rotate `FAL_AI_API_KEY` given the partial exposure. Once `FAL_KEY` loads
+correctly, the `hook-2b` sample call -- prompt already fully vetted in
+`asset-inventory-and-prompts.md` -- can be retried as its own bounded
+action. No batch generation, other assets, composition, render, publish, or
+deploy is authorized until then.
+
+---

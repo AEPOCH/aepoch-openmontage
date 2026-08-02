@@ -2,8 +2,8 @@
 type: Production Review
 title: Phase 16 Retimed Storyboard Review
 description: Executive-producer review of the human-narration scene retiming.
-status: draft
-project_state: blocked
+status: stable
+project_state: confirmed
 generated:
   by: codex
   at: 2026-08-02T18:00:00+01:00
@@ -95,5 +95,19 @@ was not modified -- out of scope for this correction. Full detail:
 `knowledge/log.md`, 2026-08-02 "Scene-retiming boundary correction executed"
 entry.
 
-**Status: awaiting Monty's Gate 4 re-review of the corrected boundaries.**
+## Monty Re-review — 2026-08-02
 
+**Final verdict: PASS. Gate 4 is closed.** Monty independently reproduced the
+boundary audit after commit `75f26fa`:
+
+- zero internal scene boundaries lie strictly inside any canonical spoken-word
+  interval;
+- all 32 scenes cover exactly 0.0-280.0s with no gaps or overlaps;
+- every scene duration is within the active 3.0-12.0s guidance;
+- `tail-hold-mark` begins at 263.39s, exactly at the locked narration end, and
+  `tail-release` is also narration-free;
+- the corrected tail comprises a 12.0s mark hold and 4.61s release;
+- no asset generation, audio processing, composition, or rendering occurred.
+
+The corrected human-performance timing is approved as the production timing
+source. Further work requires a separate tracked assets-stage handoff.
