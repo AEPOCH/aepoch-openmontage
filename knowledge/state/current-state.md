@@ -873,17 +873,34 @@ method -- no time compression needed. Full detail: `knowledge/log.md`,
 2026-08-02 "Human-narration intake, transcription, and timing proposal
 executed" entry.
 
-**Immediate next action:** Chris and Monty review the 4 flagged ambiguous
-words in `assets/audio/chris/deviation_report.md` (with exact timestamps to
-listen at) and the proposed section timing map in
-`assets/audio/chris/proposed_timing_map.json`, and decide whether to lock
-this narration and timing as Gate 4 (Timing lock) per
-`knowledge/production/pipeline.md`. The disclosed `climax-2b-scene` pacing
-exception (scene plan) and the two `aepoch-symbolic.yaml` WCAG contrast
-findings remain outstanding; the checkpoint schema's assets-stage
-`asset_manifest` requirement gap is no longer immediately relevant to the
-next step. No visual asset generation, composition, render, publish, or
-deploy is authorized.
+**Update 2026-08-02 (Gate 4 timing lock and scene retiming executed):** Chris
+and Monty approved the human narration at Gate 4; Chris confirmed by ear the
+two ambiguous words ("if" ~124.43s, "loud" ~195.78s) with accepted minor
+stumbles. Claude locked the confirmation into `canonical_word_alignment.json`
+and a new durable `assets/audio/chris/timing_lock.json`, then retimed all 17
+`script.json` sections (boundaries at the midpoint of each measured
+inter-section pause) and all 32 `scene_plan.json` scenes (each keeping its
+proportional share of its section's new real-performance span) to the real
+performance. Every enhancement cue repositioned to a real word/pause
+boundary, with the AEPOCH Signal-reveal and KAIROS-naming cues placed at
+their exact real spoken onsets. Verified: both artifacts schema-valid, exact
+0-280s coverage with no gaps/overlaps, all cues in-bounds, full word
+provenance, and the variation/slideshow-risk checkers unchanged (strong/0.6,
+strong/0.42). The previously disclosed `climax-2b-scene` pacing exception is
+now resolved (5.265s, was 2.92s) as a byproduct of the real performance's
+longer pause, not deliberate engineering. Full detail: `knowledge/log.md`,
+2026-08-02 "Gate 4 approved; human-narration timing lock and scene retiming
+executed" entry.
+
+**Immediate next action:** Chris and Monty review the retimed storyboard
+(`scene_plan.json` against `script.json`'s new section boundaries) and
+confirm Gate 4 is fully closed. Only after that review may Claude proceed
+toward asset generation under a separate, later, explicitly authorized
+handoff. The two `aepoch-symbolic.yaml` WCAG contrast findings remain
+outstanding; the checkpoint schema's assets-stage `asset_manifest`
+requirement gap remains a known, disclosed limitation. No visual asset
+generation, audio mastering, composition, render, publish, or deploy is
+authorized.
 
 ## Verification Criteria for Phase 15 Start
 

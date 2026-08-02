@@ -2404,6 +2404,27 @@ generation or composition is authorized.
 
 ---
 
+## 2026-08-02 — Human narration approved at timing gate
+
+Chris confirmed by ear that the two ASR ambiguities are the intended canonical
+words “if” (~124.43s) and “loud” (~195.78s). He acknowledged slight stumbles
+on both and explicitly accepted them as fine. They are not script deviations
+and do not require a rerecord.
+
+The human narration passes Gate 4 content/fit review: all 17 sections are
+present, the recording is technically usable, and the real performance fits
+the 280-second target without compression. Quiet source level remains a later
+non-destructive mastering task.
+
+The next tracked handoff is
+`docs/aepoch-production-playbook/prompts/phase-16-human-narration-timing-lock.md`:
+record the human confirmations, lock canonical word/section timing, retime the
+approved script cues and 32-scene plan mechanically to the real performance,
+keep assets `in_progress`, and stop. No audio processing, visual generation,
+composition, or render is authorized.
+
+---
+
 ## 2026-08-02 — Human-narration intake, transcription, and timing proposal executed
 
 Executed `docs/aepoch-production-playbook/prompts/phase-16-human-narration-intake.md`.
@@ -2485,5 +2506,85 @@ approved scene plan, and whether to lock this narration and timing as Gate 4
 (Timing lock) per `knowledge/production/pipeline.md`. No visual asset
 generation, composition, render, publish, or deploy is authorized until that
 review completes.
+
+---
+
+## 2026-08-02 — Gate 4 approved; human-narration timing lock and scene retiming executed
+
+Chris and Monty approved the human narration at Gate 4
+(`knowledge/wiki/reports/phase-16-human-narration-timing-gate-review.md`).
+Chris confirmed by ear that the two ASR ambiguities are the canonical words
+"if" (~124.43s) and "loud" (~195.78s), each with a slight accepted delivery
+stumble -- no rerecord required.
+
+Executed `docs/aepoch-production-playbook/prompts/phase-16-human-narration-timing-lock.md`.
+
+**Human confirmation locked.** Marked both words `human_confirmed: true` in
+`assets/audio/chris/canonical_word_alignment.json` (the reconciled map, not
+the raw ASR evidence, which remains untouched and independently checksum-
+verified). Updated `deviation_report.md` so both items read RESOLVED, with
+the original ASR readings kept visible as evidence. Wrote a durable
+`assets/audio/chris/timing_lock.json` recording source/derived checksums,
+confirmed speech boundaries, the canonical word-map reference, final section
+boundaries, target duration, and approval evidence.
+
+**Timeline placement.** The complete `chrisnarration.mp4` audio is placed at
+timeline t=0 as-is, including its natural leading (~2.1s) and trailing
+(~5.8s within-file) room tone -- not trimmed, normalized, denoised,
+compressed, gated, EQ'd, or speed-changed. First aligned word ~2.89s, last
+~263.39s; the 280s composition retains a 16.61s wordless ending after the
+narration (of which ~5.9s is in-file room tone and ~10.71s is silence beyond
+the file's own end).
+
+**`script.json` retimed.** All 17 sections' `start_seconds`/`end_seconds`
+updated to real-performance boundaries: boundary[0]=0.0 (extends back to
+include leading room tone), each inter-section boundary placed at the
+midpoint of that section pair's measured pause (0 where the performance is
+continuous, e.g. `climax-1`/`climax-2`), boundary[17]=280.0 (extends forward
+to include the wordless tail). Every `enhancement_cues[].timestamp_seconds`
+repositioned to the nearest real word-start boundary within its owning
+section, except the `climax-1` Signal-reveal cue and the `climax-2b` KAIROS-
+naming cue, which were placed at the exact real spoken onset of AEPOCH
+(~201.44s) and KAIROS (~229.27s) respectively. `narration_ends_at_seconds`
+(261.25 -> 263.39) and `tail_hold_seconds` (18.75 -> 16.61) updated
+accordingly. Verified byte-for-byte: 627/627 words, 17/17 sections in order,
+every section's cue count/pronunciation_guides/source_ref presence
+unchanged -- only timing fields changed.
+
+**`scene_plan.json` retimed.** All 32 scenes retimed, each preserving its
+original proportional share of its owning section's screen time on the new,
+real-performance span. Scene IDs, types, descriptions, visual subjects,
+shot_intent, narrative_role, hero_moment, required_assets, the Presence
+Ring/Signal reveal, and atelier/Remotion runtime choices verified unchanged
+-- only `start_seconds`/`end_seconds` changed. **The previously disclosed
+`climax-2b-scene` pacing exception (2.92s, 0.08s under the 3.0s minimum) is
+now resolved** -- not by deliberate engineering, but because Chris's real
+performance paused longer around naming KAIROS than the synthetic-TTS timing
+plan assumed: the scene is now 5.265s. No other pacing exception was
+introduced; every scene now falls within the aepoch-symbolic.yaml playbook's
+3.0-12.0s hold range.
+
+**Verification.** Both artifacts re-validated against their schemas. Exact
+0.0-280.0s coverage confirmed with no gaps or overlaps in both `script.json`
+(17 sections) and `scene_plan.json` (32 scenes). Every enhancement cue
+verified within its owning section and within a scene's time range. Word
+provenance verified for all 627 canonical words: 619 directly ASR-aligned,
+2 human-confirmed, 6 interpolated from neighbors (all explicitly flagged,
+none silent). Re-ran `lib.variation_checker` (strong / 0.6) and
+`lib.slideshow_risk` (strong / 0.42) -- both unchanged from the pre-retiming
+scene plan, as expected for a pure timing pass with no creative changes.
+
+No audio mastering, TTS, image, diagram, music, sound effect, or review
+still was generated. No composition, render, publish, or deploy occurred.
+
+### Next action
+
+Chris and Monty review the retimed storyboard (`scene_plan.json` against
+`script.json`'s new section boundaries) and confirm Gate 4 (Timing lock) is
+fully closed. Only after that review may Claude proceed toward asset
+generation under a separate, later, explicitly authorized handoff. The two
+`aepoch-symbolic.yaml` WCAG contrast findings remain outstanding; the
+checkpoint schema's assets-stage `asset_manifest` requirement gap remains a
+known, disclosed limitation, not yet fixed.
 
 ---
