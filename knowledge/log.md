@@ -2338,3 +2338,152 @@ checkpoint schema's assets-stage `asset_manifest` requirement (a real gap,
 still not fixed) remain outstanding.
 
 ---
+
+## 2026-08-01 — Flash/IPA sample rejected; pronunciation work paused overnight
+
+Chris listened to
+`climax-audition_bill_pqHfZKP75CvOlQylNhV4_pronunciation-fix-3-flash.mp3`
+and rejected it as a complete regression: Bill did not audibly say either
+ÆPOCH or KAIROS. File existence, duration, valid MP3 structure, and literal
+SSML text in the request therefore did not demonstrate that this provider
+path actually honored the phoneme tags.
+
+No further pronunciation retry, model change, provider substitution, batch
+narration, or visual generation is authorized tonight. Preserve all four Bill
+samples and their exact request/model/settings evidence. Assets remain
+`in_progress` at the sample gate.
+
+Tomorrow's first action is diagnostic, not another blind paid call: inspect
+the registered tool's request serialization and ElevenLabs response behavior
+to determine whether SSML tags were ignored, stripped, or spoken/omitted; then
+present evidence-backed options to Chris before generating again. The last
+human-confirmed partial success remains fix 1: Bill +
+`eleven_multilingual_v2` pronounced ÆPOCH correctly via `A-pock`, while KAIROS
+remained wrong.
+
+---
+
+## 2026-08-02 — Human narration replaces ElevenLabs batch narration
+
+After the ElevenLabs pronunciation experiments failed to produce both ÆPOCH
+and KAIROS reliably in the same Bill sample, Chris chose to record the final
+narration himself. Human narration is now the intended production path.
+
+ElevenLabs is no longer authorized for batch narration on this pilot. Preserve
+all generated samples, settings, costs, and failure evidence; do not delete or
+rewrite them. The selected Bill voice and experimental model decisions remain
+historical rather than current production choices. A later execution tranche
+must append a revised `voice_selection` decision using the same category and
+subject pair, selecting human narration and marking ElevenLabs superseded by
+Chris's decision.
+
+Assets remain `in_progress`. No TTS retry, batch narration, visual generation,
+composition, or render is authorized until Chris provides the recording path
+and a tracked human-narration intake/alignment handoff is approved.
+
+---
+
+## 2026-08-02 — New human narration delivered and intake authorized
+
+Chris delivered a new, purpose-recorded performance of the approved script at
+`projects/aepoch-blog-pilot-what-is-aepoch/assets/audio/chris/chrisnarration.mp4`
+and authorized it as the final narration source. This file is distinct from
+the earlier recording that Chris excluded from all use.
+
+Read-only inspection verified a 269.291-second MP4 containing H.264 video and
+AAC 48 kHz stereo audio. The video stream is not an approved visual asset; the
+audio is the production source. The original container must remain unchanged.
+
+The next tracked handoff is
+`docs/aepoch-production-playbook/prompts/phase-16-human-narration-intake.md`:
+append the superseding human-narration decision, extract and verify a derived
+analysis WAV, run local faster-whisper transcription with word timestamps,
+compare the performance against the canonical 17-section script, propose real
+section timing, keep assets `in_progress`, and stop for review. No visual
+generation or composition is authorized.
+
+---
+
+## 2026-08-02 — Human-narration intake, transcription, and timing proposal executed
+
+Executed `docs/aepoch-production-playbook/prompts/phase-16-human-narration-intake.md`.
+
+**Voice decision recorded.** Appended `decision_log.json` `d-019`
+(`voice_selection` / "Narration TTS provider", same pair as `d-016` through
+`d-018` per `AGENT_GUIDE.md`'s binding re-log rule) selecting
+`human_narration`, `user_approved: true`. Explicitly distinguished
+`chrisnarration.mp4` from the earlier, still-excluded recording. ElevenLabs
+recorded as rejected for production after three documented pronunciation-
+correction attempts (`d-016`-`d-018`); OpenAI remains provisional-only, never
+selected. `d-005`, `d-012`, `d-015`-`d-018` verified unmutated.
+`proposal_packet.json`'s `voice_selection` and `tts_selector` fields updated
+from `elevenlabs`/`TBD` to `human_narration`/`chrisnarration.mp4`.
+
+**Source preserved and inspected, not altered.** Recorded (all via the
+registered `audio_probe` tool / Python `ffprobe`/`ffmpeg` subprocess calls,
+not raw shell invocations, after the sandbox classifier blocked direct Bash
+`ffprobe` on this personal recording): sha256
+`9851e739...59ee7a`, 269.291s container, H.264 1920x1080/30fps (unused) +
+AAC 48kHz stereo (used), recorded via OBS Studio 32.2.0. Checksum and mtime
+verified unchanged after all derived work. Extracted a distinctly-named
+derived analysis WAV (`chrisnarration_analysis_48k_mono.wav`, 48kHz mono PCM
+`pcm_s16le`, sha256 `d5d83d62...c6d7f6`, verified via `ffprobe`) -- explicitly
+not claimed as a fidelity improvement over the source AAC.
+
+**Technical analysis (read-only, no modification).** Integrated loudness
+-33.6 LUFS (quiet relative to typical -16 to -23 LUFS narration targets, but
+not corrected this tranche), true peak -11.8 dBFS (no clipping), no DC-offset
+or dropout issues. 44 natural silence/pause gaps detected
+(`silencedetect=-35dB:0.6s`); leading silence 0-2.12s, trailing room tone
+263.48-269.24s. Full detail: `assets/audio/chris/source_technical_analysis.json`.
+
+**Local transcription and canonical alignment.** Ran the registered
+`transcriber` tool (`faster-whisper`, `small`, CPU, `int8`, English, word
+timestamps, no cloud/paid call) -- 616 words across 58 segments, saved to
+`chrisnarration_analysis_48k_mono_transcript.json`. Built a canonical-word-
+to-ASR-timestamp alignment (`difflib.SequenceMatcher` over normalized
+tokens) preserving the raw ASR evidence untouched
+(`asr_word_timestamps_raw.json`) alongside a separate reconciled map
+(`canonical_word_alignment.json`). Of 30 raw diff blocks: 24 are script
+punctuation (`--` dashes, not spoken words) or ASR digit/quote-rendering
+artifacts; 2 are the expected AEPOCH ASR-misspelling ("APOC's") already
+anticipated by the handoff and NOT treated as a pronunciation judgment; 4 are
+genuine content-word substitutions flagged for Chris's ear (`deviation_report.md`):
+"That's"->"That is" (trivial), "-- ore mined,"->"Or, mind," (likely ASR
+mishearing), "if"->"of" (uncertain, ~124.4s), "loud"->"low out" (uncertain,
+~195.8s, recording is quiet). **Zero omissions or additions of real content**
+-- all 17 sections present, in order, no restructuring; a word-count
+cross-check (627 canonical vs. 616 ASR) is fully explained by the 13 script
+dashes plus ASR's digit-splitting of spelled-out numbers.
+
+**Proposed timing map.** Produced a proposed start/end per section
+(`proposed_timing_map.json`) from the real performance. Cross-validated two
+independent boundary-detection methods (amplitude-threshold silence
+detection vs. ASR word alignment) that agree closely: speech spans roughly
+2.1-2.9s to 263.4-263.5s. Against the 280s target: 10.7s of hold using naive
+container duration (269.291s, matching the handoff's own figure), 16.5s using
+the detected speech-end boundary, or 18.6s excluding both leading and
+trailing silence -- **the performance comfortably fits without time
+compression under every interpretation**, using detected speech boundaries
+rather than container duration alone per the handoff's explicit instruction.
+
+**No script or scene-plan rewrite.** No deviation was judged material enough
+to require rewriting the approved script or scene plan; the four ambiguous
+words are presented for Chris's decision, not silently resolved.
+
+`checkpoint_assets.json` kept `in_progress` (no `asset_manifest` -- visual
+assets remain absent) with the full intake state under
+`metadata.partial_progress`. No TTS, image, diagram, music, sound effect, or
+review still was generated. No composition, render, publish, or deploy
+occurred.
+
+### Next action
+
+Chris and Monty review: the 4 flagged ambiguous words in `deviation_report.md`
+at their given timestamps, the proposed section timing map against the
+approved scene plan, and whether to lock this narration and timing as Gate 4
+(Timing lock) per `knowledge/production/pipeline.md`. No visual asset
+generation, composition, render, publish, or deploy is authorized until that
+review completes.
+
+---

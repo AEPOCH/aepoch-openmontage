@@ -855,18 +855,35 @@ three earlier Bill files. Real cost confirmed $0 against the account's
 monthly PAYG quota. Full detail: `knowledge/log.md`, 2026-08-01 "Bill IPA
 pronunciation-fix tranche executed (eleven_flash_v2_5)" entry.
 
-**Immediate next action:** Chris listens to
-`climax-audition_bill_pqHfZKP75CvOlQylNhV4_pronunciation-fix-3-flash.mp3`
-and confirms whether BOTH ÆPOCH and KAIROS now sound correct. If approved,
-Claude may write canonical voice-selection fields and proceed toward batch
-narration (a separate, later, explicitly authorized handoff) -- Chris would
-also need to decide whether batch narration uses `eleven_flash_v2_5` or
-reverts to the `d-016`-locked `eleven_multilingual_v2`. If rejected, another
-correction attempt is needed. The disclosed `climax-2b-scene` pacing
-exception, the two `aepoch-symbolic.yaml` WCAG contrast findings, and the
-checkpoint schema's assets-stage `asset_manifest` requirement (a real gap,
-still not fixed) remain outstanding. No batch narration, other asset
-generation, paid calls, full production, publish, or deploy is authorized.
+**Update 2026-08-02 (human narration supersedes the ElevenLabs TTS path
+entirely):** Chris recorded and delivered his own performance of the fully
+approved script (`assets/audio/chris/chrisnarration.mp4`, 269.291s, OBS
+Studio, H.264+AAC 48kHz stereo) and selected it as the final narration
+source -- superseding the whole ElevenLabs pronunciation-correction effort
+(`d-016`-`d-018`). This is a NEW, distinct file from the earlier excluded
+recording. Claude recorded the decision (`decision_log.json` `d-019`, same
+subject as prior voice decisions), preserved and inspected the source
+(checksum/container verified, unmodified throughout), extracted a derived
+analysis WAV, ran local `faster-whisper` transcription (616 words, no paid
+call), and built a canonical-script-to-real-timestamp alignment. Result:
+zero omissions/additions of real content, only 4 ambiguous single-word
+substitutions flagged for Chris's ear (likely mostly ASR mishearing), and
+the performance fits the 280s target with 10.7-18.6s of hold depending on
+method -- no time compression needed. Full detail: `knowledge/log.md`,
+2026-08-02 "Human-narration intake, transcription, and timing proposal
+executed" entry.
+
+**Immediate next action:** Chris and Monty review the 4 flagged ambiguous
+words in `assets/audio/chris/deviation_report.md` (with exact timestamps to
+listen at) and the proposed section timing map in
+`assets/audio/chris/proposed_timing_map.json`, and decide whether to lock
+this narration and timing as Gate 4 (Timing lock) per
+`knowledge/production/pipeline.md`. The disclosed `climax-2b-scene` pacing
+exception (scene plan) and the two `aepoch-symbolic.yaml` WCAG contrast
+findings remain outstanding; the checkpoint schema's assets-stage
+`asset_manifest` requirement gap is no longer immediately relevant to the
+next step. No visual asset generation, composition, render, publish, or
+deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 
