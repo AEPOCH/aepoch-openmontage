@@ -3227,3 +3227,50 @@ service is confirmed available again. No further paid calls, other assets,
 composition, render, publish, or deploy is authorized until then.
 
 ---
+
+## 2026-08-03 — Recraft attempt 5 retried on Chris's authorization; closest result yet, still rejected on two specific criteria
+
+Chris authorized retrying the identical prompt/inputs once fal.ai's service
+recovered ("try again"). Re-ran the exact same call recorded in attempt
+5's original entry above (unchanged prompt, `colors`: Clay/Iris/Prism,
+`background_color`: Void, `image_size: landscape_16_9`, no seed reuse
+concern since Recraft is stochastic).
+
+**Succeeded this time.** Real cost $0.04 (`cost_log.json` entry
+`515770f233be`, `budget_spent_usd` now $0.9131 of $2.00). Native PNG,
+1344x768, verified independently via PIL; checksum
+(`d83df6ec0a4...cdf2bab`) confirmed genuinely distinct from attempt 4's
+image despite an identical byte count -- a real coincidence, not a
+duplicate response.
+
+**Inspected at original resolution against the handoff's own explicit
+reject list -- by far the strongest result across all five attempts, but
+still rejected on two specific, clear criteria.** Resolved from attempt 4:
+no repeated compound motif (every one of the ~18 marks is a genuinely
+varied, disconnected simple primitive), no internal decoration or corner
+dots on any mark, and the palette is correct throughout (Clay figure, Void
+background, Iris/Prism marks, no unrequested hue -- attempt 4's pale-yellow
+substitution does not recur). But two of the handoff's explicit reject
+triggers fire: at least two of the "L-shaped angle marks" read unmistakably
+as **checkmark/tick symbols** -- a recognized glyph the prompt's "no
+recognized symbols" clause was meant to prevent -- and the **upper third of
+the frame is not empty** (marks appear within roughly the top 15%). Two
+softer concerns also noted honestly: the person's arms don't read as
+clearly distinct limbs from the torso, and the marks are arranged in a
+fairly symmetric pattern rather than genuinely randomly. Full scored review
+in `assets/images/samples/hook-2b-sample-review-recraft-2.md`.
+
+**This looks like a small, targeted correction away from approval**, not
+another rewrite-from-scratch: explicitly forbid checkmark/tick shapes by
+name, add a numeric vertical-placement constraint instead of the
+descriptive "upper third empty" (which this attempt did not honor), and
+consider reinforcing arm distinctness. No further paid call was made.
+
+### Next action
+
+Chris and Monty review `assets/images/samples/hook-2b-sample-review-recraft-2.md`
+and decide whether to authorize one more targeted-correction sample. No
+further paid calls, batch generation, other assets, composition, render,
+publish, or deploy is authorized until Chris explicitly decides.
+
+---

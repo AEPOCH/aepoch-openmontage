@@ -1026,13 +1026,30 @@ remains genuinely untested against a real response. Full detail:
 `knowledge/log.md`, 2026-08-03 "Recraft correction attempt 5: prompt
 rewritten, generation hit a transient fal.ai outage" entry.
 
-**Immediate next action:** Chris decides whether to authorize a
-same-prompt retry once fal.ai's service is confirmed available again --
-this is a "try again" situation, not a prompt or tool revision. The
+**Update 2026-08-03 (attempt 5 retried on Chris's authorization; closest
+result yet, still rejected on two specific criteria):** Chris authorized
+retrying the identical prompt once fal.ai recovered. Succeeded: real cost
+$0.04 (`budget_spent_usd` now $0.9131 of $2.00), native PNG 1344x768,
+checksum confirmed distinct from attempt 4. By far the strongest result
+across all five attempts -- the repeated-motif/circuit-board failure and
+the palette-substitution failure from attempt 4 are both fully resolved.
+But two of the handoff's own explicit reject criteria fire: at least two
+"L-shaped angle marks" read as recognizable checkmark/tick symbols, and the
+upper third of the frame is not empty. Softer concerns: the person's arms
+don't read as clearly distinct limbs, and mark placement is fairly
+symmetric rather than genuinely random. This looks like a small, targeted
+correction away from approval. Full detail: `knowledge/log.md`, 2026-08-03
+"Recraft attempt 5 retried on Chris's authorization; closest result yet,
+still rejected on two specific criteria" entry.
+
+**Immediate next action:** Chris and Monty review
+`assets/images/samples/hook-2b-sample-review-recraft-2.md` and decide
+whether to authorize one more targeted-correction sample (explicit
+anti-checkmark wording, numeric vertical-placement constraint). The
 checkpoint schema's assets-stage `asset_manifest` requirement gap remains a
 known limitation. No further paid calls, provider substitution, batch
 generation, other assets, composition, render, publish, or deploy is
-authorized until then.
+authorized until Chris explicitly decides.
 
 ## Verification Criteria for Phase 15 Start
 
