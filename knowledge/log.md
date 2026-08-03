@@ -3394,3 +3394,108 @@ acceptable. No further paid calls, provider changes, composition,
 rendering, publishing, or deployment is authorized until Chris decides.
 
 ---
+
+## 2026-08-03 — Monty independently passes the batch process and accepts Plates 1 and 9
+
+Monty audited the Recraft batch scope, cost evidence, provisional manifest,
+contact sheet, and the four disputed images at native resolution. The process
+passes: eight calls cost $0.32, project spend remains $1.2331 of $2.00, and the
+stop after the repeated Plates 5/6 non-flat texture failure correctly followed
+the approved rule.
+
+Creative review accepts Plates 1, 3, 4, 7, 8, and 9. Plate 1's radial field is
+strong and useful for the story despite deviating from the requested irregular
+scatter. Plate 9's inset reads as necessary doorway depth rather than material
+ornament. Plates 5 and 6 remain rejected because their nested contour texture
+breaks semantic clarity and the locked flat-illustration language. Plates
+10–12 remain ungenerated.
+
+The full ruling was appended to
+`assets/images/recraft-plate-batch-review.md`. A tracked, no-spend reconciliation
+handoff was created at
+`docs/aepoch-production-playbook/prompts/phase-16-recraft-batch-reconciliation-and-correction-plan.md`.
+It instructs Claude to reconcile the provisional manifest and compare a single
+Recraft correction probe against deterministic native geometry, then stop for
+Chris's explicit approval before any paid call or composition work.
+
+### Next action
+
+Claude executes the tracked reconciliation/planning handoff and returns the
+smallest recommended correction path, exact maximum incremental cost, and one
+explicit approval request. No paid generation is authorized by this review.
+
+---
+
+## 2026-08-03 — Recraft batch reconciled per Monty's review; correction plan produced
+
+Executed
+`docs/aepoch-production-playbook/prompts/phase-16-recraft-batch-reconciliation-and-correction-plan.md`
+in full. Documentation and planning only -- no paid call, generation,
+provider switch, composition, render, publish, or deploy occurred.
+
+**Reconciliation.** Per Monty's binding independent review, Plate 1
+(`hook-1b`) and Plate 9 (`build-5b`) are flipped from rejected to accepted;
+only Plates 5 and 6 (`build-1a`, `build-2a`) remain rejected; Plates 10-12
+stay explicitly ungenerated. `artifacts/asset_manifest.json` was updated:
+both plates moved into the accepted `assets[]` array, `total_cost_usd`
+updated $0.20 -> $0.28, `plates_accepted_this_batch`/
+`plates_rejected_this_batch` updated to 6/2, `reuse_mappings` updated
+(unblocking `build-5b`, `build-6b`, `build-7a`), `rejected_plates` trimmed
+to only Plates 5 and 6, `outstanding_decisions` trimmed to the two
+unresolved items. Re-validated against
+`schemas/artifacts/asset_manifest.schema.json` (passes); every referenced
+asset path re-verified to exist. The contact sheet
+(`recraft-plate-batch-contact-sheet.png`) was regenerated with Plates 1 and
+9 now green-bordered/accepted. `recraft-plate-batch-review.md` got a new
+appended "Manifest Reconciliation Applied" section recording the exact
+mechanical changes -- Claude's original per-plate self-review and
+rejection reasoning for Plates 1 and 9 remain unedited and unremoved, per
+the handoff's explicit instruction not to hide or delete them.
+`checkpoint_assets.json` was refreshed with the reconciled counts and
+updated blocked/unblocked scene lists (`scenes_blocked` now just
+`build-1a`, `build-1b`, `build-2a`, `climax-3`; `scenes_unblocked` now 8
+scenes). The assets checkpoint remains `in_progress` with no canonical
+`asset_manifest` artifact registered -- this tranche does not close the
+assets stage.
+
+**Correction plan.** A new review,
+`assets/images/recraft-batch-correction-plan-review.md`, compares two
+approaches for resolving Plates 5/6 and completing Plates 10-12:
+
+- Approach 1: a single Recraft correction probe on one rejected plate,
+  then (if approved) the remaining four plates via Recraft. Worst-case 5
+  paid calls, $0.20 maximum incremental cost. Keeps one consistent
+  Recraft-illustrated visual family but does not address the unconfirmed
+  root cause of the texture bug, which has now recurred twice on flat
+  geometric-icon content specifically.
+- Approach 2 (recommended): reclassify the purely diagrammatic concepts
+  (`build-1a`/`build-1b`, `build-6a`, `climax-2-sceneA`) to deterministic
+  Remotion-native geometry -- the same rationale already used for
+  `climax-1`'s Presence Ring -- and reserve Recraft, gated by one
+  correction probe, for the two remaining editorial human/community
+  concepts (`build-2a`/`climax-3`, `landing-1a`). Worst-case 2 paid calls,
+  $0.08 maximum incremental cost. Lower cost and removes the exact content
+  category that has failed twice, and matches the scene plan's own
+  original "diagram" vs. "generated" asset-type distinction.
+
+Approach 2 is recommended, and is explicitly flagged as a change to the
+`d-023`-authorized generated-plate inventory (3 scenes move from
+Recraft-generated to Remotion-native) requiring Chris's separate approval
+before any execution. No decision-log entry was appended for this
+recommendation itself, since no approach has been approved or executed
+yet; a new entry under the `provider_selection` / "Image generation
+provider for illustration plates" pair should be appended once Chris
+decides.
+
+### Next action
+
+Chris reviews `recraft-batch-correction-plan-review.md` and gives the one
+approval needed to proceed: approve Approach 2 (reclassify `build-1a`/
+`build-1b`, `build-6a`, and `climax-2-sceneA` to Remotion-native geometry,
+and authorize up to 2 further paid Recraft calls -- a `build-2a`
+correction probe, then conditionally `landing-1a` -- at a maximum
+incremental cost of $0.08), or direct a different path. No further paid
+call, generation, composition, render, publish, or deploy is authorized
+until Chris decides.
+
+---

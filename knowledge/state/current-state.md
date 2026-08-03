@@ -1061,17 +1061,38 @@ sheet, full per-plate review, and a provisional schema-valid
 detail: `knowledge/log.md`, 2026-08-03 "Recraft visual plate batch
 executed, stopped early on a confirmed systemic failure" entry.
 
-**Immediate next action:** Chris and Monty review
-`assets/images/recraft-plate-batch-review.md` and the contact sheet, and
-decide how to correct the internal-decoration/texture bug (recommend
-testing on one plate before retrying both), whether Plate 1's radial
-composition is acceptable, and whether Plate 9's panel-line deviation is
-acceptable. The checkpoint schema's assets-stage `asset_manifest`
-requirement gap remains a known limitation (the real provisional manifest
-exists as its own file, not registered in the checkpoint's `artifacts`
-dict). No further paid calls, provider changes, batch generation, other
-assets, composition, render, publish, or deploy is authorized until Chris
-explicitly decides.
+**Update 2026-08-03 (batch reconciled per Monty's binding review; correction
+plan produced):** Per Monty's independent review, Plate 1 (`hook-1b`) and
+Plate 9 (`build-5b`) are reconciled from rejected to accepted; only Plates 5
+and 6 (`build-1a`, `build-2a`) remain rejected; Plates 10-12 stay
+ungenerated. 6 of 8 attempted plates are now accepted. `asset_manifest.json`,
+the contact sheet, `recraft-plate-batch-review.md` (appended, original
+self-review preserved), and `checkpoint_assets.json` were all updated to
+match -- schema re-validated, every asset path re-verified to exist. A new
+correction-plan review,
+`assets/images/recraft-batch-correction-plan-review.md`, compares a single
+Recraft correction probe (worst case 5 paid calls, $0.20 max) against
+reclassifying the purely diagrammatic concepts (`build-1a`/`build-1b`,
+`build-6a`, `climax-2-sceneA`) to Remotion-native geometry with Recraft
+reserved for the two remaining editorial human/community concepts
+(`build-2a`/`climax-3`, `landing-1a`, gated by one probe -- worst case 2
+paid calls, $0.08 max). The native-geometry approach is recommended. No
+paid call, generation, or code change occurred in this tranche. Full detail:
+`knowledge/log.md`, 2026-08-03 "Recraft batch reconciled per Monty's review;
+correction plan produced" entry.
+
+**Immediate next action:** Chris reviews
+`assets/images/recraft-batch-correction-plan-review.md` and gives the one
+approval needed to proceed: approve reclassifying `build-1a`/`build-1b`,
+`build-6a`, and `climax-2-sceneA` to Remotion-native deterministic geometry,
+and authorize up to 2 further paid Recraft calls (a `build-2a` correction
+probe, then conditionally `landing-1a`) at a maximum incremental cost of
+$0.08 -- or direct a different path. The checkpoint schema's assets-stage
+`asset_manifest` requirement gap remains a known limitation (the real
+provisional manifest exists as its own file, not registered in the
+checkpoint's `artifacts` dict). No further paid calls, provider changes,
+batch generation, other assets, composition, render, publish, or deploy is
+authorized until Chris explicitly decides.
 
 ## Verification Criteria for Phase 15 Start
 
