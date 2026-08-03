@@ -2777,3 +2777,78 @@ action. No batch generation, other assets, composition, render, publish, or
 deploy is authorized until then.
 
 ---
+
+## 2026-08-03 — FLUX 401 diagnosis corrected; credential rotation required
+
+Monty independently reviewed the failed registered `flux_image` sample call.
+The earlier conclusion that `lib/env_loader.py` corrupted `FAL_KEY` is not the
+cause of the registered call: `flux_image` imports `tools/base_tool.py`, whose
+loader already strips inline comments from unquoted values. A safe diagnostic
+that printed only presence/length booleans confirmed that `FAL_KEY` resolves
+empty in the real tool environment; the tool therefore used the present
+`FAL_AI_API_KEY` fallback, which fal.ai rejected with HTTP 401.
+
+The loader-patch proposal is superseded and must not be executed. Because the
+fallback credential was rejected and a partial fragment was exposed in the
+prior Claude conversation, Chris should rotate it and install the new valid
+credential as `FAL_KEY`. The bounded post-rotation retry is tracked in
+`docs/aepoch-production-playbook/prompts/phase-16-flux-sample-retry.md`.
+No additional paid call or asset generation occurred during this review.
+
+---
+
+## 2026-08-03 — FLUX sample retried after credential rotation; sample REJECTED
+
+Executed `docs/aepoch-production-playbook/prompts/phase-16-flux-sample-retry.md`.
+
+**Credential prerequisite verified without exposing the secret.** A fresh
+process importing `tools.base_tool` (whose `_load_dotenv()` correctly strips
+inline comments, unlike `lib/env_loader.py`) confirmed `FAL_KEY` present and
+non-empty (length 69) and `FAL_AI_API_KEY` no longer present at all --
+consistent with Chris rotating and replacing the credential as instructed.
+Only booleans and length were reported; no prefix, suffix, fragment, or
+`.env` content was printed.
+
+**The one authorized paid retry succeeded technically but the sample was
+rejected.** Called the registered `flux_image` tool for `hook-2b` with the
+unchanged, already-vetted prompt from `asset-inventory-and-prompts.md`
+(model `flux-pro/v1.1`, 1920x1080, no `negative_prompt`). The call
+completed without an auth error this time -- real cost $0.05 (`cost_log.json`
+entry `d691105b5ee3`, `budget_spent_usd` now $0.7331 of $2.00), seed
+`3735125555`.
+
+**Verification found the delivered file does not match the request, and
+the content fails multiple explicit checks.** Technical: the file is a
+**JPEG**, not a PNG (despite the `.png` filename), at **1440x1056**, not the
+requested 1920x1080 -- likely because the tool's fal.ai request payload
+never sets `output_format`, and the custom `image_size` object may not be
+honored the way the tool assumes for this endpoint. Content, viewed
+directly: a real, recognizable **Apple logo** appears twice; gear and cloud
+icon clichés appear, both explicitly excluded by
+`styles/aepoch-symbolic.yaml`'s `image_negative_prompt`; a **Euro currency
+symbol** appears; the background is a visible gradient, not flat Void
+(`#0C0B0A`); the accent color used throughout is an off-palette cyan/
+turquoise, not the locked Iris (`#8BAFD4`). The one thing that worked: the
+human silhouette and surrounding icons are individually well-separated and
+structurally animation-ready. Full scored review, technical root-cause
+analysis, and concrete prompt-correction recommendations for any future
+attempt are recorded in
+`assets/images/samples/hook-2b-sample-review.md`. Per the handoff, **no
+automatic retry was made** -- the sample is rejected and requires a new
+prompt plus explicit authorization before any further paid call.
+
+`checkpoint_assets.json` kept `in_progress` (no `asset_manifest` -- no
+accepted assets yet) with the full rejection record under
+`metadata.partial_progress`. No second image, batch, other asset, TTS,
+music, SFX, diagram, video, narration processing, composition, render,
+publish, or deploy occurred.
+
+### Next action
+
+Chris and Monty review `assets/images/samples/hook-2b-sample-review.md`
+(and the sample image itself) and decide how to proceed: adopt the listed
+prompt/tool corrections and authorize a new sample attempt, or take a
+different approach. No further paid calls or other work is authorized until
+then.
+
+---

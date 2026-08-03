@@ -931,15 +931,36 @@ rotation recommendation. Full detail: `knowledge/log.md`, 2026-08-02
 "Contrast remediated, asset inventory written; FLUX sample blocked by a real
 env-loading bug" entry.
 
-**Immediate next action:** Chris/Monty decide how to fix the `.env` parsing
-bug (patch `lib/env_loader.py` to strip inline comments from unquoted `.env`
-values, or edit the `.env` line directly to remove the trailing comment) and
-whether to rotate `FAL_AI_API_KEY` given the partial exposure. Once
-`FAL_KEY` loads correctly, the `hook-2b` sample call -- prompt already fully
-vetted -- can be retried as its own bounded action. The checkpoint schema's
-assets-stage `asset_manifest` requirement gap remains a known, disclosed
-limitation. No batch generation, other assets, audio mastering, composition,
-render, publish, or deploy is authorized.
+**Correction 2026-08-03 (FLUX 401 diagnosis):** Monty's independent review
+found that the failed registered call did not rely on `lib/env_loader.py`.
+`flux_image` imports `tools/base_tool.py`, whose loader already strips inline
+comments. In the actual registered-tool environment, `FAL_KEY` resolves empty
+and the tool falls back to the present `FAL_AI_API_KEY`; fal.ai rejected that
+fallback with HTTP 401. The prior claim that patching `lib/env_loader.py`
+would fix this call is superseded. No loader patch is warranted.
+
+**Update 2026-08-03 (credential rotated, sample retried, REJECTED):** Chris
+rotated the credential; `FAL_KEY` now resolves present and non-empty via
+`tools.base_tool` (verified without printing the secret), and
+`FAL_AI_API_KEY` is gone. The retried `hook-2b` sample call completed
+without an auth error (real cost $0.05, `budget_spent_usd` now $0.7331 of
+$2.00) but the delivered file fails verification on multiple fronts:
+1440x1056 JPEG instead of the requested 1920x1080 PNG, a real Apple logo
+appearing twice, excluded gear/cloud icon clichés, a Euro currency symbol,
+a gradient background instead of flat Void, and an off-palette cyan accent
+instead of Iris. Per the handoff, no automatic retry was made. Full scored
+review and concrete correction recommendations:
+`assets/images/samples/hook-2b-sample-review.md`. Full detail:
+`knowledge/log.md`, 2026-08-03 "FLUX sample retried after credential
+rotation; sample REJECTED" entry.
+
+**Immediate next action:** Chris and Monty review the rejected sample and
+its correction recommendations, and decide whether to authorize a new
+sample attempt with a corrected prompt (and fix the tool's missing
+`output_format`/size handling) or take a different approach. The checkpoint
+schema's assets-stage `asset_manifest` requirement gap remains a known
+limitation. No further paid calls, batch generation, other assets, audio
+mastering, composition, render, publish, or deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 
