@@ -1081,13 +1081,28 @@ paid call, generation, or code change occurred in this tranche. Full detail:
 `knowledge/log.md`, 2026-08-03 "Recraft batch reconciled per Monty's review;
 correction plan produced" entry.
 
-**Immediate next action:** Chris reviews
-`assets/images/recraft-batch-correction-plan-review.md` and gives the one
-approval needed to proceed: approve reclassifying `build-1a`/`build-1b`,
-`build-6a`, and `climax-2-sceneA` to Remotion-native deterministic geometry,
-and authorize up to 2 further paid Recraft calls (a `build-2a` correction
-probe, then conditionally `landing-1a`) at a maximum incremental cost of
-$0.08 -- or direct a different path. The checkpoint schema's assets-stage
+**Update 2026-08-03 (Approach 2 approved; build-2a probe hit a transient
+outage):** Chris approved Approach 2 (`decision_log` `d-024`, superseding
+`d-023`'s all-Recraft remainder): `build-1a`/`build-1b`, `build-6a`, and
+`climax-2-sceneA` are reclassified to Remotion-native geometry (planned
+composition work, not generated, not authored in this tranche);
+`build-2a`/`climax-3` and `landing-1a` remain on Recraft V4, gated one call
+at a time, $0.08 max total. The first gated call -- a corrected-prompt
+`build-2a` probe, $0.04 max -- hit a transient `HTTP 503 Service
+Unavailable` from fal.ai before returning any image. Real cost $0.00
+(project total unchanged: $1.2331 of $2.00). No retry made, per the
+handoff's explicit no-retry rule and this project's standing pattern for
+transient outages. `build-2a`/`climax-3` remain unresolved (neither
+accepted nor rejected -- no image was produced); `landing-1a` remains not
+generated. Full detail: `knowledge/log.md`, 2026-08-03 "Approach 2
+approved; `build-2a` correction probe hit a transient fal.ai outage" entry.
+
+**Immediate next action:** Chris decides whether to authorize a retry of
+the identical `build-2a` probe prompt once fal.ai has recovered
+(recommended -- no content change needed, since the corrected prompt
+remains genuinely untested against a real response), or directs a
+different path. `landing-1a` stays not-yet-generated, conditional on a
+successful `build-2a` probe. The checkpoint schema's assets-stage
 `asset_manifest` requirement gap remains a known limitation (the real
 provisional manifest exists as its own file, not registered in the
 checkpoint's `artifacts` dict). No further paid calls, provider changes,

@@ -3499,3 +3499,83 @@ call, generation, composition, render, publish, or deploy is authorized
 until Chris decides.
 
 ---
+
+## 2026-08-03 — Approach 2 approved; `build-2a` correction probe hit a transient fal.ai outage
+
+Executed
+`docs/aepoch-production-playbook/prompts/phase-16-approach-2-approval-and-build-2a-probe.md`.
+Chris's approval of Approach 2 was recorded as `decision_log.json` `d-024`
+(`provider_selection` / "Image generation provider for illustration
+plates"), superseding `d-023`'s all-Recraft remainder under the same
+(category, subject) pair -- all prior entries preserved unmutated.
+`build-1a` (reused by `build-1b`), `build-6a`, and `climax-2-sceneA` are
+now reclassified to deterministic Remotion-native geometry: planned
+composition work, not a generated asset, and not authored in this
+tranche. Recraft V4 remains selected for `build-2a`/`climax-3` and
+`landing-1a`, gated one call at a time, $0.08 maximum total. This tranche
+authorized exactly one call: a corrected-prompt probe for `build-2a`,
+$0.04 maximum, no retry.
+
+The corrected prompt (recorded in full in `asset-inventory-and-prompts.md`
+as "Plate 6, attempt 2") explicitly and repeatedly names every texture
+family observed in the prior rejection (topographic/contour, wood-grain,
+fingerprint, hatching, stripes, nested outlines, gradient, shading,
+shadow, glow, border, outline) rather than relying on the word "flat"
+alone, which is what attempt 1 did and which did not prevent the texture
+bug.
+
+**The call itself hit a transient `HTTP 503 Service Unavailable` from
+fal.ai before returning any image.** Real cost confirmed **$0.00**
+(`cost_log.json` `budget_spent_usd` unchanged at $1.2331 of $2.00). No
+bytes were written; no file exists to inspect. Per the handoff's explicit
+no-retry rule (and this project's established precedent for transient
+provider outages, e.g. the anchor's own attempt-4/attempt-5 history), no
+automatic or manual retry was made. `build-2a`/`climax-3` remain
+unresolved -- neither accepted nor rejected on creative grounds, since no
+image was produced to judge. `landing-1a` remains unchanged, not
+generated, still conditional on a successful `build-2a` probe.
+
+`artifacts/asset_manifest.json`'s metadata now records the Approach 2
+reclassification and the probe's infrastructure-failure outcome distinctly
+from the earlier creative rejections (Plates 5/6). `checkpoint_assets.json`
+was refreshed with the updated `scenes_blocked` (now just `build-2a`,
+`climax-3`), `scenes_reclassified_to_native`, and the probe outcome --
+remains `in_progress`, no canonical `asset_manifest` artifact. Full
+detail:
+`projects/aepoch-blog-pilot-what-is-aepoch/assets/images/recraft-build-2a-probe-review.md`.
+
+### Next action
+
+Chris decides whether to authorize a retry of the identical `build-2a`
+probe prompt once fal.ai has recovered (recommended -- no content change
+is needed, since the prompt itself remains untested against a real
+response), or directs a different path. No further paid call, provider
+change, composition authoring, rendering, publishing, or deployment is
+authorized until Chris decides.
+
+---
+
+## 2026-08-03 — Chris approves Approach 2 and the gated $0.08 ceiling
+
+Chris explicitly approved Approach 2 after Monty's review: deterministic
+Remotion-native geometry will replace Recraft generation for `build-1a`/
+`build-1b`, `build-6a`, and `climax-2-sceneA`; Recraft V4 remains reserved for
+the editorial-human plates `build-2a`/`climax-3` and `landing-1a`. The total
+incremental ceiling is two paid Recraft calls / $0.08.
+
+Monty wrote the tracked first execution handoff at
+`docs/aepoch-production-playbook/prompts/phase-16-approach-2-approval-and-build-2a-probe.md`.
+It authorizes exactly one `recraft_image` call through fal.ai's Recraft V4
+text-to-image endpoint for the corrected flat Clay `build-2a` silhouette, at
+$0.04 maximum. It requires a new append-only decision entry under the existing
+provider-selection pair, explicit inventory reconciliation, native-resolution
+review, and a hard stop before the conditional `landing-1a` call. No paid call
+occurred while preparing the handoff.
+
+### Next action
+
+Claude executes the tracked `build-2a` probe handoff, commits and pushes the
+evidence, then stops for Monty/Chris review. The second approved Recraft call
+remains gated and is not authorized in the first execution tranche.
+
+---
