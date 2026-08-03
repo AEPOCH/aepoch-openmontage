@@ -33,7 +33,7 @@ directly.
 ./.venv/bin/python scripts/control_bridge.py dispatch \
   --prompt docs/aepoch-production-playbook/prompts/<tracked-brief>.md \
   --approval "Chris approved via chat, 2026-08-03" \
-  [--permission-mode acceptEdits] [--model <alias>] [--claude-bin claude]
+  [--permission-mode auto] [--model <alias>] [--claude-bin claude]
 
 ./.venv/bin/python scripts/control_bridge.py status [--run-id <id>]
 
@@ -75,6 +75,14 @@ Claude runs non-interactively (`claude -p ... --output-format json`) as a
 detached background process; its stdout/stderr are captured to
 `control_room/output/<run_id>/`.
 
+The detached worker (`_run-worker`, internal) is exception-safe by
+construction: any unexpected failure launching, waiting on, or persisting
+Claude's output drives the run to a terminal `failed` state when possible
+(with only scrubbed diagnostics ever written to `stderr.log`) and always
+releases the run lock in a `finally` path, so a crash in the worker can
+never leave a run stuck `queued`/`running` while still holding the
+single-run lock.
+
 ### 2. `status`
 
 Reports the run's current state: `queued`, `running`, `completed`,
@@ -105,14 +113,21 @@ Records Monty's **independent** verdict — `pass`, `fail`, or
 `pass_with_corrections` — plus notes and evidence references. This is
 deliberately a separate step from process completion: a `completed` run
 with `exit_code: 0` has not been reviewed until `mark-reviewed` is called.
-Process exit is not creative or engineering approval.
+Process exit is not creative or engineering approval. `mark-reviewed`
+**refuses to record a verdict** unless the run is already in a terminal
+state (`completed`, `failed`, or `interrupted`) — a still-`queued`/`running`
+run has no outcome yet to review, so the CLI rejects the attempt with a
+clear error rather than let a verdict get attached to a run that later
+changes underneath it.
 
 ### 6. `recover`
 
-Idempotent and non-destructive. If the recorded run is `running` but its
-process is dead (crash, Ctrl-C, machine restart), marks it `interrupted`
-and releases the run lock so the next `dispatch` can proceed. If the run
-is genuinely still alive, `recover` reports that and changes nothing.
+Idempotent and non-destructive. If the recorded run is `queued` or
+`running` but its worker process is dead (crash, Ctrl-C, machine restart,
+or a worker that died before ever reaching `running` in a dispatch/
+worker-start race), marks it `interrupted` and releases the run lock so
+the next `dispatch` can proceed. If the run is genuinely still alive,
+`recover` reports that and changes nothing.
 
 ## Single-run lock
 
@@ -151,23 +166,30 @@ process bookkeeping.
 
 ## Permission mode
 
-The bridge's `--permission-mode` choices are `acceptEdits` (default),
-`auto`, `dontAsk`, `manual`, `plan` — **`bypassPermissions` is not an
+The bridge's `--permission-mode` choices are `acceptEdits`, `auto`
+(default), `dontAsk`, `manual`, `plan` — **`bypassPermissions` is not an
 available choice**, and the bridge never passes
 `--dangerously-skip-permissions`. This is a hard constraint in the code
 (`scripts/control_bridge.py:PERMISSION_MODE_CHOICES`), not a convention to
-remember. `acceptEdits` is the conservative default: routine file edits
-proceed without a prompt, but the CLI's normal tool-permission gating still
-applies to everything else.
+remember. `auto` is the approved default: it gives Monty genuinely
+hands-free execution of a tracked, Chris-approved brief without ever
+reaching for `bypassPermissions`/`--dangerously-skip-permissions`, which
+remain structurally excluded from `PERMISSION_MODE_CHOICES` regardless of
+what an operator passes on the command line.
 
 ## Secrets
 
 The bridge never writes `os.environ` or any credential file to disk.
-Captured Claude stdout/stderr is passed through a redaction filter
-(`scrub_secrets` in `scripts/control_bridge.py`) for common secret shapes
-(`sk-…`, `AIza…`, `Bearer …`, `api_key: …`, etc.) before being persisted —
-defense in depth on top of not logging environment values in the first
-place.
+Claude's stdout/stderr are captured to memory only (`subprocess.PIPE` +
+`communicate()`, not a file handle), scrubbed there by the redaction
+filter (`scrub_secrets` in `scripts/control_bridge.py`) for common secret
+shapes (`sk-…`, `AIza…`, `Bearer …`, `api_key: …`, etc.), and only the
+already-scrubbed text is ever written to `control_room/output/<run_id>/`
+via an atomic replace. There is no in-flight window where a partially
+captured, unredacted line is readable from disk while Claude is still
+running — nothing appears in the output directory until the process has
+exited and its output has been scrubbed. This is defense in depth on top
+of not logging environment values in the first place.
 
 ## Recovery procedure
 
@@ -193,8 +215,12 @@ a throwaway git repo and a small fake `claude` executable (`--claude-bin`)
 — covering valid dispatch, the full `queued → running → completed`
 transition, path-traversal/symlink-escape/missing-file rejection,
 second-dispatch lock rejection, a nonzero Claude exit, stale-process
-recovery after a `kill -9`, captured-output redaction, review-verdict
-recording, and append-only ledger history. Run it with:
+recovery after a `kill -9` (both from `running` and from a hand-crafted
+`queued` record simulating a dispatch/worker-start race), captured-output
+redaction (including proving no raw secret is readable on disk while
+Claude is still running), the `auto` default permission mode,
+`mark-reviewed` rejecting a non-terminal run, review-verdict recording,
+and append-only ledger history. Run it with:
 
 ```bash
 ./.venv/bin/python -m pytest tests/scripts/test_control_bridge.py -v

@@ -42,7 +42,7 @@ import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Optional
+from typing import Optional
 
 DEFAULT_REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -50,7 +50,7 @@ DEFAULT_REPO_ROOT = Path(__file__).resolve().parent.parent
 # is deliberately excluded -- it is the `--dangerously-skip-permissions`
 # equivalent and the brief forbids that class of invocation outright.
 PERMISSION_MODE_CHOICES = ["acceptEdits", "auto", "dontAsk", "manual", "plan"]
-DEFAULT_PERMISSION_MODE = "acceptEdits"
+DEFAULT_PERMISSION_MODE = "auto"
 
 REVIEW_VERDICTS = ["pass", "fail", "pass_with_corrections"]
 
@@ -186,13 +186,24 @@ def scrub_secrets(text: str) -> str:
     return redacted
 
 
-def _scrub_file_in_place(path: Path) -> None:
-    if not path.exists():
-        return
-    text = path.read_text(encoding="utf-8", errors="replace")
-    scrubbed = scrub_secrets(text)
-    if scrubbed != text:
-        path.write_text(scrubbed, encoding="utf-8")
+def _atomic_write_text(path: Path, text: str) -> None:
+    """Write `text` to `path` atomically -- a concurrent reader sees either
+    the previous complete content or the new complete content, never a
+    partial write. Used so captured Claude output only ever appears on disk
+    already scrubbed; raw output is never written to `path`.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp_name = tempfile.mkstemp(dir=str(path.parent), prefix=".tmp-", suffix=path.suffix or ".log")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            fh.write(text)
+        os.replace(tmp_name, path)
+    except Exception:
+        try:
+            os.remove(tmp_name)
+        except OSError:
+            pass
+        raise
 
 
 # --------------------------------------------------------------------------
@@ -252,12 +263,26 @@ def read_lock(paths: Paths) -> Optional[dict]:
 
 
 def acquire_lock(paths: Paths, run_id: str, pid: Optional[int]) -> None:
+    """Atomically create the lock file (`O_EXCL`).
+
+    `cmd_dispatch` already checks `read_lock` up front and raises a
+    friendlier, situation-specific error before ever reaching here; this
+    `except` only fires if another dispatch wins a race in the gap between
+    that check and this call. Report the lock actually on disk rather than
+    a generic message, since the caller's own pre-check message does not
+    apply to a race it already ruled out.
+    """
     paths.control_root.mkdir(parents=True, exist_ok=True)
     payload = json.dumps({"run_id": run_id, "pid": pid, "acquired_at": now_iso()}, indent=2)
     try:
         fd = os.open(str(paths.lock_path), os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
     except FileExistsError as exc:
-        raise BridgeError("Lock already held; refusing to acquire a second lock.") from exc
+        existing = read_lock(paths) or {}
+        raise BridgeError(
+            "Lock acquisition raced with a concurrent dispatch (now held by "
+            f"run_id={existing.get('run_id')}, pid={existing.get('pid')}); "
+            "refusing to acquire a second lock."
+        ) from exc
     with os.fdopen(fd, "w", encoding="utf-8") as fh:
         fh.write(payload)
 
@@ -339,7 +364,7 @@ def build_instruction(prompt_rel: str, approval: str) -> str:
 
 def effective_status(record: dict) -> str:
     base = record["status"]
-    if base == "running" and not _pid_alive(record.get("pid")):
+    if base in ("queued", "running") and not _pid_alive(record.get("pid")):
         base = "interrupted (unrecovered -- run `recover`)"
     if record.get("review"):
         return f"reviewed:{record['review']['verdict']} (run={base})"
@@ -373,19 +398,26 @@ def display_record(record: dict) -> dict:
 
 
 def reconcile_interrupted(paths: Paths, run_id: str) -> bool:
-    """If `run_id` is recorded running but its process is dead, mark it
-    interrupted and release its lock. Returns True if anything changed.
-    Idempotent and non-destructive -- safe to call repeatedly.
+    """If `run_id` is recorded `queued` or `running` but its worker process
+    is dead, mark it interrupted and release its lock. Returns True if
+    anything changed. Idempotent and non-destructive -- safe to call
+    repeatedly.
+
+    Covers both statuses because a worker can die before it ever gets to
+    transition its own record to `running` (e.g. a dispatch/worker-start
+    race, or the worker crashing on startup) -- without this, such a run
+    would stay `queued` forever with a dead pid and a held lock.
     """
     record = load_run(paths, run_id)
     if record is None:
         return False
     changed = False
-    if record["status"] == "running" and not _pid_alive(record.get("pid")):
+    if record["status"] in ("queued", "running") and not _pid_alive(record.get("pid")):
+        from_status = record["status"]
         _transition(record, "interrupted")
         record["ended_at"] = record.get("ended_at") or now_iso()
         save_run(paths, record)
-        append_ledger(paths, {"event": "recovered_interrupted", "run_id": run_id})
+        append_ledger(paths, {"event": "recovered_interrupted", "run_id": run_id, "from_status": from_status})
         changed = True
     lock = read_lock(paths)
     if lock and lock.get("run_id") == run_id and not _pid_alive(lock.get("pid")):
@@ -400,10 +432,12 @@ def reconcile_interrupted(paths: Paths, run_id: str) -> bool:
 # --------------------------------------------------------------------------
 
 
-def extract_result(stdout_path: Path) -> dict:
-    if not stdout_path.exists():
-        return {"parsed": False, "reason": "stdout not captured"}
-    text = stdout_path.read_text(encoding="utf-8", errors="replace").strip()
+def extract_result(stdout_text: str) -> dict:
+    """Parse the already-captured (and already-scrubbed) stdout text into a
+    result summary. Operates on in-memory text, never re-reads from disk,
+    so it never sees anything other than fully scrubbed content.
+    """
+    text = stdout_text.strip()
     if not text:
         return {"parsed": False, "reason": "empty stdout"}
     try:
@@ -513,71 +547,122 @@ def cmd_dispatch(args: argparse.Namespace, paths: Paths) -> dict:
     return display_record(record)
 
 
+def _fail_run_unexpectedly(paths: Paths, run_id: str, exc: BaseException) -> None:
+    """Best-effort terminal-failure path for an unexpected launch/wait/
+    persistence error in the worker. Never raises -- this runs from an
+    `except`/`finally` context and must not mask the original error or
+    leave the run stuck. Only scrubbed diagnostics are persisted.
+    """
+    diagnostic = scrub_secrets(
+        f"control_bridge: worker failed unexpectedly: {type(exc).__name__}: {exc}\n"
+    )
+    try:
+        record = load_run(paths, run_id)
+        if record is None:
+            return
+        stderr_path = Path(record["stderr_path"])
+        try:
+            existing = stderr_path.read_text(encoding="utf-8") if stderr_path.exists() else ""
+        except OSError:
+            existing = ""
+        _atomic_write_text(stderr_path, existing + diagnostic)
+        record["ending_head"] = git_head(paths.repo_root)
+        _transition(record, "failed")
+        record["ended_at"] = record.get("ended_at") or now_iso()
+        save_run(paths, record)
+        append_ledger(paths, {
+            "event": "run_finished", "run_id": run_id,
+            "exit_code": record.get("exit_code"), "status": "failed",
+            "unexpected_error": type(exc).__name__,
+        })
+    except Exception:
+        pass
+
+
 def cmd_run_worker(args: argparse.Namespace, paths: Paths) -> None:
     """Internal: owns one Claude run end to end. Spawned detached by
-    `dispatch`; never invoked directly by an operator."""
+    `dispatch`; never invoked directly by an operator.
+
+    Exception-safe by construction: any unexpected launch/wait/persistence
+    failure is caught, drives the run to a terminal `failed` state when
+    possible, and the run lock is always released in the `finally` path --
+    a crash here must never leave a run stuck `running`/`queued` while
+    still holding the single-run lock.
+    """
     run_id = args.run_id
-    record = load_run(paths, run_id)
-    if record is None:
-        return
-
-    record["pid"] = os.getpid()
-    record["started_at"] = now_iso()
-    _transition(record, "running")
-    save_run(paths, record)
-    append_ledger(paths, {"event": "run_started", "run_id": run_id, "pid": os.getpid()})
-
-    argv = [
-        record["claude_bin"], "-p", record["instruction"],
-        "--output-format", "json",
-        "--permission-mode", record["permission_mode"],
-    ]
-    if record.get("model"):
-        argv += ["--model", record["model"]]
-
-    stdout_path = Path(record["stdout_path"])
-    stderr_path = Path(record["stderr_path"])
-    env = os.environ.copy()
-
-    exit_code: int
     try:
-        with open(stdout_path, "w", encoding="utf-8") as out_fh, open(stderr_path, "w", encoding="utf-8") as err_fh:
+        record = load_run(paths, run_id)
+        if record is None:
+            return
+
+        record["pid"] = os.getpid()
+        record["started_at"] = now_iso()
+        _transition(record, "running")
+        save_run(paths, record)
+        append_ledger(paths, {"event": "run_started", "run_id": run_id, "pid": os.getpid()})
+
+        argv = [
+            record["claude_bin"], "-p", record["instruction"],
+            "--output-format", "json",
+            "--permission-mode", record["permission_mode"],
+        ]
+        if record.get("model"):
+            argv += ["--model", record["model"]]
+
+        stdout_path = Path(record["stdout_path"])
+        stderr_path = Path(record["stderr_path"])
+        env = os.environ.copy()
+
+        exit_code: int
+        stdout_text = ""
+        stderr_text = ""
+        try:
             proc = subprocess.Popen(
                 argv,
                 cwd=record["repo_root"],
                 stdin=subprocess.DEVNULL,
-                stdout=out_fh,
-                stderr=err_fh,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
                 env=env,
+                text=True,
             )
             record["claude_pid"] = proc.pid
             save_run(paths, record)
-            exit_code = proc.wait()
-    except FileNotFoundError as exc:
-        exit_code = 127
-        stderr_path.write_text(
-            f"control_bridge: failed to launch claude executable '{record['claude_bin']}': {exc}\n",
-            encoding="utf-8",
-        )
+            # `communicate()` captures both streams to memory (no thread
+            # deadlock from a full pipe buffer) -- nothing raw ever touches
+            # disk. Only the scrubbed text below is persisted.
+            stdout_text, stderr_text = proc.communicate()
+            exit_code = proc.returncode
+        except FileNotFoundError as exc:
+            exit_code = 127
+            stderr_text = (
+                f"control_bridge: failed to launch claude executable "
+                f"'{record['claude_bin']}': {exc}\n"
+            )
 
-    _scrub_file_in_place(stdout_path)
-    _scrub_file_in_place(stderr_path)
+        stdout_scrubbed = scrub_secrets(stdout_text)
+        stderr_scrubbed = scrub_secrets(stderr_text)
+        _atomic_write_text(stdout_path, stdout_scrubbed)
+        _atomic_write_text(stderr_path, stderr_scrubbed)
 
-    result_summary = extract_result(stdout_path)
-    Path(record["result_path"]).write_text(json.dumps(result_summary, indent=2) + "\n", encoding="utf-8")
+        result_summary = extract_result(stdout_scrubbed)
+        _atomic_write_text(Path(record["result_path"]), json.dumps(result_summary, indent=2) + "\n")
 
-    record = load_run(paths, run_id) or record
-    record["exit_code"] = exit_code
-    record["ending_head"] = git_head(paths.repo_root)
-    record["session_id"] = result_summary.get("session_id")
-    _transition(record, "completed" if exit_code == 0 else "failed")
-    record["ended_at"] = now_iso()
-    save_run(paths, record)
-    append_ledger(paths, {
-        "event": "run_finished", "run_id": run_id,
-        "exit_code": exit_code, "status": record["status"],
-    })
-    release_lock(paths, run_id)
+        record = load_run(paths, run_id) or record
+        record["exit_code"] = exit_code
+        record["ending_head"] = git_head(paths.repo_root)
+        record["session_id"] = result_summary.get("session_id")
+        _transition(record, "completed" if exit_code == 0 else "failed")
+        record["ended_at"] = now_iso()
+        save_run(paths, record)
+        append_ledger(paths, {
+            "event": "run_finished", "run_id": run_id,
+            "exit_code": exit_code, "status": record["status"],
+        })
+    except Exception as exc:
+        _fail_run_unexpectedly(paths, run_id, exc)
+    finally:
+        release_lock(paths, run_id)
 
 
 def cmd_status(args: argparse.Namespace, paths: Paths) -> dict:
@@ -604,7 +689,7 @@ def cmd_wait(args: argparse.Namespace, paths: Paths) -> dict:
         record = load_run(paths, run_id)
         if record["status"] in TERMINAL_STATUSES:
             break
-        if record["status"] == "running" and not _pid_alive(record.get("pid")):
+        if record["status"] in ("queued", "running") and not _pid_alive(record.get("pid")):
             reconcile_interrupted(paths, run_id)
             record = load_run(paths, run_id)
             break
@@ -660,6 +745,13 @@ def cmd_mark_reviewed(args: argparse.Namespace, paths: Paths) -> dict:
     record = load_run(paths, run_id)
     if record is None:
         raise BridgeError(f"No run record found for {run_id}")
+    if record["status"] not in TERMINAL_STATUSES:
+        raise BridgeError(
+            f"Cannot mark-reviewed: run {run_id} is not in a terminal state "
+            f"(status={record['status']}). Wait for it to reach "
+            f"{sorted(TERMINAL_STATUSES)}, or `recover` it first if the "
+            "worker process is actually dead."
+        )
 
     record["review"] = {
         "verdict": args.verdict,

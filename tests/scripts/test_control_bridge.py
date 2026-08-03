@@ -33,6 +33,15 @@ FAKE_CLAUDE_SOURCE = textwrap.dedent(
     mode = os.environ.get("FAKE_CLAUDE_MODE", "ok")
     if mode == "sleep":
         time.sleep(float(os.environ.get("FAKE_CLAUDE_SLEEP", "60")))
+    if mode == "leak_then_sleep":
+        print(json.dumps({
+            "session_id": "fake-session",
+            "is_error": False,
+            "result": "in flight. api_key: sk-in-flight-should-be-redacted-0123456789",
+        }))
+        sys.stdout.flush()
+        time.sleep(float(os.environ.get("FAKE_CLAUDE_SLEEP", "2")))
+        sys.exit(0)
     if mode == "fail":
         print(json.dumps({"session_id": "fake-session", "is_error": True, "result": "boom"}))
         print("a fake failure on stderr", file=sys.stderr)
@@ -283,6 +292,74 @@ def test_recover_detects_and_clears_stale_run(fake_repo, fake_claude):
     assert second["returncode"] == 0, second["stderr"]
 
 
+def test_recover_reconciles_run_left_queued_by_dispatch_worker_race(fake_repo, fake_claude):
+    """A worker can die before it ever transitions its own record past
+    `queued` (e.g. it crashes on startup, or dispatch's start-worker race
+    loses). Simulate that directly: hand-craft a `queued` run record and
+    lock pointing at a pid that is guaranteed dead, without ever starting a
+    real worker, then confirm `recover` reconciles it rather than leaving it
+    queued forever with a held lock.
+    """
+    paths = cb.Paths.for_repo(fake_repo)
+    paths.ensure_dirs()
+
+    dead_proc = subprocess.Popen([sys.executable, "-c", "pass"])
+    dead_proc.wait()
+    dead_pid = dead_proc.pid
+    assert not cb._pid_alive(dead_pid)
+
+    run_id = cb.new_run_id()
+    out_dir = paths.output_dir / run_id
+    out_dir.mkdir(parents=True, exist_ok=True)
+    record = {
+        "run_id": run_id,
+        "prompt_path": "docs/aepoch-production-playbook/prompts/fake-brief.md",
+        "approval_reference": "chris-approved",
+        "instruction": "irrelevant for this test",
+        "created_at": cb.now_iso(),
+        "started_at": None,
+        "ended_at": None,
+        "repo_root": str(paths.repo_root),
+        "starting_head": None,
+        "ending_head": None,
+        "pid": dead_pid,
+        "claude_pid": None,
+        "session_id": None,
+        "permission_mode": cb.DEFAULT_PERMISSION_MODE,
+        "claude_bin": str(fake_claude),
+        "model": None,
+        "exit_code": None,
+        "status": "queued",
+        "state_transitions": [{"to": "queued", "at": cb.now_iso()}],
+        "stdout_path": str(out_dir / "stdout.log"),
+        "stderr_path": str(out_dir / "stderr.log"),
+        "result_path": str(out_dir / "result.json"),
+        "review": None,
+    }
+    cb.save_run(paths, record)
+    cb.set_current_run_id(paths, run_id)
+    cb.acquire_lock(paths, run_id, pid=dead_pid)
+
+    status_before = parse_json(run_cli(fake_repo, "status", "--run-id", run_id))
+    assert "unrecovered" in status_before["status"]
+
+    recovered = parse_json(run_cli(fake_repo, "recover", "--run-id", run_id))
+    assert recovered["recovered"] is True
+    assert recovered["status"] == "interrupted"
+    assert not (fake_repo / "control_room" / "bridge.lock").exists()
+
+    raw = json.loads((paths.runs_dir / f"{run_id}.json").read_text(encoding="utf-8"))
+    assert raw["state_transitions"][-1]["to"] == "interrupted"
+
+    ledger_lines = [
+        json.loads(line)
+        for line in (fake_repo / "control_room" / "ledger.jsonl").read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    recovered_events = [e for e in ledger_lines if e.get("run_id") == run_id and e["event"] == "recovered_interrupted"]
+    assert recovered_events and recovered_events[0]["from_status"] == "queued"
+
+
 # --------------------------------------------------------------------------
 # Captured output
 # --------------------------------------------------------------------------
@@ -300,6 +377,42 @@ def test_output_command_shows_captured_streams(fake_repo, fake_claude):
     assert "fake-session" in payload["sections"]["stdout"]["text"]
     assert payload["sections"]["result"]["captured"] is True
     assert json.loads(payload["sections"]["result"]["text"])["parsed"] is True
+
+
+def test_no_raw_secret_on_disk_while_claude_is_still_running(fake_repo, fake_claude):
+    """The worker must capture Claude's output to memory, scrub it, and only
+    then persist it -- there must be no window where the in-flight process's
+    raw (unredacted) output is readable from the output directory.
+    """
+    dispatched = parse_json(dispatch(
+        fake_repo, fake_claude, env={"FAKE_CLAUDE_MODE": "leak_then_sleep", "FAKE_CLAUDE_SLEEP": "3"},
+    ))
+    run_id = dispatched["run_id"]
+    stdout_path = Path(dispatched["stdout_path"])
+    out_dir = stdout_path.parent
+
+    observed_running = False
+    deadline = time.monotonic() + 10
+    while time.monotonic() < deadline:
+        record = parse_json(run_cli(fake_repo, "status", "--run-id", run_id))
+        if record["status"] == "completed":
+            break
+        if record["status"] == "running":
+            observed_running = True
+            for path in out_dir.rglob("*"):
+                if path.is_file():
+                    text = path.read_text(encoding="utf-8", errors="replace")
+                    assert "sk-in-flight-should-be-redacted" not in text, (
+                        f"raw secret readable on disk at {path} while Claude was still running"
+                    )
+        time.sleep(0.1)
+
+    assert observed_running, "test never observed the run in the `running` state"
+    record = wait_for_terminal(fake_repo, run_id)
+    assert record["status"] == "completed"
+    final_text = stdout_path.read_text(encoding="utf-8")
+    assert "sk-in-flight-should-be-redacted" not in final_text
+    assert "REDACTED" in final_text
 
 
 def test_output_redacts_secrets_in_captured_files(fake_repo, fake_claude):
@@ -341,6 +454,35 @@ def test_mark_reviewed_records_verdict_and_evidence(fake_repo, fake_claude):
 
     status_after = parse_json(run_cli(fake_repo, "status", "--run-id", run_id))
     assert status_after["review"]["verdict"] == "pass_with_corrections"
+
+
+def test_mark_reviewed_rejected_while_run_is_not_terminal(fake_repo, fake_claude):
+    dispatched = parse_json(dispatch(fake_repo, fake_claude, env={"FAKE_CLAUDE_MODE": "sleep", "FAKE_CLAUDE_SLEEP": "5"}))
+    run_id = dispatched["run_id"]
+    try:
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline:
+            record = parse_json(run_cli(fake_repo, "status", "--run-id", run_id))
+            if record["status"] in ("queued", "running"):
+                break
+            time.sleep(0.1)
+        assert record["status"] in ("queued", "running")
+
+        result = run_cli(fake_repo, "mark-reviewed", "--run-id", run_id, "--verdict", "pass")
+        assert result["returncode"] != 0
+        err = parse_json(result)
+        assert "not in a terminal state" in err["error"]
+
+        status_after = parse_json(run_cli(fake_repo, "status", "--run-id", run_id))
+        assert status_after["review"] is None
+    finally:
+        pid = parse_json(run_cli(fake_repo, "status", "--run-id", run_id)).get("pid")
+        if pid:
+            try:
+                os.kill(int(pid), 9)
+            except ProcessLookupError:
+                pass
+        run_cli(fake_repo, "recover", "--run-id", run_id)
 
 
 def test_process_completion_is_not_review_by_itself(fake_repo, fake_claude):
@@ -408,6 +550,19 @@ def test_no_environment_or_secret_values_persisted_to_disk(fake_repo, fake_claud
 def test_bypass_permissions_is_not_an_allowed_choice():
     assert "bypassPermissions" not in cb.PERMISSION_MODE_CHOICES
     assert cb.DEFAULT_PERMISSION_MODE in cb.PERMISSION_MODE_CHOICES
+
+
+def test_default_permission_mode_is_auto_not_accept_edits(fake_repo, fake_claude):
+    """Approved correction: hands-free execution defaults to `auto`, not the
+    more conservative `acceptEdits` -- without ever allowing `bypassPermissions`.
+    """
+    assert cb.DEFAULT_PERMISSION_MODE == "auto"
+
+    dispatched = parse_json(dispatch(fake_repo, fake_claude))
+    run_id = dispatched["run_id"]
+    wait_for_terminal(fake_repo, run_id)
+    raw = json.loads((fake_repo / "control_room" / "runs" / f"{run_id}.json").read_text(encoding="utf-8"))
+    assert raw["permission_mode"] == "auto"
 
 
 def test_dispatch_never_passes_dangerous_skip_flag(fake_repo, fake_claude):
