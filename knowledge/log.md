@@ -3731,3 +3731,92 @@ own implementation, and the Phase 16 asset outcome / review commit
 `4d984a9` was not touched.
 
 ---
+
+## 2026-08-03 — Control-room bridge corrections from Monty's review of commit 4a32275
+
+Monty's independent review of the control-room bridge (`4a32275`) found six
+bounded correctness/security gaps, tracked in
+`docs/aepoch-production-playbook/prompts/phase-16-control-room-bridge-review-corrections.md`.
+Chris authorized exactly their correction, tests, docs, and this log entry —
+no production advancement, no provider generation, no paid call. A prior
+attempt at this handoff was quota-interrupted with the code changes already
+applied but untested/uncommitted; this pass inspected that partial diff,
+confirmed it correctly implemented five of the six items, fixed the sixth,
+added the required test coverage, updated the operator doc, and completed
+verification, commit, and push. Fixed in `scripts/control_bridge.py`
+(commit `f9a8fa5`):
+
+1. **Permission default.** `DEFAULT_PERMISSION_MODE` changed from
+   `acceptEdits` to `auto` for genuinely hands-free execution.
+   `bypassPermissions`/`--dangerously-skip-permissions` remain structurally
+   excluded from `PERMISSION_MODE_CHOICES` — unchanged, still a hard
+   constraint in code, not a convention.
+2. **In-flight secret exposure window.** The worker previously redirected
+   Claude's process stdout/stderr directly into `stdout.log`/`stderr.log`
+   and only scrubbed them after exit, so a concurrent reader of
+   `control_room/output/<run_id>/` could see raw, unredacted content while
+   Claude was still running. Fixed by capturing both streams to memory only
+   (`subprocess.PIPE` + `proc.communicate()`, never a file handle), scrubbing
+   in memory, and only then persisting via the existing atomic-replace
+   helper (renamed `_scrub_file_in_place` → `_atomic_write_text`, now
+   writes already-scrubbed text instead of scrubbing a file in place after
+   the fact). `extract_result` now parses the in-memory scrubbed text
+   directly rather than re-reading from disk.
+3. **Worker exception-safety.** `cmd_run_worker` is now wrapped in a
+   try/except/finally: any unexpected launch/wait/persistence failure is
+   caught by a new `_fail_run_unexpectedly` helper, which drives the run to
+   a terminal `failed` state with scrubbed diagnostics appended to
+   `stderr.log` when possible, and the run lock is unconditionally released
+   in the `finally` path regardless of how the run ended.
+4. **Dead-worker reconciliation race.** `reconcile_interrupted` and
+   `effective_status` previously only reconciled a dead process recorded as
+   `running`; a worker that died before ever writing its own `running`
+   transition (a dispatch/worker-start race, or a crash on startup) left the
+   run stuck `queued` forever with a held lock. Both now also cover
+   `queued`, and the `recovered_interrupted` ledger event records which
+   status it recovered from.
+5. **`mark-reviewed` terminal-state gate.** Now rejects recording a verdict
+   unless the run is already `completed`, `failed`, or `interrupted`, so a
+   review can no longer attach to a run whose outcome hasn't happened yet.
+6. **Hygiene.** `acquire_lock`'s `FileExistsError` branch duplicated
+   `cmd_dispatch`'s own lock pre-check with a generic, effectively
+   unreachable message (`cmd_dispatch` already raises a specific
+   "already active"/"stale lock" error before ever calling `acquire_lock`).
+   It only fires on a genuine TOCTOU race between that pre-check and the
+   atomic `O_EXCL` create, so it's kept as a safety net but now reports the
+   actual lock holder (`run_id`/`pid`) instead of a generic duplicate
+   message.
+
+Added 4 new tests to `tests/scripts/test_control_bridge.py` (18 → 22, all
+passing): a mid-flight test that polls the output directory while a fake
+Claude process is still `running` and asserts no raw secret is ever
+readable on disk before the process exits; a hand-crafted `queued`-record
+test proving `recover` reconciles a worker that died before reaching
+`running` (simulating the dispatch/worker-start race directly, since
+that race is very narrow to trigger through the real CLI); a test that
+`mark-reviewed` is rejected while a run is `queued`/`running`; and a test
+pinning the `auto` default end-to-end through a real dispatch. Verification
+run: `./.venv/bin/python -m pytest tests/scripts/test_control_bridge.py -v`
+→ 22 passed. Also ran `ruff check` (installed fresh into `.venv` for this
+pass) and `python -m py_compile` against the modified file as the narrow
+static/syntax check; the only findings were pre-existing style nits (unused
+`Any` import already removed by the corrections, an unused-variable nitpick
+in an untouched pre-existing test, and generic type-annotation-style
+suggestions) unrelated to the six items and out of scope per "do not
+broaden the refactor." Updated
+`docs/aepoch-production-playbook/control-room-bridge.md` so its permission
+mode, recovery, secrets, and `mark-reviewed` sections match this behavior
+precisely. All unrelated dirty-worktree files (README.md, diagram.png, the
+untracked Phase 16 prompt files, backups, and other in-flight artifacts)
+were left untouched; only `scripts/control_bridge.py`,
+`tests/scripts/test_control_bridge.py`, and the operator doc were staged
+and committed as `f9a8fa5`, pushed to `aepoch-series`.
+
+### Next action
+
+Monty records an independent review verdict on `f9a8fa5` via
+`mark-reviewed` before this bridge is used for its first real managed
+dispatch. Per the brief's hard stop, no build-2a work, landing-1a work, or
+any paid provider call was made or dispatched during this pass.
+
+---
