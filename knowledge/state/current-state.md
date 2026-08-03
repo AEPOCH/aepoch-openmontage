@@ -1110,17 +1110,47 @@ explicit reject criteria. `build-2a`/`climax-3` remain blocked;
 detail: `knowledge/log.md`, 2026-08-03 "`build-2a` probe retried: texture
 defect resolved, rejected for palette drift" entry.
 
-**Immediate next action:** Chris/Monty decide `build-2a`'s next step: a
-further prompt correction anchoring the Clay color more explicitly and
-repeatedly (the same technique that fixed the texture defect), accepting
-the current drift as a minor deviation, or a different path for this
-concept. `landing-1a` stays not-yet-generated, still blocked on `build-2a`
-producing an accepted result. The checkpoint schema's assets-stage
-`asset_manifest` requirement gap remains a known limitation (the real
-provisional manifest exists as its own file, not registered in the
-checkpoint's `artifacts` dict). No further paid calls, provider changes,
-batch generation, other assets, composition, render, publish, or deploy is
-authorized until Chris explicitly decides.
+**Update 2026-08-03 (`build-2a` resolved via local deterministic palette
+correction):** Chris approved (via Monty) a deterministic, zero-cost local
+correction of attempt 3 instead of a fourth paid Recraft call, per
+`docs/aepoch-production-playbook/prompts/phase-16-build-2a-local-palette-correction.md`.
+`scripts/local_palette_correct.py` remapped every pixel of attempt 3 by its
+measured blend position onto the target Clay (`#C4835A`) and Paper
+(`#FAF8F5`) colors, producing
+`build-2a_silhouette-warm-clay_recraft-v4-attempt4-local-recolor.png`.
+Verified: figure fill measures exactly `#C4835A` (same 105,426 pixels as
+source); background measures `#FAF7F4` vs target (negligible); geometry/
+edges unchanged by direct per-pixel comparison (max blend-position shift
+0.0039, 0 of 1,032,192 pixels shifting >0.02); attempt 3 confirmed
+byte-for-byte unchanged. Real cost `$0.00`; project total unchanged at
+`$1.2731` of `$2.00`. **`build-2a`/`climax-3` are now ACCEPTED and
+unblocked.** `decision_log.json` `d-025` appended (same category/subject as
+`d-004`/.../`d-024`, all preserved unmutated); `asset_manifest.json` gained
+asset `plate-6-build-2a-attempt4-local-recolor` and updated reuse mappings
+(schema-revalidated); `cost_log.json` gained a `$0.00` entry;
+`checkpoint_assets.json` refreshed and re-validated, remaining
+`in_progress`/`human_approved: false`. Full detail: `knowledge/log.md`,
+2026-08-03 "`build-2a` resolved via local deterministic palette correction"
+entry.
+
+**Immediate next action:** Chris/Monty decide whether and when to generate
+`landing-1a` (Plate 12), now that `build-2a`/`climax-3` are accepted. The
+checkpoint schema's assets-stage `asset_manifest` requirement gap remains a
+known limitation (the real provisional manifest exists as its own file, not
+registered in the checkpoint's `artifacts` dict). No further paid calls,
+provider changes, batch generation, other assets, composition, render,
+publish, or deploy is authorized until Chris explicitly decides.
+
+**Repository note (unrelated to this phase, flagged not resolved):** the
+working tree independently contains modified `README.md`/`diagram.png`
+(replaced with an unrelated "Phase 10C asset pack" unzip/commit script) and
+several untracked files (`AGENT_GUIDE.md.backup`, `PROJECT_CONTEXT.md.backup`,
+`MANIFEST.sha256`, `OPENMONTAGE_BASE_COMMIT.txt`, `aepoch-phase10a-assets.zip`,
+`pexels_6684209.jpg`, `preflight-*.json`, `preview/`,
+`styles/aepoch-symbolic.yaml`). None of this was created, touched, executed,
+or staged by the build-2a local-recolor tranche -- it predates it and looks
+unrelated to Phase 16. Flagged to Chris for awareness; left untouched and
+unresolved here.
 
 ## Verification Criteria for Phase 15 Start
 

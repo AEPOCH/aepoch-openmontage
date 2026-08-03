@@ -3963,3 +3963,93 @@ stabilization brief did not authorize recoloring `build-2a`, generating
 `landing-1a`, invoking media providers, composing, rendering, or publishing.
 
 ---
+
+## 2026-08-03 — `build-2a` resolved via local deterministic palette correction
+
+Chris approved this tranche via Monty on 2026-08-03
+(`docs/aepoch-production-playbook/prompts/phase-16-build-2a-local-palette-correction.md`),
+resuming after an interrupted managed foreground attempt
+(`run-20260803T143533Z-544e58`). Scope: a deterministic, local, zero-cost
+correction of `build-2a` attempt 3's palette-drift rejection. No Recraft,
+fal.ai, or any other provider/network call was authorized or made.
+
+**Why:** attempt 3 (`build-2a_silhouette-warm-clay_recraft-v4-attempt3.png`)
+had already fully resolved the non-flat-rendering texture defect that sank
+attempts 1 and Plate 5, but was rejected for a distinct, narrower defect --
+the figure's measured fill color (`#E56836`) drifted materially from the
+requested Clay swatch (`#C4835A`). Since geometry and edges were already
+accepted, this is a correctable-in-place color defect, not a compositional
+one, and does not need a fourth paid generation call.
+
+**Implementation** (`scripts/local_palette_correct.py`, found already
+present on disk from the interrupted prior attempt): a deterministic
+per-pixel palette remap. Each pixel is projected onto the line segment
+between the *measured* old fill/background colors to get a blend position
+`t`, which is then re-projected onto the new fill/background colors. Since
+`t` is a pure per-pixel color function with no spatial filtering,
+resampling, or inpainting, silhouette geometry, edges, and anti-aliasing
+are preserved by construction -- only color changes. Ran once, non-
+destructively, against attempt 3:
+
+```
+python scripts/local_palette_correct.py \
+  --input .../build-2a_silhouette-warm-clay_recraft-v4-attempt3.png \
+  --output .../build-2a_silhouette-warm-clay_recraft-v4-attempt4-local-recolor.png \
+  --old-fill E56836 --new-fill C4835A --old-bg FFFFFF --new-bg FAF8F5
+```
+
+**Verification:** attempt 3 confirmed byte-for-byte unchanged (sha256
+`661026a4b423c3c2debc1c0a62231d1294b7ce9ec26df6438392f93daef2045e`, same
+3,115,426 bytes). Output is a new PNG, 1344x768, RGB, 240,907 bytes, sha256
+`1324c937e463eb6705d2d714721121c9dc8c7e0a7382c0ca016572e2e0e57449`. Figure
+fill measures exactly `#C4835A` on the same 105,426 pixels as the source's
+measured fill region (mask/selection unchanged). Background measures
+`#FAF7F4` against target `#FAF8F5` -- a negligible, 8-bit-rounding-level
+delta, not a rejection-relevant drift. Geometry/edge preservation verified
+directly: comparing each pixel's blend position `t` between source and
+output gives a maximum absolute difference of `0.00387`, mean `0.00092`,
+and zero of 1,032,192 pixels differing by more than `0.02` -- confirming no
+changed geometry, missing limb, new object, edge damage, texture,
+gradient, outline, shadow, or non-flat treatment was introduced. Real
+provider cost: `$0.00`; project total unchanged at `$1.2731` of `$2.00`.
+
+**Documentation updated to agree:** appended an "Attempt 4" section to
+`assets/images/recraft-build-2a-probe-review.md` (attempts 1-3 preserved,
+none erased); appended a matching entry to
+`asset-inventory-and-prompts.md`'s Plate 6 section; added asset
+`plate-6-build-2a-attempt4-local-recolor` to `artifacts/asset_manifest.json`
+(schema-revalidated) and updated its `reuse_mappings`,
+`approach_2_reclassification.retained_on_recraft_gated`,
+`outstanding_decisions`, and `checksums`; appended `decision_log.json`
+`d-025` (`provider_selection`, same subject as `d-004`/`d-011`/`d-021`
+through `d-024`, all preserved unmutated) recording the local-correction
+method as the resolution for `build-2a`/`climax-3` within Approach 2's
+existing scope; appended a `$0.00` entry to `cost_log.json`
+(`budget_spent_usd` unchanged at `1.2731`); refreshed
+`checkpoint_assets.json`'s `review` and `metadata.partial_progress` to
+mark `build-2a`/`climax-3` accepted and unblocked, `landing-1a` still not
+generated -- checkpoint stays `in_progress`/`human_approved: false`, per
+the handoff's explicit instruction not to close the assets stage. All
+changed JSON artifacts re-validated against their schemas
+(`asset_manifest`, `decision_log`, `cost_log`, `checkpoint`) -- all valid.
+
+**Repository note (not part of this tranche's scope):** the working tree
+also contains untracked/modified files unrelated to this project --
+`README.md` and `diagram.png` are already modified to a different
+"Phase 10C asset pack" unzip/commit script, and `AGENT_GUIDE.md.backup`,
+`PROJECT_CONTEXT.md.backup`, `MANIFEST.sha256`, `OPENMONTAGE_BASE_COMMIT.txt`,
+`aepoch-phase10a-assets.zip`, `pexels_6684209.jpg`, `preflight-*.json`,
+`preview/`, and `styles/aepoch-symbolic.yaml` are untracked. None of these
+were created, modified, executed, or staged by this tranche -- they are
+flagged to Chris as pre-existing repository state that appears unrelated
+to Phase 16 and outside this handoff's scope, not resolved here.
+
+### Next action
+
+Chris/Monty decide whether and when to generate `landing-1a` (Plate 12),
+now that `build-2a`/`climax-3` are accepted. Per the brief's hard stop: no
+paid or network media provider call was made, no composition geometry was
+authored, and no compose, render, publish, or deploy step occurred during
+this tranche.
+
+---
