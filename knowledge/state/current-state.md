@@ -1133,13 +1133,33 @@ asset `plate-6-build-2a-attempt4-local-recolor` and updated reuse mappings
 2026-08-03 "`build-2a` resolved via local deterministic palette correction"
 entry.
 
-**Immediate next action:** Chris/Monty decide whether and when to generate
-`landing-1a` (Plate 12), now that `build-2a`/`climax-3` are accepted. The
-checkpoint schema's assets-stage `asset_manifest` requirement gap remains a
-known limitation (the real provisional manifest exists as its own file, not
-registered in the checkpoint's `artifacts` dict). No further paid calls,
-provider changes, batch generation, other assets, composition, render,
-publish, or deploy is authorized until Chris explicitly decides.
+**Update 2026-08-03 (`landing-1a` generated; rejected for palette drift):**
+Chris authorized (via Monty) exactly one Recraft V4 call for Plate 12
+(`landing-1a`), per
+`docs/aepoch-production-playbook/prompts/phase-16-landing-1a-recraft-generation.md`,
+with the prompt's flatness clause strengthened per the handoff's explicit
+allowance. The call succeeded technically (real cost `$0.04`, project total
+now `$1.3131` of `$2.00`) and the internal-decoration texture defect that
+sank Plates 5/6/`build-2a` attempt 1 did **not** reproduce; composition,
+count (5, within 5-7), sizing (bounding-box areas within ~3% of each other,
+no hierarchy), and anatomy all passed. A new, distinct defect appeared: the
+figure's measured fill color `#B55E30` drifted materially from the requested
+Clay `#C4835A` (delta magnitude 57.99) -- essentially the same severity as
+`build-2a` attempt 3's already-rejected drift (55.8). Applying this
+project's own established standard, `landing-1a` is **REJECTED for palette
+drift**. No retry, fallback, or local correction was made in this tranche.
+Full detail: `knowledge/log.md`, 2026-08-03 "`landing-1a` generated via
+Recraft V4, rejected for palette drift" entry.
+
+**Immediate next action:** Chris/Monty decide how to resolve `landing-1a`'s
+palette-drift rejection (e.g. a local deterministic correction, as was done
+for `build-2a`, or some other path) -- a separate decision, not made or
+authorized here. The checkpoint schema's assets-stage `asset_manifest`
+requirement gap remains a known limitation (the real provisional manifest
+exists as its own file, not registered in the checkpoint's `artifacts`
+dict). No further paid calls, provider changes, batch generation, other
+assets, composition, render, publish, or deploy is authorized until Chris
+explicitly decides.
 
 **Repository note (unrelated to this phase, flagged not resolved):** the
 working tree independently contains modified `README.md`/`diagram.png`

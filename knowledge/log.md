@@ -4089,3 +4089,80 @@ defect in the corrected plate.
 requires a separate explicit approval for its Recraft V4 provider call.
 
 ---
+
+## 2026-08-03 — `landing-1a` generated via Recraft V4, rejected for palette drift
+
+Chris approved this tranche via Monty on 2026-08-03
+(`docs/aepoch-production-playbook/prompts/phase-16-landing-1a-recraft-generation.md`),
+authorizing exactly one Recraft V4 call for Plate 12 (`landing-1a`), maximum
+`$0.04`, no retry/fallback/correction/composition/render.
+
+**Prompt:** the locked Plate 12 Post prompt from
+`asset-inventory-and-prompts.md`, with the flatness clause strengthened per
+the handoff's explicit allowance -- added "no internal contour lines, no
+topographic or fingerprint-like concentric lines, no wood-grain texture, no
+nested outlines, no hatching, no stripes, no pattern, no gradient, no
+shading, no shadow, no glow, and no border or outline inside or around any
+figure." Concept, count range (5-7), hierarchy, anatomy, palette, and
+framing were left unchanged, per the handoff's constraint.
+
+**Call:** `recraft_image`, `fal-ai/recraft/v4/text-to-image`, `colors:
+["#C4835A"]`, `background_color: "#FAF8F5"`, `image_size:
+landscape_16_9`, `enable_safety_checker: true`, `style` omitted. Exactly one
+call made. Succeeded technically: real cost `$0.04`, duration 13.64s, PNG
+1344x768, 3,115,426 bytes, sha256
+`c2b6b9b5f004232309c4d8f6e5f9675296e1355e569d2f74c49272be8bf81ac9`. Project
+spend: `$1.3131` of `$2.00`.
+
+**Review:** the internal-decoration texture defect that sank Plates 5/6 and
+`build-2a` attempt 1 did **not** reproduce -- interior fill/torso/limb
+boundaries measured as genuine background-color gaps, not a foreign
+decorative stroke. Composition passed on every other measured axis: 5
+person pictograms (within the required 5-7 range); bounding-box areas of
+46,537/46,756/47,193/45,854/46,719 pixels across the five figures (within
+~3% of each other, confirming no hierarchy); consistent anatomy (circular
+head, rounded torso, two separated arms/legs, no facial features); no
+forbidden text, numerals, logos, or brand marks.
+
+**Palette drift (decisive finding):** the figure fill measured, averaged
+over 229,475 interior fill pixels, RGB `(180.60, 94.46, 47.68)` =
+`#B55E30`, against the requested Clay `#C4835A` = `(196, 131, 90)` -- delta
+`(-15.4, -36.5, -42.3)`, Euclidean magnitude **57.99**. This project already
+established a rejection standard for exactly this failure mode: `build-2a`
+attempt 3 was rejected for a measured fill of `#E56836` against the same
+Clay target, delta magnitude 55.8. `landing-1a`'s drift (57.99) is
+essentially the same severity, marginally larger. Background measured RGB
+`(254.86, 254.78, 254.81)` = `#FFFFFF` against requested Paper `#FAF8F5` --
+delta magnitude 12.88, the same small, non-rejection-relevant direction
+already accepted for `build-2a`'s background.
+
+Applying the project's own established standard consistently, `landing-1a`
+is **REJECTED for palette drift**. Per the handoff's hard stop: no retry,
+provider/model fallback, or second generation call was made; no local
+recoloring was performed (unlike `build-2a`, which required its own
+separate explicit approval before a local correction was authorized);
+no composition, render, publish, or deploy step occurred. Full measurement
+and CHAI review: `projects/aepoch-blog-pilot-what-is-aepoch/assets/images/recraft-landing-1a-review.md`.
+
+Updated `asset_manifest.json` (added `landing-1a` to `rejected_plates`,
+recorded checksum, updated `outstanding_decisions` and the Approach-2
+reclassification note; schema-revalidated), `checkpoint_assets.json`
+(`review`, `cost_snapshot.total_spent_usd: 1.3131`,
+`metadata.partial_progress` scenes/next-action fields; schema-revalidated),
+`cost_log.json` (appended completed `$0.04` entry, `budget_spent_usd:
+1.3131`; schema-revalidated), and `asset-inventory-and-prompts.md` (added a
+Result note under Plate 12). No `decision_log.json` entry was needed --
+no provider/approach decision changed, only an outcome was recorded, per
+this project's existing precedent (the earlier `build-2a` attempt-3
+rejection was likewise recorded without its own decision-log entry).
+Checkpoint remains `in_progress`/`human_approved: false`.
+
+### Next action
+
+`landing-1a` is not accepted. Chris/Monty decide how to resolve the palette
+drift (e.g. a local deterministic correction, as was done for `build-2a`,
+or some other path) -- a separate decision, not made or authorized here. No
+further paid call, provider change, composition authoring, rendering,
+publishing, or deployment is authorized until Chris decides.
+
+---
