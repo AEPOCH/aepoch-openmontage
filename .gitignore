@@ -28,6 +28,12 @@ tests/qa/output/
 # Project workspaces (generated assets, renders — all regenerable)
 projects/
 
+# Control-room bridge runtime state (run ledger, locks, captured Claude
+# stdout/stderr) — local coordination evidence for Monty, not repository
+# source or a production artifact. See docs/aepoch-production-playbook/
+# control-room-bridge.md.
+control_room/
+
 # Corpus directories (downloaded stock clips, thumbnails, embeddings —
 # regenerable from source APIs via corpus_builder). Explicit rule even
 # though most corpora live under projects/ since agents sometimes

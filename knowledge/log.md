@@ -3654,3 +3654,80 @@ then stops for Monty/Chris review. `landing-1a` remains gated regardless of the
 probe outcome.
 
 ---
+
+## 2026-08-03 — Chris approves a Monty-managed Claude control-room bridge
+
+Chris approved replacing the manual copy/paste and notification-only sentinel
+workflow with a single-control-room model: Chris discusses and approves work
+only with Monty; Monty writes the tracked prompt, dispatches Claude directly,
+monitors execution, reviews repository evidence, and reports the next decision
+back in the primary chat. A rejected proposal is never dispatched and remains
+in discussion until amended and approved.
+
+The approved architecture preserves ADR-029's Git-backed knowledge tree and
+tracked handoffs while superseding its notification-only sentinel consequence.
+It adds a managed non-interactive Claude execution bridge with a single-run
+lock, durable append-only run ledger, captured output, interruption recovery,
+and an explicit separation between process completion and Monty's review.
+
+The bounded implementation brief is
+`docs/aepoch-production-playbook/prompts/phase-16-monty-claude-control-room-bridge.md`.
+It forbids production advancement or paid media calls and requires tests with a
+fake Claude executable before the first real managed production dispatch.
+
+### Next action
+
+Monty dispatches this approved infrastructure brief to Claude directly, without
+Chris copying a command, monitors the run, and independently reviews the bridge
+implementation and evidence.
+
+---
+
+## 2026-08-03 — Control-room bridge implemented, tested, and pushed
+
+Claude executed the approved bridge brief
+(`docs/aepoch-production-playbook/prompts/phase-16-monty-claude-control-room-bridge.md`)
+as infrastructure-only work. No production advancement, paid provider call,
+or asset modification occurred.
+
+Implemented `scripts/control_bridge.py`: a dependency-free CLI with exactly
+the six approved operations (`dispatch`, `status`, `wait`, `output`,
+`mark-reviewed`, `recover`). `dispatch` validates the tracked prompt path
+(rejects traversal, symlink escape, missing files, non-Markdown), takes a
+single-run lock, and starts Claude Code non-interactively as a detached
+background process; a separate internal worker owns each run end to end so
+`dispatch` returns a durable run ID immediately instead of blocking.
+Runtime state (run records, an append-only event ledger, captured
+secret-redacted stdout/stderr/result, the lock) lives under the new
+gitignored `control_room/` directory — documented in the new
+`docs/aepoch-production-playbook/control-room-bridge.md` operator doc.
+`--permission-mode` structurally excludes `bypassPermissions`; the bridge
+never passes `--dangerously-skip-permissions`.
+
+Added `tests/scripts/test_control_bridge.py` (18 tests) driving the CLI
+against a throwaway git repo and a fake `claude` executable — no network
+calls, no real model invocation. Covers valid dispatch and the full
+`queued → running → completed` transition, path-traversal/symlink-escape/
+missing-file rejection, second-dispatch lock rejection, a nonzero Claude
+exit, stale-process recovery after `kill -9`, captured-output secret
+redaction, review-verdict recording, and append-only ledger history. All 18
+pass locally (`./.venv/bin/python -m pytest tests/scripts/test_control_bridge.py -v`).
+Also manually smoke-tested every command against a real fake-executable
+dry run (dispatch → status → wait → output → mark-reviewed, plus lock
+rejection and `recover`) before writing the formal suite.
+
+Recorded the architectural change as ADR-030 in
+`knowledge/state/decisions.md`, which supersedes ADR-029's
+notification-only-sentinel consequence while leaving ADR-029's Git-backed
+knowledge tree and tracked-handoff model fully intact.
+
+### Next action
+
+Monty independently reviews this bridge implementation and evidence
+(commit, test results, operator doc) and records a verdict via
+`mark-reviewed` before the first real managed production dispatch. Per the
+brief's hard stop, the bridge was not used to dispatch anything during its
+own implementation, and the Phase 16 asset outcome / review commit
+`4d984a9` was not touched.
+
+---

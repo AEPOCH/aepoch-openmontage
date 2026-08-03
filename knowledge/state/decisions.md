@@ -1369,3 +1369,96 @@ also prevents the team from paying twice for the same lesson.
 Revisit only if the repository gains a different durable, versioned handoff
 system that preserves equivalent provenance, auditability, and fresh-session
 resumability.
+
+---
+
+## ADR-030 — Supersede ADR-029's notification-only sentinel with a managed dispatch/monitor/review bridge
+
+**Date:** 2026-08-03
+**Status:** confirmed
+
+### Decision
+
+Replace the manual copy/paste and notification-only sentinel workflow with a
+single-control-room model, implemented as `scripts/control_bridge.py`:
+
+- Chris discusses and approves work only with Monty, in the primary chat.
+- After approval, Monty dispatches the tracked handoff to Claude directly
+  (`dispatch`), monitors execution (`status`, `wait`), inspects the captured
+  repository evidence (`output`), and records an independent review verdict
+  (`mark-reviewed`) — Chris never pastes a command or operates Claude's
+  terminal.
+- A crash, Ctrl-C, or restart is reconciled explicitly (`recover`), never
+  silently.
+
+This keeps ADR-029's Git-backed knowledge tree and tracked-handoff model
+fully intact — the bridge only replaces *how* Monty starts and watches the
+Claude process and *what tells Monty a run is over*. ADR-029's sentinel
+consequence ("the sentinel remains notification-only; it reports that
+Claude finished and does not duplicate Monty's review role") is superseded:
+the sentinel's notification role is now redundant with `status`/`wait`, and
+Monty's review role is formalized as its own step (`mark-reviewed`) rather
+than an implicit follow-on to a notification.
+
+### Context
+
+Chris approved this exact replacement in chat on 2026-08-03 (see
+`knowledge/log.md`, "Chris approves a Monty-managed Claude control-room
+bridge"). The bounded implementation brief is
+`docs/aepoch-production-playbook/prompts/phase-16-monty-claude-control-room-bridge.md`.
+It is infrastructure-only: it explicitly forbids advancing the active video
+production, calling paid media providers, or modifying generated assets
+while building the bridge itself.
+
+### Reason
+
+The prior model required Chris to relay "Claude finished" to Monty and to
+operate a terminal Monty could not reach. That is an unnecessary human
+relay step for infrastructure that a small, dependency-free, well-tested
+control script can own: a single-run lock, a durable append-only run
+ledger, captured (secret-redacted) output, and an explicit distinction
+between process completion and Monty's creative/engineering review.
+
+### Consequences
+
+- `scripts/control_bridge.py` provides exactly six operations: `dispatch`,
+  `status`, `wait`, `output`, `mark-reviewed`, `recover`. See
+  `docs/aepoch-production-playbook/control-room-bridge.md` for the full
+  operator workflow and recovery procedure.
+- Runtime coordination state (run records, the append-only ledger,
+  captured output, the single-run lock) lives under `control_room/`, which
+  is gitignored — it is local process bookkeeping, not a production
+  artifact and not repository source. The tracked prompts and `knowledge/`
+  remain the durable coordination layer per ADR-029.
+- `dispatch` never invokes `--dangerously-skip-permissions` and the
+  bridge's `--permission-mode` choices structurally exclude
+  `bypassPermissions`; the conservative default is `acceptEdits`.
+- Process exit is not equivalent to creative or engineering approval — only
+  `mark-reviewed` records Monty's verdict (`pass`, `fail`, or
+  `pass_with_corrections`).
+- Enforced by tests against a fake `claude` executable (no network, no real
+  model calls): valid dispatch and full state transition, tracked-path
+  validation (traversal/symlink-escape/missing-file rejection),
+  second-dispatch lock rejection, nonzero Claude exit, stale-process
+  recovery, captured-output redaction, review-verdict recording, and
+  append-only ledger history.
+
+### Alternatives considered
+
+- Keep the notification-only sentinel and have Monty poll for it —
+  rejected because it still requires Chris to relay Claude's terminal
+  output and does not give Monty a way to dispatch Claude directly.
+- Give the bridge a `kill`/`cancel` operation — rejected as out of scope
+  for the approved brief, which specifies exactly six operations; adding a
+  seventh, unrequested one is scope creep the brief did not authorize.
+- Use `bypassPermissions` (or `--dangerously-skip-permissions`) for
+  simplicity — rejected outright; the brief forbids it and the CLI's
+  `--permission-mode` choices exclude it structurally, not just by
+  convention.
+
+### Revisit condition
+
+Revisit if Monty needs to run more than one Claude execution concurrently
+against the same repository, or if the six-operation surface proves
+insufficient for real production dispatches once Chris authorizes the
+first one.
