@@ -14,6 +14,11 @@ Commands
 --------
     dispatch       Validate a tracked prompt, take the run lock, start Claude
                    Code in the background, and return a durable run ID.
+                   With --foreground, runs the same validated lifecycle
+                   synchronously in the calling process instead of detaching
+                   a worker, and returns only once the run is terminal --
+                   for managed tool-call sandboxes (Monty/Codex) that kill
+                   detached descendants when the launching call ends.
     status         Report the active/latest run's state.
     wait           Block (with bounded polling) until a run finishes.
     output         Show a run's captured stdout/stderr/result.
@@ -518,6 +523,24 @@ def cmd_dispatch(args: argparse.Namespace, paths: Paths) -> dict:
     set_current_run_id(paths, run_id)
     acquire_lock(paths, run_id, pid=os.getpid())
 
+    if args.foreground:
+        # No fork, no detach: this process IS the worker. Managed tool-call
+        # sandboxes (Monty/Codex) kill detached descendants once the
+        # launching call ends, so foreground mode runs the identical
+        # lifecycle (`_execute_run_lifecycle`) synchronously here instead.
+        record["pid"] = os.getpid()
+        save_run(paths, record)
+        append_ledger(paths, {
+            "event": "dispatched",
+            "run_id": run_id,
+            "prompt_path": prompt_rel,
+            "approval_reference": args.approval,
+            "pid": os.getpid(),
+            "foreground": True,
+        })
+        _execute_run_lifecycle(paths, run_id)
+        return display_record(load_run(paths, run_id))
+
     worker_cmd = [
         sys.executable,
         str(Path(__file__).resolve()),
@@ -543,6 +566,7 @@ def cmd_dispatch(args: argparse.Namespace, paths: Paths) -> dict:
         "prompt_path": prompt_rel,
         "approval_reference": args.approval,
         "pid": worker.pid,
+        "foreground": False,
     })
     return display_record(record)
 
@@ -579,9 +603,14 @@ def _fail_run_unexpectedly(paths: Paths, run_id: str, exc: BaseException) -> Non
         pass
 
 
-def cmd_run_worker(args: argparse.Namespace, paths: Paths) -> None:
-    """Internal: owns one Claude run end to end. Spawned detached by
-    `dispatch`; never invoked directly by an operator.
+def _execute_run_lifecycle(paths: Paths, run_id: str) -> None:
+    """Owns one Claude run end to end: launches Claude, captures and
+    redacts its output, and drives the run record to a terminal status.
+
+    Shared verbatim by both dispatch modes so they can never diverge --
+    the detached worker (`cmd_run_worker`, spawned by normal `dispatch`)
+    calls this in its own process; `dispatch --foreground` calls it
+    synchronously in the calling process instead of forking a worker.
 
     Exception-safe by construction: any unexpected launch/wait/persistence
     failure is caught, drives the run to a terminal `failed` state when
@@ -589,7 +618,6 @@ def cmd_run_worker(args: argparse.Namespace, paths: Paths) -> None:
     a crash here must never leave a run stuck `running`/`queued` while
     still holding the single-run lock.
     """
-    run_id = args.run_id
     try:
         record = load_run(paths, run_id)
         if record is None:
@@ -663,6 +691,16 @@ def cmd_run_worker(args: argparse.Namespace, paths: Paths) -> None:
         _fail_run_unexpectedly(paths, run_id, exc)
     finally:
         release_lock(paths, run_id)
+
+
+def cmd_run_worker(args: argparse.Namespace, paths: Paths) -> None:
+    """Internal: spawned detached by normal (non-`--foreground`) `dispatch`;
+    never invoked directly by an operator. Thin wrapper around
+    `_execute_run_lifecycle` -- see that function for the actual lifecycle,
+    which `dispatch --foreground` also calls, synchronously, without this
+    wrapper or a second process.
+    """
+    _execute_run_lifecycle(paths, args.run_id)
 
 
 def cmd_status(args: argparse.Namespace, paths: Paths) -> dict:
@@ -813,6 +851,18 @@ def build_parser() -> argparse.ArgumentParser:
     p_dispatch.add_argument("--permission-mode", default=os.environ.get("CONTROL_BRIDGE_PERMISSION_MODE", DEFAULT_PERMISSION_MODE), choices=PERMISSION_MODE_CHOICES)
     p_dispatch.add_argument("--claude-bin", default=os.environ.get("CONTROL_BRIDGE_CLAUDE_BIN", "claude"))
     p_dispatch.add_argument("--model", default=None, help="Optional model override passed through to Claude Code.")
+    p_dispatch.add_argument(
+        "--foreground",
+        action="store_true",
+        help=(
+            "Run the same validated lifecycle synchronously in this process "
+            "instead of detaching a worker, returning only once the run is "
+            "terminal. For managed tool-call sandboxes (Monty/Codex) that "
+            "kill detached descendants when the launching call ends. "
+            "A human's persistent terminal should keep using the default "
+            "detached dispatch."
+        ),
+    )
     p_dispatch.set_defaults(func=cmd_dispatch)
 
     p_status = sub.add_parser("status", help="Report the active/latest run's state.")

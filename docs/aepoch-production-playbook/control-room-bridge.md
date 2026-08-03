@@ -26,14 +26,38 @@ notification role is superseded; Monty's independent repository review
 All commands live in one file, `scripts/control_bridge.py`, and print a
 single JSON object to stdout on success (or to stderr with a nonzero exit
 code on failure). There is no seventh public command — `_run-worker` is an
-internal implementation detail spawned by `dispatch`; never invoke it
-directly.
+internal implementation detail spawned by detached `dispatch`; never invoke
+it directly. `--foreground` is an option on `dispatch`, not a new command.
+
+### Decision rule: detached vs `--foreground`
+
+Codex's (and Monty's) managed command sandbox kills detached descendants
+once the launching tool call ends, so a plain `dispatch` from inside a
+managed tool call would have its worker killed before Claude finishes.
+
+- **Monty/Codex, dispatching from inside a managed tool call:** always use
+  `dispatch --foreground`. It runs the identical validated lifecycle
+  synchronously in the calling process — no fork, no detach — and returns
+  only once the run is terminal, so it survives the sandbox tearing down
+  everything the tool call spawned.
+- **A human operator at a persistent terminal:** keep using plain
+  (detached) `dispatch`. It returns immediately with a `queued` run and
+  lets you `status`/`wait`/`output` from the same or a different shell
+  without blocking it for the run's full duration.
+
+Both modes validate the same tracked-prompt and `--approval` inputs,
+acquire the same single-run lock, write the same durable run record and
+ledger events, and share one lifecycle implementation
+(`_execute_run_lifecycle` in `scripts/control_bridge.py`) for the Claude
+invocation, redaction, transitions, result extraction, and lock cleanup —
+they cannot diverge in behavior, only in whether a worker is detached.
 
 ```bash
 ./.venv/bin/python scripts/control_bridge.py dispatch \
   --prompt docs/aepoch-production-playbook/prompts/<tracked-brief>.md \
   --approval "Chris approved via chat, 2026-08-03" \
-  [--permission-mode auto] [--model <alias>] [--claude-bin claude]
+  [--permission-mode auto] [--model <alias>] [--claude-bin claude] \
+  [--foreground]
 
 ./.venv/bin/python scripts/control_bridge.py status [--run-id <id>]
 
@@ -70,18 +94,38 @@ advance production. Commit and push only the authorized implementation and
 evidence described in that prompt, then stop at its hard boundary.
 ```
 
-`dispatch` returns immediately with a durable `run_id` — it does not block.
-Claude runs non-interactively (`claude -p ... --output-format json`) as a
-detached background process; its stdout/stderr are captured to
+By default `dispatch` returns immediately with a durable `run_id` — it does
+not block. Claude runs non-interactively (`claude -p ... --output-format
+json`) as a detached background process; its stdout/stderr are captured to
 `control_room/output/<run_id>/`.
 
-The detached worker (`_run-worker`, internal) is exception-safe by
-construction: any unexpected failure launching, waiting on, or persisting
-Claude's output drives the run to a terminal `failed` state when possible
+With `--foreground`, `dispatch` runs the exact same validated lifecycle —
+same prompt/approval checks, same lock, same run record and ledger events,
+same Claude invocation, redaction, transitions, and result capture — but
+synchronously inside the calling process instead of spawning a detached
+worker, and only returns once the run has reached a terminal status
+(`completed`, `failed`, or, if the process is killed mid-run, whatever
+`recover` later reconciles it to). Use it whenever the caller is a managed
+tool call rather than a persistent terminal — see "Decision rule" above.
+It remains genuinely hands-free with the `auto` default and, being the
+same code path, structurally excludes `bypassPermissions` and
+`--dangerously-skip-permissions` exactly as detached dispatch does.
+
+The lifecycle itself (`_execute_run_lifecycle`, internal — invoked by the
+detached worker `_run-worker` in normal dispatch, or directly by `dispatch
+--foreground`) is exception-safe by construction: any unexpected failure
+launching, waiting on, or persisting Claude's output drives the run to a
+terminal `failed` state when possible
 (with only scrubbed diagnostics ever written to `stderr.log`) and always
-releases the run lock in a `finally` path, so a crash in the worker can
-never leave a run stuck `queued`/`running` while still holding the
-single-run lock.
+releases the run lock in a `finally` path, so a Python-level exception
+during the run can never leave it stuck `queued`/`running` while still
+holding the single-run lock — in either dispatch mode. That `finally`
+path only runs if the process itself keeps running: it does not survive
+Ctrl-C delivered as SIGKILL, a managed tool call being torn down, or the
+machine being terminated. Those cases still leave a dead process holding a
+stale lock/record, exactly as with detached dispatch — see "Recovery
+procedure" below; `recover` is how you reconcile them, not a claim that
+`finally` is unnecessary.
 
 ### 2. `status`
 
@@ -193,8 +237,11 @@ of not logging environment values in the first place.
 
 ## Recovery procedure
 
-If Monty's managed-process tool restarts, or the machine crashes, or an
-operator hits Ctrl-C on a foreground `dispatch`/`wait` invocation:
+If Monty's managed-process tool restarts, the machine crashes, an operator
+hits Ctrl-C on a blocking `wait` or a plain `dispatch --foreground`
+invocation, or a managed tool call running `dispatch --foreground` is
+torn down mid-run (killing everything the call spawned, including the
+dispatch process itself):
 
 1. `status` — if it reports `interrupted (unrecovered -- run recover)`,
    the run's process died without a recorded outcome.
@@ -208,6 +255,15 @@ operator hits Ctrl-C on a foreground `dispatch`/`wait` invocation:
 mid-poll, it reconciles the run to `interrupted` itself rather than
 spinning until the timeout.
 
+The lifecycle's `finally`-based lock release (see "1. `dispatch`" above)
+only fires while the process is still executing Python — it protects
+against in-process exceptions, not against the process being killed
+outright. SIGKILL, a managed sandbox tearing down a tool call, or a
+machine terminating mid-run all skip `finally` entirely, in both dispatch
+modes. `recover` — not `finally` — is the actual answer to "the process
+is gone but the lock/record still says otherwise"; do not treat `finally`
+as a substitute for it.
+
 ## Fake-executable dry run (no real Claude call, no network)
 
 `tests/scripts/test_control_bridge.py` drives the full CLI surface against
@@ -220,7 +276,12 @@ recovery after a `kill -9` (both from `running` and from a hand-crafted
 redaction (including proving no raw secret is readable on disk while
 Claude is still running), the `auto` default permission mode,
 `mark-reviewed` rejecting a non-terminal run, review-verdict recording,
-and append-only ledger history. Run it with:
+and append-only ledger history. `--foreground` gets its own focused
+coverage: synchronous success returning a terminal record with the
+dispatch process's own pid (no forked worker), lock release on
+completion, a nonzero-exit run marked `failed`, secret redaction, and a
+second dispatch still being rejected while a foreground run is active.
+Run it with:
 
 ```bash
 ./.venv/bin/python -m pytest tests/scripts/test_control_bridge.py -v
@@ -231,7 +292,8 @@ and append-only ledger history. Run it with:
 Once Monty has independently reviewed this bridge's implementation and
 evidence and Chris has approved a production tranche, Monty dispatches it
 exactly the way the tests exercise the CLI, with the real `claude` binary
-(the default for `--claude-bin`) and a written approval reference, e.g.:
+(the default for `--claude-bin`) and a written approval reference. From a
+human-owned persistent terminal:
 
 ```bash
 ./.venv/bin/python scripts/control_bridge.py dispatch \
@@ -241,6 +303,20 @@ exactly the way the tests exercise the CLI, with the real `claude` binary
 ./.venv/bin/python scripts/control_bridge.py wait --timeout 3600
 ./.venv/bin/python scripts/control_bridge.py output
 # Monty reviews the repository evidence the run produced, then:
+./.venv/bin/python scripts/control_bridge.py mark-reviewed \
+  --verdict pass --notes "..." --evidence "commit <sha>"
+```
+
+From inside a Monty/Codex managed tool call, add `--foreground` and skip
+`wait` — the call already blocks until the run is terminal:
+
+```bash
+./.venv/bin/python scripts/control_bridge.py dispatch \
+  --prompt docs/aepoch-production-playbook/prompts/<next-tracked-brief>.md \
+  --approval "Chris approved <what> via chat on <date>" \
+  --foreground
+
+./.venv/bin/python scripts/control_bridge.py output
 ./.venv/bin/python scripts/control_bridge.py mark-reviewed \
   --verdict pass --notes "..." --evidence "commit <sha>"
 ```
@@ -255,3 +331,5 @@ exactly the way the tests exercise the CLI, with the real `claude` binary
 - `recover` reconciles state; it cannot recover a run's actual outcome if
   the process was killed before writing one. Such runs are recorded as
   `interrupted` with `exit_code: null`, which is the honest answer.
+- `--foreground` is an option on `dispatch`, not a seventh operation —
+  there are still exactly six public operations.

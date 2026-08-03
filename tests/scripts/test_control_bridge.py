@@ -111,6 +111,33 @@ def dispatch(repo: Path, fake_claude: Path, prompt: str = None, approval: str = 
     return result
 
 
+def dispatch_foreground(
+    repo: Path, fake_claude: Path, prompt: str = None, approval: str = "chris-approved", env: dict | None = None
+) -> dict:
+    prompt = prompt or "docs/aepoch-production-playbook/prompts/fake-brief.md"
+    return run_cli(
+        repo, "dispatch",
+        "--prompt", prompt,
+        "--approval", approval,
+        "--claude-bin", str(fake_claude),
+        "--foreground",
+        env=env,
+    )
+
+
+def spawn_cli(repo: Path, *args: str, env: dict | None = None) -> subprocess.Popen:
+    full_env = os.environ.copy()
+    if env:
+        full_env.update(env)
+    return subprocess.Popen(
+        [sys.executable, str(BRIDGE), "--repo-root", str(repo), *args],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        env=full_env,
+    )
+
+
 def wait_for_terminal(repo: Path, run_id: str, timeout: float = 10.0) -> dict:
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
@@ -149,6 +176,118 @@ def test_valid_dispatch_reaches_completed(fake_repo, fake_claude):
 
     lock_path = fake_repo / "control_room" / "bridge.lock"
     assert not lock_path.exists(), "lock must be released once the run finishes"
+
+
+# --------------------------------------------------------------------------
+# Foreground dispatch (synchronous, no detached worker)
+# --------------------------------------------------------------------------
+
+
+def test_foreground_dispatch_returns_terminal_record_synchronously(fake_repo, fake_claude):
+    proc = spawn_cli(
+        fake_repo, "dispatch",
+        "--prompt", "docs/aepoch-production-playbook/prompts/fake-brief.md",
+        "--approval", "chris-approved",
+        "--claude-bin", str(fake_claude),
+        "--foreground",
+    )
+    stdout, stderr = proc.communicate(timeout=15)
+    assert proc.returncode == 0, stderr
+    record = json.loads(stdout)
+    # `dispatch --foreground` must not return until the run is terminal --
+    # unlike detached dispatch, which returns `queued` immediately.
+    assert record["status"] == "completed"
+    assert record["exit_code"] == 0
+    assert record["session_id"] == "fake-session"
+    assert record["starting_head"]
+    assert record["ending_head"] == record["starting_head"]
+
+    run_file = fake_repo / "control_room" / "runs" / f"{record['run_id']}.json"
+    raw = json.loads(run_file.read_text(encoding="utf-8"))
+    transitions = [t["to"] for t in raw["state_transitions"]]
+    assert transitions == ["queued", "running", "completed"]
+    # Foreground mode never forks/detaches a worker: the record's pid is the
+    # dispatch process's own pid throughout, not a distinct child process.
+    assert raw["pid"] == proc.pid
+
+
+def test_foreground_dispatch_releases_lock_on_completion(fake_repo, fake_claude):
+    result = dispatch_foreground(fake_repo, fake_claude)
+    assert result["returncode"] == 0, result["stderr"]
+    lock_path = fake_repo / "control_room" / "bridge.lock"
+    assert not lock_path.exists(), "lock must be released once the foreground run finishes"
+
+
+def test_foreground_dispatch_nonzero_exit_marks_run_failed(fake_repo, fake_claude):
+    result = dispatch_foreground(fake_repo, fake_claude, env={"FAKE_CLAUDE_MODE": "fail"})
+    assert result["returncode"] == 0, result["stderr"]
+    record = parse_json(result)
+    assert record["status"] == "failed"
+    assert record["exit_code"] == 1
+    assert not (fake_repo / "control_room" / "bridge.lock").exists()
+
+
+def test_foreground_dispatch_redacts_secrets_in_captured_output(fake_repo, fake_claude):
+    result = dispatch_foreground(fake_repo, fake_claude)
+    record = parse_json(result)
+    stdout_text = Path(record["stdout_path"]).read_text(encoding="utf-8")
+    assert "sk-should-be-redacted" not in stdout_text
+    assert "REDACTED" in stdout_text
+    result_text = Path(record["result_path"]).read_text(encoding="utf-8")
+    assert "sk-should-be-redacted" not in result_text
+
+
+def test_foreground_dispatch_ledger_records_full_lifecycle(fake_repo, fake_claude):
+    result = dispatch_foreground(fake_repo, fake_claude)
+    record = parse_json(result)
+    ledger_path = fake_repo / "control_room" / "ledger.jsonl"
+    lines = [json.loads(line) for line in ledger_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    events = [entry["event"] for entry in lines if entry.get("run_id") == record["run_id"]]
+    assert events == ["dispatched", "run_started", "run_finished"]
+    dispatched_event = next(e for e in lines if e.get("run_id") == record["run_id"] and e["event"] == "dispatched")
+    assert dispatched_event["foreground"] is True
+
+
+def test_second_dispatch_rejected_while_foreground_run_is_active(fake_repo, fake_claude):
+    proc = spawn_cli(
+        fake_repo, "dispatch",
+        "--prompt", "docs/aepoch-production-playbook/prompts/fake-brief.md",
+        "--approval", "chris-approved",
+        "--claude-bin", str(fake_claude),
+        "--foreground",
+        env={"FAKE_CLAUDE_MODE": "sleep", "FAKE_CLAUDE_SLEEP": "5"},
+    )
+    try:
+        run_id = None
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline:
+            current = current_run_id_or_none(fake_repo)
+            if current:
+                record = parse_json(run_cli(fake_repo, "status", "--run-id", current))
+                if record["status"] == "running":
+                    run_id = current
+                    break
+            time.sleep(0.1)
+        assert run_id, "foreground run never reported running"
+
+        second = dispatch(fake_repo, fake_claude)
+        assert second["returncode"] != 0
+        err = parse_json(second)
+        assert "already active" in err["error"]
+        assert run_id in err["error"]
+    finally:
+        stdout, stderr = proc.communicate(timeout=10)
+        assert proc.returncode == 0, stderr
+        finished = json.loads(stdout)
+        assert finished["status"] == "completed"
+        assert not (fake_repo / "control_room" / "bridge.lock").exists()
+
+
+def current_run_id_or_none(repo: Path) -> str | None:
+    current_path = repo / "control_room" / "current.json"
+    if not current_path.exists():
+        return None
+    return json.loads(current_path.read_text(encoding="utf-8")).get("run_id")
 
 
 def test_wait_command_blocks_until_completion(fake_repo, fake_claude):
