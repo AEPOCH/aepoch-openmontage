@@ -1097,12 +1097,25 @@ accepted nor rejected -- no image was produced); `landing-1a` remains not
 generated. Full detail: `knowledge/log.md`, 2026-08-03 "Approach 2
 approved; `build-2a` correction probe hit a transient fal.ai outage" entry.
 
-**Immediate next action:** Chris decides whether to authorize a retry of
-the identical `build-2a` probe prompt once fal.ai has recovered
-(recommended -- no content change needed, since the corrected prompt
-remains genuinely untested against a real response), or directs a
-different path. `landing-1a` stays not-yet-generated, conditional on a
-successful `build-2a` probe. The checkpoint schema's assets-stage
+**Update 2026-08-03 (`build-2a` probe retried; texture resolved, rejected
+for palette drift):** Chris authorized one identical-prompt retry after
+the transient 503. The call succeeded technically (real cost $0.04,
+project total now $1.2731 of $2.00) and fully resolved the internal-
+decoration/texture defect (interior fill measured RGB std ~0.3-0.5,
+genuinely flat). A new, distinct defect appeared: the figure's measured
+fill color `#E56836` drifted materially from the requested Clay `#C4835A`
+(deltas +33/-27/-36) -- rejected for palette drift per the handoff's
+explicit reject criteria. `build-2a`/`climax-3` remain blocked;
+`landing-1a` remains not generated; no further retry was made. Full
+detail: `knowledge/log.md`, 2026-08-03 "`build-2a` probe retried: texture
+defect resolved, rejected for palette drift" entry.
+
+**Immediate next action:** Chris/Monty decide `build-2a`'s next step: a
+further prompt correction anchoring the Clay color more explicitly and
+repeatedly (the same technique that fixed the texture defect), accepting
+the current drift as a minor deviation, or a different path for this
+concept. `landing-1a` stays not-yet-generated, still blocked on `build-2a`
+producing an accepted result. The checkpoint schema's assets-stage
 `asset_manifest` requirement gap remains a known limitation (the real
 provisional manifest exists as its own file, not registered in the
 checkpoint's `artifacts` dict). No further paid calls, provider changes,

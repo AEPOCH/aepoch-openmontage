@@ -3555,6 +3555,59 @@ authorized until Chris decides.
 
 ---
 
+## 2026-08-03 — `build-2a` probe retried: texture defect resolved, rejected for palette drift
+
+Executed
+`docs/aepoch-production-playbook/prompts/phase-16-build-2a-probe-retry-after-503.md`.
+Chris authorized exactly one identical-prompt retry of the `build-2a`
+probe after the prior transient 503, capped at $0.04, no further retry, no
+`landing-1a`. Reused attempt 2's prompt and controls verbatim (Clay
+`#C4835A` only, Paper `#FAF8F5` background, `landscape_16_9`,
+`enable_safety_checker: true`, no `style`) -- no rewording.
+
+**The call succeeded technically.** Real cost $0.04 (project total now
+$1.2731 of $2.00). PNG, 1344x768, native. Direct pixel measurement of the
+figure's interior fill (torso, head) shows RGB standard deviation of only
+~0.3-0.5 across a 40x60px sample -- genuinely flat, no texture. The
+internal-decoration/topographic-line defect that sank Plate 5, Plate 6
+attempt 1, and made attempt 2's prompt necessary is now **fully
+resolved**: naming every specific texture family explicitly in the prompt
+worked.
+
+**A new, distinct defect appeared: palette drift.** Direct measurement of
+the figure's fill returns `(229, 104, 54)` = `#E56836` against the
+requested Clay `#C4835A` = `(196, 131, 90)` -- channel deltas of
+`(+33, -27, -36)`. This is a materially more saturated red-orange than the
+muted warm-tan Clay used in the anchor and all 6 accepted plates, not a
+subtle rendering variance. (The background measured `#FFFFFF` against
+requested Paper `#FAF8F5` -- a much smaller, likely-imperceptible drift,
+noted but not the basis for rejection.) Per the handoff's explicit reject
+criteria (which lists "palette drift" alongside texture, gradient, and
+border defects), this attempt is **REJECTED**.
+
+Both outcomes -- attempt 2's transient 503 ($0.00) and attempt 3's
+technical success but content rejection ($0.04) -- are recorded in full,
+neither erased, in
+`assets/images/recraft-build-2a-probe-review.md`. Per the handoff, no
+further retry was made regardless of outcome, and `landing-1a` was not
+generated. `artifacts/asset_manifest.json`, `cost_log.json` (now $1.2731
+spent), and `asset-inventory-and-prompts.md` were all updated to record
+this honestly. `checkpoint_assets.json` remains `in_progress`, no
+canonical `asset_manifest` artifact.
+
+### Next action
+
+Chris/Monty decide `build-2a`'s next step: a further prompt correction
+that anchors the Clay color more explicitly and repeatedly (the same
+technique that successfully fixed the texture defect), accepting the
+current color drift as a minor deviation, or a different path entirely
+for this concept. `landing-1a` remains not-yet-generated, still blocked on
+`build-2a` producing an accepted result. No further paid call, provider
+change, composition authoring, rendering, publishing, or deployment is
+authorized until Chris decides.
+
+---
+
 ## 2026-08-03 — Chris approves Approach 2 and the gated $0.08 ceiling
 
 Chris explicitly approved Approach 2 after Monty's review: deterministic
@@ -3577,5 +3630,27 @@ occurred while preparing the handoff.
 Claude executes the tracked `build-2a` probe handoff, commits and pushes the
 evidence, then stops for Monty/Chris review. The second approved Recraft call
 remains gated and is not authorized in the first execution tranche.
+
+---
+
+## 2026-08-03 — Chris authorizes one identical `build-2a` retry after the zero-cost 503
+
+Chris explicitly approved retrying the corrected `build-2a` Recraft V4 probe
+after attempt 2 failed before generation with HTTP 503 and cost $0.00. The
+provider, model, Approach 2 scope, and prompt remain unchanged; `d-024` remains
+the current decision, so no redundant provider-selection entry is required.
+
+Monty wrote the tracked retry handoff at
+`docs/aepoch-production-playbook/prompts/phase-16-build-2a-probe-retry-after-503.md`.
+It authorizes exactly one identical `recraft_image` call through fal.ai at
+$0.04 maximum, requires a distinct attempt-3 output path and native-resolution
+review, forbids another retry or fallback, and hard-stops before the conditional
+`landing-1a` call. No paid call occurred while preparing the handoff.
+
+### Next action
+
+Claude executes the tracked attempt-3 retry, commits and pushes the evidence,
+then stops for Monty/Chris review. `landing-1a` remains gated regardless of the
+probe outcome.
 
 ---
