@@ -158,3 +158,94 @@ def test_output_format_change_does_not_alter_provider_or_cost():
     assert tool.estimate_cost({"model": "flux-pro/v1.1", "output_format": "png"}) == 0.05
     assert tool.estimate_cost({"model": "flux-pro/v1.1", "output_format": "jpeg"}) == 0.05
     assert tool.estimate_cost({"model": "flux/dev", "output_format": "png"}) == 0.03
+
+
+# --- image_size preset support (phase-16-flux-visual-sample-3) ---
+
+def test_image_size_preset_sent_unchanged_when_present():
+    """When image_size_preset is given, it's sent to fal.ai as a bare string,
+    not wrapped in a {width, height} object."""
+    tool = FluxImage()
+    payload = tool._build_payload({
+        "prompt": "a scene", "image_size_preset": "landscape_16_9",
+    })
+    assert payload["image_size"] == "landscape_16_9"
+
+
+def test_custom_width_height_still_used_when_no_preset_given():
+    """The existing custom width/height behavior is preserved when no preset
+    is requested -- this is a regression check for the prior contract."""
+    tool = FluxImage()
+    payload = tool._build_payload({
+        "prompt": "a scene", "width": 1920, "height": 1080,
+    })
+    assert payload["image_size"] == {"width": 1920, "height": 1080}
+
+
+def test_image_size_preset_schema_matches_fal_documented_values():
+    tool = FluxImage()
+    assert set(tool.input_schema["properties"]["image_size_preset"]["enum"]) == {
+        "square_hd", "square", "portrait_4_3", "portrait_16_9",
+        "landscape_4_3", "landscape_16_9",
+    }
+
+
+def test_preset_path_does_not_weaken_content_type_safety_check(monkeypatch, tmp_path):
+    """Using image_size_preset must not bypass the content-type/extension
+    mismatch guard -- a mismatch must still fail before download."""
+    monkeypatch.setenv("FAL_KEY", "fake-key")
+
+    api_response = {
+        "seed": 42,
+        "images": [
+            {"url": "https://x/image.jpg", "width": 1344, "height": 756, "content_type": "image/jpeg"}
+        ],
+    }
+
+    import requests
+
+    monkeypatch.setattr(requests, "post", lambda *a, **kw: FakeResp(api_response))
+    get_called = {"count": 0}
+    monkeypatch.setattr(
+        requests, "get",
+        lambda url, **kw: get_called.update(count=get_called["count"] + 1) or FakeResp(content=b"x"),
+    )
+
+    out = tmp_path / "sample.png"  # requested png via output_format, fal.ai returned jpeg
+    result = FluxImage().execute({
+        "prompt": "a scene", "image_size_preset": "landscape_16_9",
+        "output_format": "png", "output_path": str(out),
+    })
+
+    assert result.success is False
+    assert "content_type" in result.error
+    assert not out.exists()
+    assert get_called["count"] == 0
+
+
+def test_preset_path_succeeds_with_matching_jpeg_output(monkeypatch, tmp_path):
+    monkeypatch.setenv("FAL_KEY", "fake-key")
+
+    api_response = {
+        "seed": 7,
+        "images": [
+            {"url": "https://x/image.jpg", "width": 1344, "height": 756, "content_type": "image/jpeg"}
+        ],
+    }
+
+    import requests
+
+    monkeypatch.setattr(requests, "post", lambda *a, **kw: FakeResp(api_response))
+    monkeypatch.setattr(requests, "get", lambda url, **kw: FakeResp(content=b"jpeg-bytes"))
+
+    out = tmp_path / "sample.jpg"
+    result = FluxImage().execute({
+        "prompt": "a scene", "image_size_preset": "landscape_16_9",
+        "output_format": "jpeg", "output_path": str(out),
+    })
+
+    assert result.success is True
+    assert result.data["width"] == 1344
+    assert result.data["height"] == 756
+    assert result.data["content_type"] == "image/jpeg"
+    assert out.read_bytes() == b"jpeg-bytes"

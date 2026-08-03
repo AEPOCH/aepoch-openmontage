@@ -2952,3 +2952,88 @@ and decide how to proceed with the fal.ai `output_format` question before
 any further paid call is authorized.
 
 ---
+
+## 2026-08-03 — FLUX Sample 2 produced no reviewable artifact
+
+Monty reviewed the tool repair, focused tests, cost evidence, and Sample 2
+report. The `flux_image` repair is sound and prevents mislabeled files, but the
+paid call returned JPEG despite an explicit PNG request; the tool therefore
+stopped before download. The call cost $0.05, while no Sample 2 image exists to
+judge creatively and its returned dimensions/seed were not retained.
+
+Monty recommends ending the PNG-format loop: make one intentional JPEG request
+using fal.ai's documented `landscape_16_9` preset, save it honestly as `.jpg`,
+and use it solely as the visual gate for the revised abstract-geometry prompt.
+That proposed single-call tranche is tracked in
+`docs/aepoch-production-playbook/prompts/phase-16-flux-visual-sample-3.md`.
+If the art fails, retire FLUX 1.1 for this pilot rather than buying a fourth
+creative attempt. No further call or batch was authorized by this review.
+
+---
+
+## 2026-08-03 — Honest JPEG visual gate executed; sample 3 rejected, FLUX 1.1 retirement recommended
+
+Executed `docs/aepoch-production-playbook/prompts/phase-16-flux-visual-sample-3.md`.
+
+**Small tool addition, tested before spending.** Extended
+`tools/graphics/flux_image.py` with an optional `image_size_preset` input
+matching fal.ai's documented enum (`square_hd`, `square`, `portrait_4_3`,
+`portrait_16_9`, `landscape_4_3`, `landscape_16_9`); when present it's sent
+to fal.ai unchanged as a string in place of the custom `{width, height}`
+object, with the existing custom-size behavior and the prior
+content-type/extension safety check both left fully intact. Added 5 new
+focused, network-free tests (12 total in
+`tests/contracts/test_flux_image_output_format.py`) confirming the preset
+path works, the fallback path still works, the schema enum matches fal.ai
+exactly, and the safety check isn't weakened. Full `tests/contracts/` suite:
+654 passed, 7 pre-existing skips, 0 failures -- run before the paid call.
+
+**The one authorized visual-gate sample succeeded honestly this time.**
+Used the unchanged Plate 2 Attempt 2 Post prompt verbatim, requested
+`image_size_preset: "landscape_16_9"` and `output_format: "jpeg"`, saved
+honestly as `.jpg`, no seed reuse (fresh seed `4234766226`). fal.ai returned
+`content_type: "image/jpeg"` matching the requested extension -- the file
+saved without triggering the safety check this time. Verified independently
+via PIL: genuine JPEG, 1024x576, aspect ratio 1.7778 -- exactly 16:9 as
+required (1920x1080 was explicitly not required at this gate). Real cost
+$0.05 (`cost_log.json` entry `9155b5656557`, `budget_spent_usd` now $0.8331
+of $2.00).
+
+**Inspected at original resolution -- rejected on content and palette
+grounds, scored plainly in both directions.** Real, honest improvements
+over attempt 1: no recognizable brand logo, no currency symbol, a genuinely
+flat gradient-free background, good shape separation with real negative
+space, and a clearly visible (non-disappearing) figure. But multiple
+explicit checks still fail: gear/cog-wheel icon clichés recur (present in
+both attempt 1 and this attempt despite explicit prohibition in both
+prompts); standard representational UI glyphs appear (a photo-placeholder
+icon, a speech-bubble icon) despite the prompt's explicit
+"nonrepresentational... no resemblance to any real object... icon"
+language; and **every locked color was substituted** -- the figure is
+near-black instead of Clay `#C4835A`, the background is navy/slate-blue
+instead of Void `#0C0B0A`, and the linework accent is pink/magenta instead
+of Iris `#8BAFD4`/Prism `#B8A9D9`. Full scored review, including a
+three-attempt comparison table, is in
+`assets/images/samples/hook-2b-sample-review-3.md`.
+
+**Recommendation, per the handoff's explicit fallback instruction:** retire
+FLUX 1.1 for this pilot's illustration needs rather than paying for a
+fourth creative attempt. Three attempts with increasingly forceful,
+explicit, RGB-anchored prompting have not produced the locked palette or
+suppressed FLUX's default bias toward generic tech-icon vocabulary -- this
+reads as a model-level tendency, not a prompt-wording gap a fourth try
+would likely fix. **No replacement provider was selected or called** -- that
+decision belongs to Chris.
+
+No second image, batch, other asset, TTS, music, SFX, diagram, video,
+narration processing, composition, render, publish, or deploy occurred.
+
+### Next action
+
+Chris and Monty review `assets/images/samples/hook-2b-sample-review-3.md`
+and decide whether to retire FLUX 1.1 for this pilot and select a different
+approach or provider. No further paid calls, provider substitution, other
+assets, composition, render, publish, or deploy is authorized until Chris
+explicitly decides.
+
+---

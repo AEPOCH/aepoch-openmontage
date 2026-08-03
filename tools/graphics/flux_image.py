@@ -58,6 +58,19 @@ class FluxImage(BaseTool):
         "image/jpeg": (".jpg", ".jpeg"),
     }
 
+    # fal.ai's documented image_size preset enum (live schema at
+    # https://fal.ai/models/fal-ai/flux-pro/v1.1/api). When one of these is
+    # given, it's sent to fal.ai unchanged as a string; otherwise the tool
+    # falls back to its existing custom {width, height} object.
+    IMAGE_SIZE_PRESETS = (
+        "square_hd",
+        "square",
+        "portrait_4_3",
+        "portrait_16_9",
+        "landscape_4_3",
+        "landscape_16_9",
+    )
+
     input_schema = {
         "type": "object",
         "required": ["prompt"],
@@ -66,6 +79,15 @@ class FluxImage(BaseTool):
             "negative_prompt": {"type": "string", "default": ""},
             "width": {"type": "integer", "default": 1024},
             "height": {"type": "integer", "default": 1024},
+            "image_size_preset": {
+                "type": "string",
+                "enum": list(IMAGE_SIZE_PRESETS),
+                "description": (
+                    "Optional fal.ai documented image_size preset (e.g. "
+                    "'landscape_16_9'). When present, sent to fal.ai unchanged in "
+                    "place of the custom width/height object."
+                ),
+            },
             "model": {
                 "type": "string",
                 "enum": ["flux-pro/v1.1", "flux/dev", "flux-pro"],
@@ -112,16 +134,22 @@ class FluxImage(BaseTool):
     def _build_payload(self, inputs: dict[str, Any]) -> dict[str, Any]:
         """Build the fal.ai request payload. Pure function -- no network calls.
 
-        Kept separate from `execute()` so its contract (custom width/height
-        sent as `image_size`, `output_format` always present) can be tested
-        without mocking or a real provider call.
+        Kept separate from `execute()` so its contract (custom width/height or
+        a documented preset sent as `image_size`, `output_format` always
+        present) can be tested without mocking or a real provider call.
         """
-        payload: dict[str, Any] = {
-            "prompt": inputs["prompt"],
-            "image_size": {
+        preset = inputs.get("image_size_preset")
+        if preset is not None:
+            image_size: Any = preset
+        else:
+            image_size = {
                 "width": inputs.get("width", 1024),
                 "height": inputs.get("height", 1024),
-            },
+            }
+
+        payload: dict[str, Any] = {
+            "prompt": inputs["prompt"],
+            "image_size": image_size,
             # Always send explicitly -- fal.ai's own server-side default is
             # "jpeg", not "png" (confirmed against the live schema at
             # https://fal.ai/models/fal-ai/flux-pro/v1.1/api).
@@ -181,10 +209,10 @@ class FluxImage(BaseTool):
                     success=False,
                     error=(
                         f"fal.ai returned content_type={content_type!r} "
-                        f"({returned_width}x{returned_height}) but output_path "
-                        f"{str(output_path)!r} has extension {output_path.suffix!r} -- "
-                        f"refusing to save a mislabeled file. Requested output_format="
-                        f"{payload['output_format']!r}."
+                        f"({returned_width}x{returned_height}, seed={data.get('seed')}) but "
+                        f"output_path {str(output_path)!r} has extension "
+                        f"{output_path.suffix!r} -- refusing to save a mislabeled file. "
+                        f"Requested output_format={payload['output_format']!r}."
                     ),
                 )
 

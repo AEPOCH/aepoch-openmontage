@@ -972,14 +972,33 @@ completed before the local save was refused. No image exists to review.
 Full detail: `knowledge/log.md`, 2026-08-03 "`flux_image` tool repaired and
 tested; sample 2 rejected on a fal.ai-side format mismatch" entry.
 
+**Update 2026-08-03 (honest JPEG visual gate executed; sample 3 rejected,
+FLUX 1.1 retirement recommended):** Extended `flux_image` with an optional
+`image_size_preset` input (fal.ai's documented enum), tested (5 new tests,
+12 total, 654/661 project-wide, 0 failures), then generated one honest
+`landscape_16_9` JPEG sample using the unchanged Plate 2 Attempt 2 prompt.
+This time the file saved correctly (genuine JPEG, 1024x576, verified exact
+16:9 via PIL, real cost $0.05, `budget_spent_usd` now $0.8331 of $2.00).
+Inspected at original resolution: real improvements (no logo, no currency
+symbol, flat gradient-free background, good spacing, visible figure) but
+still rejected -- gear-icon clichés and standard representational UI glyphs
+(photo icon, speech bubble) persist despite explicit prohibition, and every
+locked color was substituted (figure not Clay, background not Void, accent
+pink/magenta not Iris/Prism). Per the handoff's explicit fallback
+instruction, **recommended retiring FLUX 1.1 for this pilot's illustration
+needs** rather than a fourth attempt -- three attempts with increasingly
+forceful prompting haven't produced the locked palette or suppressed
+generic icon vocabulary. No replacement provider was selected or called.
+Full detail: `knowledge/log.md`, 2026-08-03 "Honest JPEG visual gate
+executed; sample 3 rejected, FLUX 1.1 retirement recommended" entry.
+
 **Immediate next action:** Chris and Monty review
-`assets/images/samples/hook-2b-sample-review-2.md` and decide how to
-proceed with the fal.ai `output_format` question -- investigate fal.ai's
-actual mechanism further, or accept JPEG for sample/reference purposes
-while requiring true PNG only for final batch-approved plates. The
-checkpoint schema's assets-stage `asset_manifest` requirement gap remains a
-known limitation. No further paid calls, batch generation, other assets,
-audio mastering, composition, render, publish, or deploy is authorized.
+`assets/images/samples/hook-2b-sample-review-3.md` and decide whether to
+retire FLUX 1.1 for this pilot and select a different approach or provider.
+The checkpoint schema's assets-stage `asset_manifest` requirement gap
+remains a known limitation. No further paid calls, provider substitution,
+other assets, composition, render, publish, or deploy is authorized until
+Chris explicitly decides.
 
 ## Verification Criteria for Phase 15 Start
 
