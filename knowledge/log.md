@@ -3820,3 +3820,118 @@ dispatch. Per the brief's hard stop, no build-2a work, landing-1a work, or
 any paid provider call was made or dispatched during this pass.
 
 ---
+
+## 2026-08-03 — Control-room final stabilization: `--foreground` dispatch, prompt-corpus reconciliation
+
+Chris approved this tranche via chat on 2026-08-03
+(`docs/aepoch-production-playbook/prompts/phase-16-control-room-final-stabilization.md`).
+Scope: a foreground execution adapter for the bridge, focused verification,
+Git reconciliation of the untracked Phase 16 prompt corpus after a secret
+audit, this durable evidence entry, and a harmless fake-executable dogfood
+run. No production advancement, paid media call, or change to generated
+assets occurred.
+
+**Why:** the real managed-sandbox limitation this brief anticipated had
+already bitten once — the run reviewed in commit `f9a8fa5`
+(`run-20260803T125517Z-23184e`) was marked `reviewed:fail` because the
+launching tool call's environment killed the detached worker mid-run, and
+the synchronous recovery attempt then hit a Claude session limit before
+completing. `dispatch --foreground` closes that gap structurally rather
+than relying on a retry.
+
+**Implementation** (`scripts/control_bridge.py`): added a `--foreground`
+option to `dispatch` — no seventh public operation. It validates the same
+tracked-prompt and `--approval` inputs, acquires the same single-run lock,
+writes the same durable run record and ledger events (the `dispatched`
+event now carries a `foreground: true/false` marker), and then runs the
+Claude invocation, redaction, transitions, result extraction, and lock
+cleanup synchronously in the calling process — no fork, no detach —
+returning only once the run is terminal. Detached dispatch is unchanged
+and remains the default for a human's persistent terminal. Both modes now
+call one extracted lifecycle function, `_execute_run_lifecycle` (the
+former body of `cmd_run_worker`, which is now a thin wrapper around it),
+so the two modes cannot diverge in Claude-invocation/redaction/transition/
+result/cleanup behavior — only in whether a worker is detached. Foreground
+mode remains hands-free with the existing `auto` permission-mode default
+and, being the same code path through `PERMISSION_MODE_CHOICES`,
+structurally excludes `bypassPermissions`/`--dangerously-skip-permissions`
+exactly as detached dispatch does; no separate gate was needed for that
+requirement.
+
+**Tests:** added 6 focused tests to `tests/scripts/test_control_bridge.py`
+(22 → 28, all passing): foreground success returning a terminal record
+synchronously with the dispatch process's own pid rather than a forked
+worker's, lock release on completion, a nonzero-exit run marked `failed`,
+secret redaction in captured output, full ledger lifecycle with the
+`foreground: true` marker, and a second dispatch still being rejected
+while a foreground run is active (driven by spawning the blocking
+foreground `dispatch` itself via `Popen` and polling `status`/
+`current.json` until it reports `running`, then asserting a concurrent
+plain `dispatch` fails with the existing "already active" error).
+
+**Verification:** `./.venv/bin/python -m pytest tests/scripts/test_control_bridge.py -v`
+→ 28 passed. `python -m py_compile` on both the module and the test file →
+clean. `ruff check` on both files → 18 findings, all pre-existing style
+nits unrelated to this change (unexecutable shebang, `Optional[...]` vs
+`X | None` annotation style, `subprocess.run` without explicit `check`,
+one nested-if simplification, blind `except Exception` in the exception-
+safety paths, and one unused-variable nit in an untouched pre-existing
+test) — the same category of out-of-scope findings the prior corrections
+pass (`f9a8fa5`) already logged and left alone; no bugs found in the new
+code.
+
+**Dogfood run:** ran a real `dispatch --foreground` against a throwaway
+fake `claude` executable (`/tmp/fake_claude_dogfood.py`, a 9-line script
+that prints a fixed JSON result and exits 0 — no real Claude/model call,
+no network, no paid provider) in this actual repository's `control_room/`
+state (gitignored runtime coordination, not source). Result: the single
+CLI invocation returned a terminal `completed` record
+(`run-20260803T141836Z-ebd15b`, `exit_code: 0`, `session_id:
+dogfood-foreground-session`) with no separate `wait` call needed; the
+ledger recorded the full lifecycle in order (`dispatched` with
+`foreground: true` → `run_started` → `run_finished`); `control_room/bridge.lock`
+did not exist after the call returned. Marked reviewed
+(`verdict: pass`, reviewer Monty) to close the loop. Evidence: run record
+and ledger lines quoted above are this entry's durable copy; the
+machine-local `control_room/` files themselves are gitignored and not
+committed.
+
+**Prompt-corpus reconciliation:** audited all 22 then-untracked
+`docs/aepoch-production-playbook/prompts/phase-16-*.md` files for literal
+secret values (regex sweep for common key/token shapes plus a manual
+scan for `KEY`/`TOKEN`/`SECRET`-adjacent assignments and any long
+opaque-looking tokens) — found none; the only credential-adjacent mentions
+are environment-variable *names* (`FAL_KEY`, `FAL_AI_API_KEY`) referenced
+in `phase-16-flux-sample-retry.md`, which the brief explicitly treats as
+expected, not a secret. Added all 22 files to Git — they are now part of
+commit `e2a2517` below rather than defeating the Git-backed handoff model
+by staying untracked. No other untracked or dirty file in the working
+tree (`README.md`, `diagram.png`, backups, zip/JSON/preview artifacts,
+`styles/aepoch-symbolic.yaml`) was staged or modified.
+
+**Committed range:** everything above — `scripts/control_bridge.py`,
+`tests/scripts/test_control_bridge.py`,
+`docs/aepoch-production-playbook/control-room-bridge.md`, and all 22
+Phase 16 prompt files (including this brief itself) — landed in one
+commit, `e2a2517` (`feat(control-bridge): add --foreground dispatch for
+managed tool-call sandboxes`), pushed to `aepoch-series`. This log entry
+is committed separately per the knowledge Git-scope rule.
+
+**Residual risk:** the lifecycle's `finally`-based lock release protects
+against in-process Python exceptions only; it does not survive SIGKILL, a
+managed sandbox tearing down a tool call, or the machine terminating
+mid-run — in either dispatch mode. `recover` remains the actual answer to
+"the process is gone but the lock/record still says otherwise," documented
+explicitly in the operator doc so it is never mistaken for automatic.
+
+### Next action
+
+Monty independently reviews this tranche (commit `e2a2517`, the dogfood
+evidence above, and this entry) and records a verdict via `mark-reviewed`
+on the dogfood run if a distinct verdict is wanted beyond the `pass`
+already recorded above. Per the brief's hard stop: `build-2a` was not
+recolored, `landing-1a` was not generated, no media provider was invoked,
+and no composition, render, publish, or other production advancement
+occurred during this pass.
+
+---
