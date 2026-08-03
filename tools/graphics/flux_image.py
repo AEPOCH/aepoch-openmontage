@@ -52,6 +52,12 @@ class FluxImage(BaseTool):
     ]
     not_good_for = ["text rendering in images", "offline generation"]
 
+    # Maps fal.ai's returned content_type to the output_path extensions we'll accept.
+    CONTENT_TYPE_EXTENSIONS = {
+        "image/png": (".png",),
+        "image/jpeg": (".jpg", ".jpeg"),
+    }
+
     input_schema = {
         "type": "object",
         "required": ["prompt"],
@@ -69,6 +75,15 @@ class FluxImage(BaseTool):
             "num_inference_steps": {"type": "integer"},
             "guidance_scale": {"type": "number"},
             "output_path": {"type": "string"},
+            "output_format": {
+                "type": "string",
+                "enum": ["png", "jpeg"],
+                "default": "png",
+                "description": (
+                    "Image encoding to request from fal.ai. Always sent explicitly -- "
+                    "fal.ai's own server-side default is 'jpeg', not 'png'."
+                ),
+            },
         },
     }
 
@@ -94,6 +109,34 @@ class FluxImage(BaseTool):
             return 0.05
         return 0.03  # dev tier
 
+    def _build_payload(self, inputs: dict[str, Any]) -> dict[str, Any]:
+        """Build the fal.ai request payload. Pure function -- no network calls.
+
+        Kept separate from `execute()` so its contract (custom width/height
+        sent as `image_size`, `output_format` always present) can be tested
+        without mocking or a real provider call.
+        """
+        payload: dict[str, Any] = {
+            "prompt": inputs["prompt"],
+            "image_size": {
+                "width": inputs.get("width", 1024),
+                "height": inputs.get("height", 1024),
+            },
+            # Always send explicitly -- fal.ai's own server-side default is
+            # "jpeg", not "png" (confirmed against the live schema at
+            # https://fal.ai/models/fal-ai/flux-pro/v1.1/api).
+            "output_format": inputs.get("output_format", "png"),
+        }
+        if inputs.get("seed") is not None:
+            payload["seed"] = inputs["seed"]
+        if inputs.get("num_inference_steps"):
+            payload["num_inference_steps"] = inputs["num_inference_steps"]
+        if inputs.get("guidance_scale"):
+            payload["guidance_scale"] = inputs["guidance_scale"]
+        if inputs.get("negative_prompt"):
+            payload["negative_prompt"] = inputs["negative_prompt"]
+        return payload
+
     def execute(self, inputs: dict[str, Any]) -> ToolResult:
         api_key = self._get_api_key()
         if not api_key:
@@ -106,22 +149,7 @@ class FluxImage(BaseTool):
 
         start = time.time()
         model = inputs.get("model", "flux-pro/v1.1")
-        prompt = inputs["prompt"]
-        width = inputs.get("width", 1024)
-        height = inputs.get("height", 1024)
-
-        payload: dict[str, Any] = {
-            "prompt": prompt,
-            "image_size": {"width": width, "height": height},
-        }
-        if inputs.get("seed") is not None:
-            payload["seed"] = inputs["seed"]
-        if inputs.get("num_inference_steps"):
-            payload["num_inference_steps"] = inputs["num_inference_steps"]
-        if inputs.get("guidance_scale"):
-            payload["guidance_scale"] = inputs["guidance_scale"]
-        if inputs.get("negative_prompt"):
-            payload["negative_prompt"] = inputs["negative_prompt"]
+        payload = self._build_payload(inputs)
 
         try:
             response = requests.post(
@@ -136,11 +164,33 @@ class FluxImage(BaseTool):
             response.raise_for_status()
             data = response.json()
 
-            image_url = data["images"][0]["url"]
+            image = data["images"][0]
+            image_url = image["url"]
+            returned_width = image.get("width")
+            returned_height = image.get("height")
+            # fal.ai's own Image schema defaults content_type to "image/jpeg"
+            # when the field is absent -- match that instead of assuming success.
+            content_type = image.get("content_type") or "image/jpeg"
+
+            output_path = Path(
+                inputs.get("output_path", f"generated_image.{inputs.get('output_format', 'png')}")
+            )
+            expected_exts = self.CONTENT_TYPE_EXTENSIONS.get(content_type)
+            if expected_exts is None or output_path.suffix.lower() not in expected_exts:
+                return ToolResult(
+                    success=False,
+                    error=(
+                        f"fal.ai returned content_type={content_type!r} "
+                        f"({returned_width}x{returned_height}) but output_path "
+                        f"{str(output_path)!r} has extension {output_path.suffix!r} -- "
+                        f"refusing to save a mislabeled file. Requested output_format="
+                        f"{payload['output_format']!r}."
+                    ),
+                )
+
             image_response = requests.get(image_url, timeout=60)
             image_response.raise_for_status()
 
-            output_path = Path(inputs.get("output_path", "generated_image.png"))
             output_path.parent.mkdir(parents=True, exist_ok=True)
             output_path.write_bytes(image_response.content)
 
@@ -152,9 +202,12 @@ class FluxImage(BaseTool):
             data={
                 "provider": "flux",
                 "model": model,
-                "prompt": prompt,
+                "prompt": payload["prompt"],
                 "output": str(output_path),
                 "seed": data.get("seed"),
+                "width": returned_width,
+                "height": returned_height,
+                "content_type": content_type,
             },
             artifacts=[str(output_path)],
             cost_usd=self.estimate_cost(inputs),

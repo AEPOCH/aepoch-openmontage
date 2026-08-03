@@ -2852,3 +2852,103 @@ different approach. No further paid calls or other work is authorized until
 then.
 
 ---
+
+## 2026-08-03 — First FLUX visual sample independently rejected
+
+Monty inspected the `hook-2b` sample at original resolution and confirmed
+Claude's rejection. The file is mislabeled JPEG rather than PNG and is
+1440x1056 rather than 1920x1080. Visually it is generic stock-like tech-symbol
+soup: recognizable Apple marks, gears, a cloud, a Euro sign, consumer-device
+icons, a gray gradient/vignette, off-palette cyan, and an Ink figure that
+nearly disappears against Void.
+
+Official fal.ai schema documentation confirms that `output_format` defaults to
+JPEG unless sent explicitly, while PNG and custom dimensions are supported.
+Monty prepared a proposed narrow handoff to patch/test the registered tool and
+generate one revised $0.05 sample using a Clay figure and invented abstract
+machine tiles rather than semantic “system icons.” No new call was made and no
+batch is authorized.
+
+---
+
+## 2026-08-03 — `flux_image` tool repaired and tested; sample 2 rejected on a fal.ai-side format mismatch
+
+Executed `docs/aepoch-production-playbook/prompts/phase-16-flux-tool-repair-and-sample-2.md`.
+
+**Tool repaired before any spend.** Confirmed the exact live schema at
+`https://fal.ai/models/fal-ai/flux-pro/v1.1/api`: `output_format` defaults
+to `"jpeg"` server-side and is a valid `["jpeg","png"]` enum; `image_size`
+accepts a custom `{width, height}` object (the tool's request shape was
+already correct on that front). Patched `tools/graphics/flux_image.py`:
+added `output_format` to the public input contract (tool default `"png"`,
+always sent explicitly in the payload); `execute()` now parses and reports
+the response's actual `content_type`/`width`/`height` instead of assuming
+the request was honored; added a hard content-type/extension check that
+fails **before writing any bytes** if the returned content-type doesn't
+match the requested output path's extension -- this is the exact bug class
+that produced attempt 1's mislabeled JPEG-as-PNG file. Extracted a pure,
+network-free `_build_payload()` helper for direct testing.
+
+**Focused contract tests added and run before the paid call**, per the
+handoff's explicit instruction not to spend on testing the patch:
+`tests/contracts/test_flux_image_output_format.py` (7 tests, all mocked,
+zero network calls, zero cost) proving custom width/height are sent as
+`image_size`, `output_format: "png"` is sent by default, returned
+content-type/dimensions are captured and may legitimately differ from the
+request, a mismatch fails before download rather than mislabeling a file,
+a missing `content_type` is treated as fal.ai's own documented
+`"image/jpeg"` default, and none of this changes provider selection or
+`estimate_cost()`. Full `tests/contracts/` suite: 649 passed, 7 pre-existing
+skips, 0 failures -- no regressions.
+
+**Revised CHAI prompt triplet written**, recorded in
+`asset-inventory-and-prompts.md` under Plate 2 "Attempt 2 (corrected)".
+Removed "bot icons"/"system icons"/"tech icons" phrasing (the suspected
+cause of attempt 1's recognizable-consumer-icon soup) in favor of an
+explicit, exhaustive abstract-shape vocabulary, explicit
+nonrepresentational framing, RGB-anchored exact colors for every element
+(Clay `#C4835A` for the figure -- a deliberate, handoff-specified change
+from Ink for stronger contrast against Void; Iris `#8BAFD4` with sparse
+Prism `#B8A9D9` for the machine tiles; Void `#0C0B0A` for the background),
+and an explicit, affirmative prohibition on any recognizable object, logo,
+currency symbol, or lettering.
+
+**The one authorized retry was rejected -- but by the repair working
+correctly, not by repeating the old bug.** Announced tool/provider/model/
+scene/cost, then called the repaired tool with `output_format: "png"`
+correctly present in the outgoing payload (independently re-verified via
+`_build_payload()` after the fact) and a fresh, unspecified seed (not
+reusing `3735125555`). fal.ai's response again reported
+`content_type: "image/jpeg"` despite the valid `png` request. The tool's
+new safety check correctly refused to save the mismatched file -- **no
+mislabeled artifact exists on disk for this attempt.** Per the handoff, no
+second call was made.
+
+**Real cost was incurred despite no file being saved.** fal.ai's generation
+call completed successfully (valid JSON, image URL, seed) before the local
+save was refused -- billing occurs at that point in fal.ai's model
+regardless of what the caller does next. The cost-tracker entry was
+initially reconciled as `failed`/$0.00 and then corrected to
+`completed`/$0.05 once this was recognized, rather than left showing an
+inaccurate $0 spend. `cost_log.json` `budget_spent_usd` is now $0.7831 of
+$2.00 (entry `76a395b108a1`).
+
+**What remains genuinely unresolved:** why fal.ai's `flux-pro/v1.1`
+endpoint doesn't honor a documented, valid `output_format: "png"` request.
+This looks like a real fal.ai-side inconsistency between their published
+schema and actual behavior, not a defect in the repaired tool's request
+construction. Full record, including the two recommended paths forward
+(investigate fal.ai's mechanism further, or accept JPEG for sample/
+reference purposes while requiring true PNG only for final batch-approved
+plates), is in `assets/images/samples/hook-2b-sample-review-2.md`.
+
+No second image, batch, other asset, TTS, music, SFX, diagram, video,
+narration processing, composition, render, publish, or deploy occurred.
+
+### Next action
+
+Chris and Monty review `assets/images/samples/hook-2b-sample-review-2.md`
+and decide how to proceed with the fal.ai `output_format` question before
+any further paid call is authorized.
+
+---

@@ -954,13 +954,32 @@ review and concrete correction recommendations:
 `knowledge/log.md`, 2026-08-03 "FLUX sample retried after credential
 rotation; sample REJECTED" entry.
 
-**Immediate next action:** Chris and Monty review the rejected sample and
-its correction recommendations, and decide whether to authorize a new
-sample attempt with a corrected prompt (and fix the tool's missing
-`output_format`/size handling) or take a different approach. The checkpoint
-schema's assets-stage `asset_manifest` requirement gap remains a known
-limitation. No further paid calls, batch generation, other assets, audio
-mastering, composition, render, publish, or deploy is authorized.
+**Update 2026-08-03 (tool repaired and tested; sample 2 rejected on a
+fal.ai-side format mismatch):** Patched `tools/graphics/flux_image.py` to
+always send `output_format` explicitly (fal.ai's own default is `"jpeg"`,
+confirmed against the live schema), capture the response's real
+`content_type`/width/height, and hard-fail before writing any bytes if the
+returned content-type doesn't match the requested extension. Added 7
+focused, network-free contract tests (`tests/contracts/test_flux_image_output_format.py`)
+and ran the full suite (649 passed, 0 failures) before spending. Wrote a
+revised CHAI prompt (Clay figure, invented abstract machine tiles, no
+"system icons" phrasing) and made the one authorized retry: the repaired
+tool correctly sent `output_format: "png"`, but fal.ai's `flux-pro/v1.1`
+endpoint again returned `content_type: "image/jpeg"` -- the tool correctly
+refused to save the mismatched file. Real cost was still incurred ($0.05;
+`budget_spent_usd` now $0.7831 of $2.00) since fal.ai's generation call
+completed before the local save was refused. No image exists to review.
+Full detail: `knowledge/log.md`, 2026-08-03 "`flux_image` tool repaired and
+tested; sample 2 rejected on a fal.ai-side format mismatch" entry.
+
+**Immediate next action:** Chris and Monty review
+`assets/images/samples/hook-2b-sample-review-2.md` and decide how to
+proceed with the fal.ai `output_format` question -- investigate fal.ai's
+actual mechanism further, or accept JPEG for sample/reference purposes
+while requiring true PNG only for final batch-approved plates. The
+checkpoint schema's assets-stage `asset_manifest` requirement gap remains a
+known limitation. No further paid calls, batch generation, other assets,
+audio mastering, composition, render, publish, or deploy is authorized.
 
 ## Verification Criteria for Phase 15 Start
 
