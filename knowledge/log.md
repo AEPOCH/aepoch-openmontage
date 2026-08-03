@@ -4166,3 +4166,41 @@ further paid call, provider change, composition authoring, rendering,
 publishing, or deployment is authorized until Chris decides.
 
 ---
+
+## 2026-08-03 — Independent Monty review rejects `landing-1a` on two grounds
+
+Monty independently inspected the generated Plate 12 image at native
+resolution and reviewed run `run-20260803T151330Z-17f9dd` plus commit
+`cfa00c7`. Verdict: **fail / asset rejected**. Claude correctly rejected the
+measured fill (`#B55E30`) for material drift from Clay (`#C4835A`), but its
+self-review incorrectly passed anatomy and the absence of contour treatment.
+The five figures are visibly assembled from bulbous, muscle-like segments
+separated by conspicuous white curved gaps at shoulders, arms, hips, thighs,
+and calves. Even though those pixels match the background, they perceptually
+read as internal joint/contour lines and do not match the accepted plain
+`build-2a` silhouette or the required single-fill pictogram language.
+
+Count, equal sizing, no hierarchy, spacing, and text/logo exclusions pass.
+Palette and visual-language consistency fail. A palette-only local correction
+is therefore insufficient. The binding addendum is recorded in
+`assets/images/recraft-landing-1a-review.md` and the provisional manifest's
+rejection reason was corrected to agree. No further media call or asset
+correction was made.
+
+The bridge run's approval-reference string contains `/bin/bash.04` where the
+human-approved ceiling was `$0.04`: Monty's shell command allowed `$0` to be
+expanded by Bash. The tracked prompt (`phase-16-landing-1a-recraft-generation.md`)
+contains the correct `$0.04` authorization and governed the call; real cost was
+exactly `$0.04`. This is an audit-transcription defect, explicitly corrected
+here and in the run's independent-review notes, not a change to authorization.
+
+### Recommended next action
+
+Build `landing-1a` deterministically and locally by reusing the already
+accepted `build-2a` silhouette as the canonical figure, arranging five equal
+copies with irregular spacing and no hierarchy on Paper. This is zero provider
+cost, guarantees exact visual-language and palette consistency, and avoids
+trying to repair the rejected segmented anatomy. It requires Chris's separate
+approval before execution.
+
+---
