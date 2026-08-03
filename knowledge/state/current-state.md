@@ -1011,15 +1011,28 @@ cost $0.04, `budget_spent_usd` now $0.8731 of $2.00. This reads as
 prompt-addressable, not a provider dead end. Full detail: `knowledge/log.md`,
 2026-08-03 "FLUX 1.1 retired; Recraft V4 tool repaired and sampled" entry.
 
-**Immediate next action:** Chris and Monty review
-`assets/images/samples/hook-2b-sample-review-recraft.md` and decide whether
-to authorize a corrected follow-up Recraft V4 sample (explicit anti-circuit-
-board/network-diagram exclusion, forced shape variety, explicit per-color
-naming), pursue a different provider, or take another path. The checkpoint
-schema's assets-stage `asset_manifest` requirement gap remains a known
-limitation. No further paid calls, provider substitution, batch generation,
-other assets, composition, render, publish, or deploy is authorized until
-Chris explicitly decides.
+**Update 2026-08-03 (Recraft correction attempt 5 -- transient fal.ai
+outage, no sample produced):** Rewrote the sample prompt from scratch
+around 18 disconnected primitive marks (6 rectangles, 6 L-shapes, 6
+parallel-line pairs) and an anatomically explicit person pictogram,
+eliminating every word suspected of causing attempt 4's circuit-board
+reading; colors reduced to Clay/Iris/Prism (Ink deliberately dropped) with
+explicit per-color mark counts. No tool or decision-log changes needed.
+The generation call returned **HTTP 503 Service Unavailable** from
+fal.ai -- a transient provider-side outage, not a content or auth problem.
+No cost incurred (`budget_spent_usd` unchanged at $0.8731 of $2.00); no
+automatic retry was made, per the standing rule. The corrected prompt
+remains genuinely untested against a real response. Full detail:
+`knowledge/log.md`, 2026-08-03 "Recraft correction attempt 5: prompt
+rewritten, generation hit a transient fal.ai outage" entry.
+
+**Immediate next action:** Chris decides whether to authorize a
+same-prompt retry once fal.ai's service is confirmed available again --
+this is a "try again" situation, not a prompt or tool revision. The
+checkpoint schema's assets-stage `asset_manifest` requirement gap remains a
+known limitation. No further paid calls, provider substitution, batch
+generation, other assets, composition, render, publish, or deploy is
+authorized until then.
 
 ## Verification Criteria for Phase 15 Start
 

@@ -3152,3 +3152,78 @@ provider substitution, batch generation, other assets, composition,
 render, publish, or deploy is authorized until Chris explicitly decides.
 
 ---
+
+## 2026-08-03 — First Recraft sample rejected; correction proposed
+
+Monty inspected the first Recraft V4 sample at original resolution and
+confirmed rejection. Recraft materially outperformed FLUX: it removed logos,
+currency, device/UI clichés, clouds/gears, gradient, and the background/human
+color failures. The remaining result is not approved because almost every
+surrounding shape repeats one circuit/blockchain-style diamond motif, the
+figure reads like a pawn rather than a person, and an unrequested pale yellow
+appears.
+
+These failures are prompt-addressable rather than evidence to retire Recraft.
+Monty prepared one $0.04 correction using exactly 18 disconnected primitive
+marks with no internal detail and a reduced structured palette. Proposed
+handoff:
+`docs/aepoch-production-playbook/prompts/phase-16-recraft-sample-correction-1.md`.
+No additional generation or batch occurred during this review.
+
+---
+
+## 2026-08-03 — Recraft correction attempt 5: prompt rewritten, generation hit a transient fal.ai outage
+
+Executed `docs/aepoch-production-playbook/prompts/phase-16-recraft-sample-correction-1.md`.
+
+**Provider decision preserved, not re-logged.** Per the handoff's explicit
+instruction, `decision_log.json` `d-022` (Recraft V4 selected, FLUX 1.1
+retired) was left unchanged -- no redundant entry appended.
+
+**Prompt rewritten from scratch**, not incrementally patched. New CHAI
+pre/critique/post triplet recorded in `asset-inventory-and-prompts.md`
+under Plate 2 "Attempt 5 (primitive-marks rewrite)". Every word suspected
+of causing attempt 4's circuit-board reading was eliminated -- "tile,"
+"node," "cluster," "network," "circuit," "trace," "blockchain," "system,"
+"technology," "digital," "automation," "icon" all absent. Replaced with an
+anatomically explicit person pictogram (circular head, rounded
+shoulders/torso, two separate arms, two separate legs) and exactly 18
+primitive marks (6 empty rectangles, 6 L-shaped angle marks, 6 pairs of
+short parallel line segments), each required to be a single plain outline
+with no internal lines, no internal corner dots, and no decoration --
+directly targeting the corner-dot detail that made attempt 4's shapes read
+as PCB traces. Explicit anti-repetition/anti-grid language targets attempt
+4's core failure of one motif repeated ~20 times. Colors assigned
+explicitly by name and count (nine marks Iris, nine Prism) to avoid attempt
+4's silent color drop; Ink deliberately omitted (it caused the unrequested
+pale-yellow substitution and isn't needed in this scene).
+
+**Generation hit a genuine transient provider outage, not a content or
+tool problem.** No tool changes were needed (already repaired in the prior
+tranche; its 12 focused tests still pass). The call to
+`https://fal.run/fal-ai/recraft/v4/text-to-image` returned **HTTP 503
+Service Unavailable** -- fal.ai's own service was temporarily unavailable,
+unrelated to the prompt, colors, or request construction. No cost was
+incurred (`cost_log.json` entry `6c6735cac5cb`, reconciled `failed`/$0.00;
+`budget_spent_usd` unchanged at $0.8731 of $2.00). Per the standing
+no-fallback/no-automatic-retry rule carried by every one of these paid-call
+handoffs, **no retry was made**, even though this specific failure mode
+(transient infrastructure outage rather than a diagnosable bug) wasn't
+explicitly anticipated by this handoff's text.
+
+No image exists to visually review from this attempt -- the corrected
+prompt itself remains genuinely untested against a real Recraft V4
+response. This is a "try again" situation, not a "revise the approach"
+one: the prompt, colors, and tool are all believed correct. Full record in
+`assets/images/samples/hook-2b-sample-review-recraft-2.md`.
+
+No second image, batch, other asset, TTS, music, SFX, diagram, video,
+narration processing, composition, render, publish, or deploy occurred.
+
+### Next action
+
+Chris decides whether to authorize a same-prompt retry once fal.ai's
+service is confirmed available again. No further paid calls, other assets,
+composition, render, publish, or deploy is authorized until then.
+
+---
