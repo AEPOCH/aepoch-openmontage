@@ -1042,14 +1042,36 @@ correction away from approval. Full detail: `knowledge/log.md`, 2026-08-03
 "Recraft attempt 5 retried on Chris's authorization; closest result yet,
 still rejected on two specific criteria" entry.
 
+**Update 2026-08-03 (Recraft anchor approved; 11-plate batch stopped early
+on a confirmed systemic failure):** Chris approved the Recraft V4 anchor
+after Monty's PASS. Appended `decision_log.json` `d-023` authorizing the
+11-plate batch ($0.44 cap). Generated 8 of 11 remaining plates before
+stopping: 4 accepted (`setup-1a`, `setup-2a`, `build-3a`, `build-4a`), 4
+rejected -- Plate 1 (`hook-1b`, compositional deviation: radial/symmetric
+mark placement instead of irregular), Plates 5 and 6 (`build-1a`,
+`build-2a`, both showing the **same** unwanted internal decorative
+contour-line texture, a real non-flat-rendering systemic failure that
+triggered the handoff's explicit two-occurrence stop rule), and Plate 9
+(`build-5b`, a milder panel-line deviation). Plates 5/6/9's rejections also
+block their reuse scenes (`build-1b`, `climax-3`, `build-6b`, `build-7a`).
+Plates 10-12 were never attempted; $0.12 of the $0.44 cap preserved. Real
+cost $0.32 this batch; project total $1.2331 of $2.00. A labeled contact
+sheet, full per-plate review, and a provisional schema-valid
+`asset_manifest.json` (every path verified to exist) were produced. Full
+detail: `knowledge/log.md`, 2026-08-03 "Recraft visual plate batch
+executed, stopped early on a confirmed systemic failure" entry.
+
 **Immediate next action:** Chris and Monty review
-`assets/images/samples/hook-2b-sample-review-recraft-2.md` and decide
-whether to authorize one more targeted-correction sample (explicit
-anti-checkmark wording, numeric vertical-placement constraint). The
-checkpoint schema's assets-stage `asset_manifest` requirement gap remains a
-known limitation. No further paid calls, provider substitution, batch
-generation, other assets, composition, render, publish, or deploy is
-authorized until Chris explicitly decides.
+`assets/images/recraft-plate-batch-review.md` and the contact sheet, and
+decide how to correct the internal-decoration/texture bug (recommend
+testing on one plate before retrying both), whether Plate 1's radial
+composition is acceptable, and whether Plate 9's panel-line deviation is
+acceptable. The checkpoint schema's assets-stage `asset_manifest`
+requirement gap remains a known limitation (the real provisional manifest
+exists as its own file, not registered in the checkpoint's `artifacts`
+dict). No further paid calls, provider changes, batch generation, other
+assets, composition, render, publish, or deploy is authorized until Chris
+explicitly decides.
 
 ## Verification Criteria for Phase 15 Start
 

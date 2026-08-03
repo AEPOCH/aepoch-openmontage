@@ -3274,3 +3274,123 @@ further paid calls, batch generation, other assets, composition, render,
 publish, or deploy is authorized until Chris explicitly decides.
 
 ---
+
+## 2026-08-03 — Recraft correction passes Monty style review
+
+Monty inspected the successful Recraft correction image at original resolution
+and overruled the initial self-review's rejection as too literal. In context,
+the acute angle marks remain abstract rather than reading materially as approval
+UI; occupying part of the upper third supports `hook-2b`'s surrounding/
+encroaching-field purpose while ample negative space remains. The figure reads
+as a person with distinct limbs, and the palette, flatness, primitive variety,
+separation, absence of clichés, and plate utility all pass.
+
+Verdict: **PASS PENDING CHRIS'S HUMAN APPROVAL.** The sample may become the
+Recraft style/prompt anchor if Chris approves it. Future prompts should avoid
+near-checkmark acute angles, reduce bilateral symmetry, and keep irregular
+spacing. No further generation or batch was authorized during Monty's review.
+
+---
+
+## 2026-08-03 — Recraft style anchor human-approved; plate batch prepared
+
+Chris explicitly approved the corrected Recraft `hook-2b` sample after
+Monty's PASS. It is now locked as Plate 2 and the visual/prompt anchor; it will
+not be regenerated. The HyperFrames routing check preserved the already
+approved Remotion atelier runtime and did not change the production path.
+
+Monty prepared a controlled remaining batch of exactly 11 Recraft V4 raster
+plates at $0.04 each ($0.44 maximum), projected to bring total spend from
+$0.9131 to $1.3531 under the $2.00 cap. The handoff forbids fallback and
+creative retries, stops on repeated systemic drift, excludes native typography/
+ring/logo/tail assets, and requires individual reviews plus a contact sheet:
+`docs/aepoch-production-playbook/prompts/phase-16-recraft-visual-plate-batch.md`.
+No batch call occurred during this approval step.
+
+---
+
+## 2026-08-03 — Recraft visual plate batch executed, stopped early on a confirmed systemic failure
+
+Executed `docs/aepoch-production-playbook/prompts/phase-16-recraft-visual-plate-batch.md`.
+
+**Approval and batch decision locked.** Appended `decision_log.json`
+`d-023` (`provider_selection` / "Image generation provider for
+illustration plates", same pair as `d-004`/`d-011`/`d-021`/`d-022`):
+selected Recraft V4 for the 11-plate batch, recorded the approved anchor
+(`hook-2b_person-primitive-marks_recraft-v4-attempt5.png`), $0.44 cap,
+FLUX 1.1 retirement, OpenAI considered-not-selected, no fallback, no
+content-quality retries. `d-004`, `d-011`, `d-021`, `d-022` verified
+unmutated. All 11 planned FLUX-era prompts (Plates 3-12) were superseded
+with fresh Recraft CHAI triplets recorded in `asset-inventory-and-prompts.md`,
+each using structured `colors`/`background_color` controls per scene, the
+smallest palette each scene genuinely needs, and explicit lessons from all
+five hook-2b attempts (no circuit/network vocabulary, checkmark/tick
+shapes forbidden by name where relevant, Signal `#6B5FED` never requested).
+
+**Generated 8 of the 11 remaining plates before stopping.** Reviewed in
+groups of ~4 calls at original resolution against each scene's brief:
+
+- **Accepted (4):** Plate 3 `two-node-empty-diagram` (`setup-1a`), Plate 4
+  `three-icons-broken-connection` (`setup-2a`), Plate 7
+  `extraction-icons-ore-debt-attention` (`build-3a`), Plate 8
+  `silhouette-scroll-attention-arrow` (`build-4a`) -- all clean, on-palette,
+  no clichés, matching their briefs closely.
+- **Rejected (4):** Plate 1 `silhouette-crowd-resolve` (`hook-1b`) --
+  compositional deviation, the small marks form an ordered radial/halo
+  burst rather than the requested irregular, non-symmetric placement.
+  Plate 5 `extraction-icons-oil-ore-code` (`build-1a`) -- unwanted internal
+  decorative contour-line texture on all three shapes, violating "single
+  plain outline, no internal decoration." Plate 6 `silhouette-warm-clay`
+  (`build-2a`) -- the **same** texture issue on the person's fill, the
+  **second occurrence**, which triggered the batch stop. Plate 9
+  `door-icon-closed` (`build-5b`) -- a milder related issue, a subtle inset
+  reading as a forbidden panel line.
+
+**Batch stopped before Plates 10-12**, per the handoff's explicit rule:
+*"Stop the remaining batch immediately if two plates show the same
+systemic failure ... non-flat rendering."* Plates 5 and 6's repeated
+internal-decoration/texture bug is exactly that failure category. $0.32 of
+the $0.44 cap was spent (8 x $0.04); $0.12 preserved, not spent on Plates
+10-12. Disclosed honestly: plates were reviewed in batches of ~4, so the
+second occurrence (Plate 6) was confirmed only after Plates 7-9 were
+already generated alongside it -- the stop landed at the group boundary,
+not immediately at the second plate, though no further generation occurred
+once the pattern was confirmed. Project total: $1.2331 of $2.00.
+
+**Rejected plates' impact via reuse mapping, recorded plainly.** Plate 5's
+rejection blocks not just `build-1a` but also `build-1b` (which was to
+reuse it with added animation); Plate 6 blocks `build-2a` and `climax-3`;
+Plate 9 blocks `build-5b`, `build-6b`, and `build-7a`. Seven of 32 scenes
+are now blocked pending a corrected prompt architecture.
+
+**Evidence produced.** A labeled contact sheet
+(`assets/images/recraft-plate-batch-contact-sheet.png`, green border =
+accepted, red = rejected) covering the anchor plus all 8 batch attempts. A
+full per-plate review (`assets/images/recraft-plate-batch-review.md`). A
+provisional, schema-valid `artifacts/asset_manifest.json` recording the
+approved human narration, the 4 accepted plates, the existing
+`aepoch-mark-ink.svg` brand asset, all rejected-plate evidence with
+reasons, reuse mappings, native-scene exclusions (every `text_card` scene,
+`climax-1`'s native ring animation, the tail scenes), and outstanding
+decisions -- every referenced path independently verified to exist. This
+manifest is explicitly marked partial/provisional in its own metadata, not
+the completed assets-stage canonical artifact.
+
+`checkpoint_assets.json` kept `in_progress` with no canonical artifact in
+its own `artifacts` dict, consistent with the standing pattern -- the real
+provisional manifest exists as its own file, referenced from
+`metadata.partial_progress`, and the assets stage remains open. No native
+composition, audio mastering, TTS, music, SFX, diagram generation via
+another tool, composition, render, publish, or deploy occurred.
+
+### Next action
+
+Chris and Monty review `assets/images/recraft-plate-batch-review.md` and
+the contact sheet, and decide: how to correct the internal-decoration/
+texture bug before retrying Plates 5/6 or attempting 10-12 (recommend
+testing the fix on one plate first); whether Plate 1's radial composition
+is acceptable as-is; and whether Plate 9's panel-line deviation is
+acceptable. No further paid calls, provider changes, composition,
+rendering, publishing, or deployment is authorized until Chris decides.
+
+---
