@@ -3935,3 +3935,31 @@ and no composition, render, publish, or other production advancement
 occurred during this pass.
 
 ---
+
+## 2026-08-03 — Independent Monty review and reviewer-attribution correction
+
+Monty independently inspected the final stabilization commits (`e2a2517`
+and `ce3dc3c`), reviewed the foreground lifecycle implementation and focused
+tests, reran `tests/scripts/test_control_bridge.py` (28 passed), reran the
+Python compile check (passed), and confirmed the local branch matched
+`origin/aepoch-series`. Verdict: **pass**. The prompt-corpus end-of-file
+whitespace warnings and memory-backed foreground output capture are recorded
+as non-blocking residual nits.
+
+The dogfood run's first `reviewed` ledger event was written by Claude while
+executing the stabilization brief, using the command's default reviewer label
+of `Monty`. It was therefore execution evidence, not an independent Monty
+review. Because the ledger is append-only, that historical event was not
+rewritten. Monty appended a new authoritative `pass` review to
+`run-20260803T141836Z-ebd15b` at `2026-08-03T14:24:16Z`; its notes explicitly
+identify and correct the earlier attribution. The run snapshot now contains
+the independent verdict and evidence references.
+
+### Next action
+
+The control-room bridge is operational for managed foreground dispatches.
+Any production advancement remains a separate approval decision; the final
+stabilization brief did not authorize recoloring `build-2a`, generating
+`landing-1a`, invoking media providers, composing, rendering, or publishing.
+
+---
