@@ -3037,3 +3037,118 @@ assets, composition, render, publish, or deploy is authorized until Chris
 explicitly decides.
 
 ---
+
+## 2026-08-03 — FLUX Sample 3 independently rejected; Recraft proposed
+
+Monty inspected FLUX Sample 3 at original resolution and confirmed rejection.
+Although the honest JPEG transport, 16:9 framing, spacing, and negative space
+passed, FLUX again replaced every locked color, produced a photographic human
+silhouette, and emitted cog/UI glyphs despite the revised nonrepresentational
+brief. FLUX 1.1 should be retired for this pilot rather than receive a fourth
+creative attempt.
+
+Monty evaluated the existing fallback. The registered Recraft V4 raster path
+is available at $0.04 and the current official schema exposes both preferred
+RGB `colors` and an explicit `background_color`. A proposed tracked handoff
+repairs the tool's stale V4 payload contract and authorizes one Recraft sample
+only after Chris approves the provider change:
+`docs/aepoch-production-playbook/prompts/phase-16-recraft-provider-switch-sample.md`.
+No Recraft call, provider substitution, or batch occurred during this review.
+
+---
+
+## 2026-08-03 — FLUX 1.1 retired; Recraft V4 tool repaired and sampled
+
+Executed `docs/aepoch-production-playbook/prompts/phase-16-recraft-provider-switch-sample.md`.
+
+**Provider decision re-logged.** Appended `decision_log.json` `d-022`
+(`provider_selection` / "Image generation provider for illustration
+plates", same pair as `d-004`/`d-011`/`d-021`): selected `recraft_image_v4`
+for this new sample, formally recorded FLUX 1.1 as **retired for this
+pilot's illustration plates** after three evidenced attempts (all rejected
+-- wrong format/size and real logo/gear/currency imagery on attempt 1, no
+usable file on attempt 2, and persistent gear/UI-icon clichés plus complete
+palette substitution on attempt 3 even as a genuine JPEG), preserved OpenAI
+as considered-but-not-selected, scoped to one sample only, and forbade
+automatic fallback. `d-004`, `d-011`, `d-021` verified unmutated.
+
+**Tool repaired against the live V4 schema before spending.** Confirmed
+against `https://fal.ai/models/fal-ai/recraft/v4/text-to-image/api` that the
+current endpoint accepts `prompt`, `image_size`, `colors`,
+`background_color`, and `enable_safety_checker` -- and has **no `style`
+field at all**, exactly as the handoff stated. Patched
+`tools/graphics/recraft_image.py`: added `background_color` (normalized to
+a single RGB object, unlike the `colors` array), added
+`enable_safety_checker` (always sent explicitly, default `true`), and
+`style` is now never sent to the V4 endpoint regardless of caller input
+(preserved in the input schema only for compatibility, with its
+description now stating that V4 style direction belongs in the prompt
+text). The existing shared `save_image_correctly()` WebP-normalization
+helper was left unchanged. Extracted `_build_payload()`/`_resolve_model_path()`
+as pure, testable helpers.
+
+**12 new focused, network-free contract tests** added at
+`tests/contracts/test_recraft_v4_contract.py`, all passing: payload keys
+match the V4 schema exactly, `style` is never sent even when supplied,
+color/background normalization (hex and RGB-object input), correct
+endpoint resolution for `v4`/`v4-pro`, a mocked WebP response correctly
+converts to the requested PNG, and cost estimation is unchanged. Full
+suite: `tests/contracts/ tests/tools/ -q` -> 950 passed, 8 skipped, 4
+pre-existing failures in `tests/tools/test_remotion_diagnostics.py`
+(`KeyError: 'cmd'`) -- confirmed unrelated to this tranche by re-running the
+same file with these changes stashed away; it fails identically either way.
+
+**New CHAI prompt triplet written**, recorded in
+`asset-inventory-and-prompts.md` under Plate 2 "Attempt 4 (provider switch
+to Recraft V4)". Key adaptation: since Recraft V4 takes `colors`/
+`background_color` as structured parameters rather than prose, the prompt
+assigns color *roles* by description ("the palette's warm human-presence
+color" for the figure, "the palette's cool secondary colors" for the
+machine tiles) instead of repeating raw hex values redundantly.
+
+**The one authorized sample generated cleanly, technically the best result
+across all four attempts -- but still rejected on content grounds.**
+Announced tool/provider/model/scene/cost, then called the repaired tool
+with `colors` (Clay, Iris, Prism, Ink), `background_color` (Void),
+`image_size: landscape_16_9`, `enable_safety_checker: true`, `style`
+omitted. fal.ai returned a **native PNG this time** -- no WebP conversion
+needed (`source_format == saved_format == "PNG"`). Real cost $0.04
+(`cost_log.json` entry `cb82fc05fa72`, `budget_spent_usd` now $0.8731 of
+$2.00). Verified independently via PIL: 1344x768 (aspect 1.75, disclosed as
+close to but not exactly 16:9's 1.7778).
+
+**Inspected at original resolution, scored plainly in both directions.**
+Real wins: no recognizable brand logo, no currency symbol, no consumer-
+device/UI glyph, no cloud/gear/padlock cliché, a flat gradient-free
+correctly-Void background, and a correctly-Clay-colored, clearly visible
+figure -- every one of FLUX's three failure categories resolved. But: the
+~20 machine tiles are almost entirely one repeated diamond/rotated-square
+motif with an internal circuit-trace pattern and corner node-dots, not the
+requested variety of five distinct shape types; that specific motif reads
+unmistakably as a **circuit-board/blockchain-network diagram**, in tension
+with the brand's explicit anti-cryptocurrency/anti-cyberpunk visual stance
+even though no single tile is a literal logo; and the palette was only
+partially honored -- no tile renders in Ink (a pale yellow, not requested
+at all, appears instead), and the orange/rust tiles blur into the figure's
+own warm tone rather than reading as a distinct cool secondary color. Full
+scored review is in `assets/images/samples/hook-2b-sample-review-recraft.md`.
+
+**This reads as prompt-addressable, not a provider-level dead end the way
+FLUX became** -- the recommendation is a follow-up sample with an explicit
+anti-circuit-board/network-diagram exclusion, a more forceful shape-variety
+requirement, and explicit per-color naming so all four requested colors
+actually appear, rather than abandoning Recraft. No such follow-up was
+generated in this tranche -- that requires Chris's separate authorization.
+
+No second image, batch, other asset, TTS, music, SFX, diagram, video,
+narration processing, composition, render, publish, or deploy occurred.
+
+### Next action
+
+Chris and Monty review `assets/images/samples/hook-2b-sample-review-recraft.md`
+and decide whether to authorize a corrected follow-up Recraft V4 sample,
+pursue a different provider, or take another path. No further paid calls,
+provider substitution, batch generation, other assets, composition,
+render, publish, or deploy is authorized until Chris explicitly decides.
+
+---

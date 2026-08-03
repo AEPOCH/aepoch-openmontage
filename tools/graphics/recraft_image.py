@@ -89,6 +89,15 @@ class RecraftImage(BaseTool):
                     "vector_illustration", "icon",
                 ],
                 "default": "any",
+                "description": (
+                    "NOT sent to the current V4 raster endpoint (recraft/v4/text-to-image) "
+                    "-- confirmed against the live schema at "
+                    "https://fal.ai/models/fal-ai/recraft/v4/text-to-image/api, which has "
+                    "no `style` field at all. Preserved here only for input-contract "
+                    "compatibility with callers/tests written against an older Recraft "
+                    "endpoint. For V4, express style direction in `prompt` text instead "
+                    "(e.g. 'flat vector editorial illustration of...')."
+                ),
             },
             "colors": {
                 "type": "array",
@@ -118,6 +127,34 @@ class RecraftImage(BaseTool):
                     "a ValueError before any API call is made."
                 ),
             },
+            "background_color": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "description": "Hex color, with or without '#', e.g. '#0C0B0A'",
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "r": {"type": "integer", "minimum": 0, "maximum": 255},
+                            "g": {"type": "integer", "minimum": 0, "maximum": 255},
+                            "b": {"type": "integer", "minimum": 0, "maximum": 255},
+                        },
+                        "required": ["r", "g", "b"],
+                    },
+                ],
+                "description": (
+                    "Preferred background color, same accepted shapes as `colors` "
+                    "entries, normalized to a single RGB object before calling "
+                    "fal.ai (the V4 endpoint's `background_color` field, unlike "
+                    "`colors`, is one object, not an array)."
+                ),
+            },
+            "enable_safety_checker": {
+                "type": "boolean",
+                "default": True,
+                "description": "Always sent explicitly to fal.ai, matching its own documented default.",
+            },
             "output_path": {"type": "string"},
         },
     }
@@ -144,6 +181,33 @@ class RecraftImage(BaseTool):
             return 0.25
         return 0.04
 
+    @staticmethod
+    def _resolve_model_path(model: str) -> str:
+        if model == "v4-pro":
+            return "recraft/v4/pro/text-to-image"
+        if model == "v4":
+            return "recraft/v4/text-to-image"
+        return f"recraft/{model}/text-to-image"
+
+    def _build_payload(self, inputs: dict[str, Any]) -> dict[str, Any]:
+        """Build the fal.ai request payload. Pure function -- no network calls.
+
+        `style` is intentionally never included: the live V4 raster schema
+        (recraft/v4/text-to-image) has no `style` field at all -- confirmed
+        against https://fal.ai/models/fal-ai/recraft/v4/text-to-image/api.
+        Kept separate from `execute()` so this contract is directly testable.
+        """
+        payload: dict[str, Any] = {"prompt": inputs["prompt"]}
+        if inputs.get("image_size"):
+            payload["image_size"] = inputs["image_size"]
+        if inputs.get("colors"):
+            payload["colors"] = normalize_colors(inputs["colors"])
+        if inputs.get("background_color") is not None:
+            payload["background_color"] = normalize_colors([inputs["background_color"]])[0]
+        # Always sent explicitly, matching fal.ai's own documented default.
+        payload["enable_safety_checker"] = bool(inputs.get("enable_safety_checker", True))
+        return payload
+
     def execute(self, inputs: dict[str, Any]) -> ToolResult:
         api_key = self._get_api_key()
         if not api_key:
@@ -157,33 +221,12 @@ class RecraftImage(BaseTool):
         start = time.time()
         model = inputs.get("model", "v4")
         prompt = inputs["prompt"]
+        model_path = self._resolve_model_path(model)
 
-        model_path = f"recraft/{model}/text-to-image"
-        if model == "v4-pro":
-            model_path = "recraft/v4/pro/text-to-image"
-        elif model == "v4":
-            model_path = "recraft/v4/text-to-image"
-
-        payload: dict[str, Any] = {"prompt": prompt}
-        if inputs.get("image_size"):
-            payload["image_size"] = inputs["image_size"]
-        if inputs.get("style"):
-            # NOTE: as of 2026-04, an earlier version of this tool blamed the
-            # `style` parameter for a 422 from the Recraft v4 endpoint. A
-            # 2026-07 smoke test traced that 422 to malformed `colors`
-            # (hex strings instead of RGB objects, fixed below) — the
-            # request still failed with `style` omitted, so `style` was
-            # never confirmed as an independent cause. It is passed through
-            # as documented; if fal.ai does reject it again, the workaround
-            # is folding the style direction into the prompt text instead
-            # (e.g. "digital illustration of..." rather than
-            # style="digital_illustration").
-            payload["style"] = inputs["style"]
-        if inputs.get("colors"):
-            try:
-                payload["colors"] = normalize_colors(inputs["colors"])
-            except ValueError as exc:
-                return ToolResult(success=False, error=f"Invalid colors input: {exc}")
+        try:
+            payload = self._build_payload(inputs)
+        except ValueError as exc:
+            return ToolResult(success=False, error=f"Invalid colors input: {exc}")
 
         try:
             response = requests.post(
@@ -203,12 +246,13 @@ class RecraftImage(BaseTool):
             image_response.raise_for_status()
 
             # fal.ai's actual returned bytes do not reliably match the
-            # requested extension (e.g. Recraft v4 commonly returns WebP
+            # requested extension (Recraft V4 commonly returns WebP
             # regardless of what the caller asked for) — save_image_correctly
             # detects the real format and converts to the requested
             # extension where practical, rather than mislabeling the file.
-            ext_hint = "svg" if inputs.get("style") == "vector_illustration" else "png"
-            requested_path = Path(inputs.get("output_path", f"generated_image.{ext_hint}"))
+            # V4 has no `style` field (see input_schema's note above), so it
+            # never returns SVG; "png" is the only sensible default here.
+            requested_path = Path(inputs.get("output_path", "generated_image.png"))
             save_result = save_image_correctly(image_response.content, requested_path)
             output_path = Path(save_result["path"])
 

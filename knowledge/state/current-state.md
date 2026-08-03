@@ -992,11 +992,32 @@ generic icon vocabulary. No replacement provider was selected or called.
 Full detail: `knowledge/log.md`, 2026-08-03 "Honest JPEG visual gate
 executed; sample 3 rejected, FLUX 1.1 retirement recommended" entry.
 
+**Update 2026-08-03 (FLUX 1.1 retired; Recraft V4 repaired and sampled):**
+Monty independently confirmed FLUX Sample 3's rejection. Chris approved
+retiring FLUX 1.1 for this pilot's illustration plates (`decision_log.json`
+`d-022`, same subject as `d-004`/`d-011`/`d-021`) and switching to Recraft
+V4. Repaired `tools/graphics/recraft_image.py` against the live V4 schema
+(added `background_color`, `enable_safety_checker`; `style` no longer sent
+-- the endpoint has no such field), tested (12 new focused tests, all
+passing; full suite 950 passed/8 skipped/4 pre-existing unrelated
+failures), and generated one sample with structured `colors`/
+`background_color` controls. Result: technically the cleanest attempt yet
+(native PNG, correct Clay figure, correct Void background, no logos/
+currency/gears/UI-glyphs) but still rejected -- the ~20 machine tiles are
+almost entirely one repeated circuit-board/network-diagram-like motif
+rather than the requested shape variety, and the palette was only partially
+honored (no Ink tile; an unrequested pale yellow appeared instead). Real
+cost $0.04, `budget_spent_usd` now $0.8731 of $2.00. This reads as
+prompt-addressable, not a provider dead end. Full detail: `knowledge/log.md`,
+2026-08-03 "FLUX 1.1 retired; Recraft V4 tool repaired and sampled" entry.
+
 **Immediate next action:** Chris and Monty review
-`assets/images/samples/hook-2b-sample-review-3.md` and decide whether to
-retire FLUX 1.1 for this pilot and select a different approach or provider.
-The checkpoint schema's assets-stage `asset_manifest` requirement gap
-remains a known limitation. No further paid calls, provider substitution,
+`assets/images/samples/hook-2b-sample-review-recraft.md` and decide whether
+to authorize a corrected follow-up Recraft V4 sample (explicit anti-circuit-
+board/network-diagram exclusion, forced shape variety, explicit per-color
+naming), pursue a different provider, or take another path. The checkpoint
+schema's assets-stage `asset_manifest` requirement gap remains a known
+limitation. No further paid calls, provider substitution, batch generation,
 other assets, composition, render, publish, or deploy is authorized until
 Chris explicitly decides.
 
