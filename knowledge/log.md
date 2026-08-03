@@ -4053,3 +4053,39 @@ authored, and no compose, render, publish, or deploy step occurred during
 this tranche.
 
 ---
+
+## 2026-08-03 — Independent review of local `build-2a` correction
+
+Monty independently reviewed Claude's completed foreground run
+`run-20260803T144944Z-0ea80f` and commit `d54d92e`. The corrected plate was
+inspected at native resolution beside attempt 3. Monty reran the deterministic
+palette tool to `/tmp` and obtained the identical output checksum
+`1324c937e463eb6705d2d714721121c9dc8c7e0a7382c0ca016572e2e0e57449`;
+the figure measures exactly Clay `#C4835A`, the source remains unchanged,
+Python compilation passed, the four updated JSON files parse cleanly, and
+local `HEAD` matches `origin/aepoch-series`.
+
+Verdict: **pass with corrections**. The sole correction was a stale sentence
+in the gitignored provisional asset manifest that still described
+`landing-1a` as blocked by an unaccepted `build-2a`, contradicting the new
+accepted attempt-4 asset elsewhere in the same manifest. Monty corrected that
+sentence to state the actual condition: `build-2a` is accepted and
+`landing-1a` awaits its own human approval. The negligible background result
+(`#FAF7F4` versus Paper `#FAF8F5`) is accepted because the approved objective
+was exact Clay correction of the figure, which passed, and the background
+difference is visually immaterial.
+
+The first managed foreground attempt (`run-20260803T143533Z-544e58`) was
+interrupted during diagnosis because a `status` command launched from a
+separate managed tool session could not see the foreground process PID and
+misreported it as dead. The run was recovered and marked failed honestly;
+the identical approved brief was then re-dispatched and completed normally.
+This cross-session PID-visibility caveat is a control-bridge follow-up, not a
+defect in the corrected plate.
+
+### Next action
+
+`build-2a`/`climax-3` are accepted. `landing-1a` remains ungenerated and
+requires a separate explicit approval for its Recraft V4 provider call.
+
+---
