@@ -4311,3 +4311,115 @@ provider call was made. Chris/Monty review the rendered video
 evidence, and decide separately whether and when to advance to `publish`.
 
 ---
+
+## 2026-08-05 — V1 creative postmortem; V2 reset reaches the proposal gate
+
+Chris reviewed the finished `aepoch-blog-pilot-what-is-aepoch` (V1) render
+and independently scored it 2/10 creatively, despite it being a technical
+success. `docs/aepoch-production-playbook/reports/phase-16-v1-creative-postmortem.md`
+records the verdict and root causes: V1 commissioned atomic symbols/icons
+instead of substantial human-centred scenes, confused hex-palette
+compliance with brand consistency, fragmented the argument across 32
+micro-scenes, let native typography/diagrams stand in for ideas rather than
+clarify them, and reviewed with proxies (motion variation, palette
+compliance) that don't measure semantic illustration quality. The Phase
+14A Direction A exploration is retained as the minimum visual-quality
+reference; V1's scene plan, asset manifest, edit decisions, composition,
+and creative approvals are explicitly discarded for V2. Chris authorized a
+full creative reset as V2, using only the manifest-defined Backlot gates
+(no invented approval loops).
+
+**V2 initialization (this run, continuing after an external interruption of
+`run-20260805T100700Z-8d7f66`):** `projects/aepoch-blog-pilot-what-is-aepoch-v2/`
+initialized via `lib.checkpoint.init_project()` (`animated-explainer`
+pipeline). V1's already-approved `source_extraction` and `research_brief`
+were carried forward byte-identical (confirmed via checksum in the
+provenance block) with explicit provenance (V1 project id, checkpoint
+path/timestamp, original content hash, Chris's prior approval date) --
+`checkpoint_extraction.json` and `checkpoint_research.json` both written
+`completed`. This is documented as a non-skipped gate: the underlying
+source article is unchanged between V1 and V2, so re-running extraction
+against the same source would reproduce the same artifact. V1 itself is
+preserved completely unchanged at `projects/aepoch-blog-pilot-what-is-aepoch/`.
+
+**Proposal gate executed per `docs/aepoch-production-playbook/prompts/phase-17-what-is-aepoch-v2-proposal.md`
+and its continuation:** Read `AGENT_GUIDE.md`, the governing brief, the V1
+postmortem, `pipeline_defs/animated-explainer.yaml`, `skills/meta/checkpoint-protocol.md`,
+`skills/pipelines/explainer/proposal-director.md`, `skills/meta/taste-direction.md`,
+and `schemas/artifacts/proposal_packet.schema.json` before acting.
+
+Ran a live preflight (`registry.provider_menu_summary()`,
+`video_compose.get_info()["render_engines"]`) and found a real discrepancy
+with the governing brief's stated "latest known state": the brief and its
+continuation both asserted HyperFrames was unavailable (npm package lookup
+timed out). This session's live check found FFmpeg, Remotion, **and
+HyperFrames** all genuinely available -- confirmed further with a live
+`hyperframes doctor` run (exit 0; v0.7.94, Node v24.18.1, ffmpeg, npx,
+Chrome, and Docker all present; only optional whisper-cpp/Kokoro/MusicGen
+extras missing). Recorded this as a corrected live capability fact rather
+than following the stale instruction, and presented both runtimes in the
+proposal per AGENT_GUIDE.md's "Present Both Composition Runtimes" hard
+rule -- Remotion is recommended on fit (V1's existing Remotion investment
+and the locked asset-first hybrid workflow), not because HyperFrames is
+unavailable. Also confirmed live: `flux_kontext_image` available (7 of 13
+image_generation providers configured), `styles/aepoch-symbolic.yaml`
+still loads and schema-validates cleanly (V1's d-010/d-020 fix intact), and
+no `music_library/` folder exists on this machine.
+
+Built a fresh, schema-valid `proposal_packet.json` presenting the
+governing brief's three treatments as `concept_options` -- all three
+preserve the protected source thesis (central_question, key_takeaway,
+aepoch_reframe, human_consequence, closing_statement) and vary only
+presentation:
+
+- **c1 "The Realness Tax -- Editorial Human Systems" (recommended):**
+  12-16 human-centred editorial beats across 4-5 visual families; Recraft
+  V4/V4 Pro masters + Flux Kontext reference-conditioned corrections for
+  continuity.
+- **c2 "One Thing Every Human Still Makes for Free -- One Expanding
+  World":** 3-4 large master tableaux navigated via camera/crops/reveals,
+  minimizing cross-call consistency risk.
+- **c3 "A Different Answer to the Same Question -- Documentary Editorial
+  Collage":** real Pexels/Pixabay photography of the live Reddit/World ID
+  story, with ÆPOCH illustration/typography overlays for the reframe.
+
+`selected_concept` records c1 as an agent recommendation only --
+`approval.status: "pending"`, and `selected_concept.rationale` explicitly
+states concept selection remains open for Chris. An 8-entry
+`decision_log.json` (`d-001`-`d-008`) covers: render runtime (both options
+presented, Remotion recommended, `d-001` documents the HyperFrames
+correction in full), composition mode (atelier, per the governing brief),
+playbook carry-forward (`aepoch-symbolic`, re-verified this run), image
+providers (Recraft V4 masters -- reasoned from V1's own documented FLUX
+palette-substitution failures across three attempts; Flux Kontext for
+reference-conditioned corrections), the narration audio plan (preserve
+`chrisnarration.mp4` untouched, propose an unproduced local FFmpeg-mastered
+derivative -- EQ, de-essing, loudness normalization -- for evaluation
+only), the music plan (no `music_library/`, ElevenLabs ~$0.50/300s or free
+Pixabay search or none, deferred to Chris), and concept selection. Cost
+estimate: $0.80 committed (14 Recraft masters + 6 Flux Kontext corrections,
+narration mastering and Remotion render both local/free), $1.30 if
+ElevenLabs music is later approved, against a recommended $3.00 cap with
+revision headroom. No provider or media-generation call was made.
+
+`checkpoint_proposal.json` written `awaiting_human`/`human_approved: false`
+via `lib.checkpoint.write_checkpoint()` (schema validation enforced at
+write time). `artifacts/proposal_packet.json` and the project-level
+`decision_log.json` independently re-validated against
+`schemas/artifacts/proposal_packet.schema.json` and
+`schemas/artifacts/decision_log.schema.json`. `backlot.state.load_board_state()`
+confirms the `proposal` stage as `awaiting_human`, every downstream stage
+(`script` through `publish`) `pending`, and all four artifacts
+(`source_extraction`, `research_brief`, `proposal_packet`, `decision_log`)
+readable.
+
+### Next action
+
+Per the continuation prompt's hard stop: this run stops here. No script,
+scene plan, asset, edit, compose, or publish checkpoint exists; no paid or
+media-generation call was made. Chris reviews the V2 proposal -- three
+treatments, the corrected runtime capability picture, image-provider plan,
+audio-mastering plan, and music options -- and either approves a concept
+(as-is or with modifications), requests revision, or aborts.
+
+---

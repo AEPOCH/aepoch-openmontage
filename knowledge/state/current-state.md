@@ -1172,6 +1172,76 @@ or staged by the build-2a local-recolor tranche -- it predates it and looks
 unrelated to Phase 16. Flagged to Chris for awareness; left untouched and
 unresolved here.
 
+## Current Phase — Phase 17: "What is ÆPOCH?" V2 Reset
+
+**Status:** V1 finished through compose at Channel Par (see
+`knowledge/log.md`, 2026-08-05 "`aepoch-blog-pilot-what-is-aepoch` finished
+through compose at Channel Par" entry) but was independently reviewed for
+creative quality and scored 2/10. Chris authorized a full creative reset as
+V2, reusing only the manifest-defined Backlot gates.
+
+**V1 postmortem (2026-08-05):** `docs/aepoch-production-playbook/reports/phase-16-v1-creative-postmortem.md`
+verdict: technical success, creative failure. Root causes: commissioned
+symbols instead of scenes, confused palette consistency with brand
+consistency, fragmented the argument into 32 micro-scenes, let native
+typography/diagrams stand in for ideas, and reviewed with proxies (motion,
+palette) that don't measure semantic illustration quality. V1 is preserved
+unchanged at `projects/aepoch-blog-pilot-what-is-aepoch/` as a technical/
+timing/provenance reference; its script, scene plan, asset manifest, edit
+decisions, composition, and creative approvals are explicitly rejected for
+V2. Its approved source extraction and research are the only artifacts
+carried forward, byte-identical, with explicit provenance.
+
+**Update 2026-08-05 (V2 initialized; extraction/research carried forward):**
+`projects/aepoch-blog-pilot-what-is-aepoch-v2/` initialized
+(`animated-explainer` pipeline). `checkpoint_extraction.json` and
+`checkpoint_research.json` written `completed`, carrying V1's already-
+approved `source_extraction` and `research_brief` forward byte-identical
+with full provenance blocks (V1 project id, checkpoint path/timestamp,
+content hash, Chris's prior approval). This is documented as a non-skipped
+gate: the underlying source article is unchanged. Run
+`run-20260805T100700Z-8d7f66` was externally interrupted after this point.
+
+**Update 2026-08-05 (proposal gate reached):** Continuation executed per
+`docs/aepoch-production-playbook/prompts/phase-17-what-is-aepoch-v2-proposal.md`
+and `-continuation.md`. Live preflight (`registry.provider_menu_summary()`,
+`video_compose.get_info()`) found FFmpeg, Remotion, **and HyperFrames** all
+genuinely available on this machine — a live `hyperframes doctor` run passed
+every core check (v0.7.94, Node v24.18.1, ffmpeg, npx, Chrome, Docker; only
+optional whisper-cpp/Kokoro/MusicGen extras missing). This **corrects** the
+governing brief's and continuation prompt's stated "latest known state"
+(HyperFrames unavailable, npm lookup timed out) — recorded as a live
+capability fact, not assumed from stale notes. Both runtimes are presented
+in the proposal per AGENT_GUIDE.md's "Present Both Composition Runtimes"
+hard rule, with Remotion recommended on fit (existing V1 investment,
+asset-first hybrid workflow) rather than on availability.
+
+Built a fresh, schema-valid `proposal_packet.json` (three treatments per the
+governing brief — Editorial Human Systems (recommended), One Expanding
+World, Documentary Editorial Collage — each preserving the protected source
+thesis and varying only presentation/visual approach) and an 8-entry
+`decision_log.json` covering render runtime, composition mode, playbook
+carry-forward, image providers (Recraft V4 masters + Flux Kontext
+reference-conditioned corrections, reasoned from V1's own evidenced
+FLUX-palette-substitution failures), the narration audio plan (preserve
+Chris's original recording untouched, propose a local FFmpeg-mastered
+derivative), the music plan (no music_library/, ElevenLabs/Pixabay/none
+presented, deferred), and concept selection. `checkpoint_proposal.json`
+written `awaiting_human`/`human_approved: false`. Backlot's
+`load_board_state()` confirms the `proposal` stage as `awaiting_human` with
+every downstream stage `pending` and all four artifacts
+(`source_extraction`, `research_brief`, `proposal_packet`, `decision_log`)
+readable. No concept, runtime, or provider is treated as approved; no paid
+or media-generation call was made.
+
+### Next action
+
+Chris reviews the V2 proposal (three treatments, runtime correction,
+provider plan, audio plan, music options, cost estimate) and either
+approves a concept (as-is or with modifications), requests revision, or
+aborts. No script, scene plan, assets, edit, compose, or publish work is
+authorized until that approval is recorded.
+
 ## Verification Criteria for Phase 15 Start
 
 Phase 15 may begin when:
