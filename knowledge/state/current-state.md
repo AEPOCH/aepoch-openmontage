@@ -1234,13 +1234,134 @@ every downstream stage `pending` and all four artifacts
 readable. No concept, runtime, or provider is treated as approved; no paid
 or media-generation call was made.
 
+**Record note (found 2026-08-05, filling a gap in this durable log):** V2
+in fact progressed beyond the proposal gate recorded above -- the on-disk
+project at `projects/aepoch-blog-pilot-what-is-aepoch-v2/` shows completed
+checkpoints through `assets`, `edit`, `compose`, and `publish`, a rendered
+`renders/final.mp4` plus `renders/final-contact-sheet.jpg`, and a NotebookLM
+comparison render/analysis (`Value_of_Presence.mp4`,
+`artifacts/notebooklm-contact-sheet.jpg`,
+`artifacts/notebooklm-video-analysis.json`) used to benchmark it. That
+production history was not captured in this file or in `knowledge/log.md`
+at the time it happened; it is referenced here only as directly-observed
+on-disk fact, not reconstructed narrative, so a later session can backfill
+the missing entries if that detail is ever needed. See Phase 18 below for
+the outcome of reviewing that render.
+
+## Current Phase — Phase 18: "What is ÆPOCH?" V3 Proposal
+
+**Status:** Chris reviewed the finished V2 render and the NotebookLM
+comparison and rejected V2 overall -- the slides remained disconnected from
+the narration, even though V2's illustration quality itself was strong. The
+NotebookLM comparison was found materially better at explaining the
+script's mechanism but materially worse as an ÆPOCH-branded film. Chris
+authorized a V3 attempt ("ok lets try again - yay team"), governed by
+`docs/aepoch-production-playbook/prompts/phase-18-what-is-aepoch-v3-proposal.md`,
+locking the V3 principle: "NotebookLM's comprehension + V2's visual
+authorship + much stronger continuity." Full detail in `knowledge/log.md`,
+2026-08-05 "Phase 18: V3 proposal reached after an externally interrupted
+resume" entry.
+
+**Update 2026-08-05 (V3 proposal gate reached after an externally
+interrupted resume):** The first controlled run
+(`run-20260805T172247Z-17c64f`) was interrupted externally after
+`projects/aepoch-blog-pilot-what-is-aepoch-v3/` was initialized and its
+extraction/research checkpoints written (both carried forward
+byte-identical from V2, re-validated this session against V2's own on-disk
+checkpoints by canonical-JSON sha256 comparison, not just trusted from the
+provenance block). This run executed the continuation brief, resuming
+rather than recreating that state; `get_next_stage()` confirmed `proposal`
+as the correct resume point.
+
+Direct evidence review (V2's `script.json`, `scene_plan.json`,
+`final-contact-sheet.jpg`, `notebooklm-contact-sheet.jpg`, `art-direction.md`,
+and the V1 postmortem) surfaced two new, specific, falsifiable findings: (1)
+V2's own `scene_plan.json` climax-2 entry explicitly instructed "no
+blockchain diagram, token coins, face scans, or dashboards" for the Proof of
+Life beat -- an atmospheric-only treatment by deliberate design, the single
+clearest concrete cause of "disconnected from narration" for that beat; (2)
+V2's `taste_profile.anti_patterns` called for anonymous silhouettes only,
+but the final render shows several distinct, individually faced recurring
+characters -- an undocumented gap between V2's stated intent and its
+delivered assets.
+
+Live preflight reconfirmed FFmpeg, Remotion, **and HyperFrames** all
+genuinely available (correcting the governing brief's stated capability
+snapshot, the same live discrepancy V2's own proposal run found); confirmed
+no Fish Audio provider is integrated (voice cloning genuinely unavailable,
+not assumed); confirmed no `music_library/`; confirmed Chris's original
+narration recording present and unchanged.
+
+Produced three concepts -- **c1 "The Realness Tax -- One Presence, Traced
+Through the System"** (recommended: one recurring protagonist plus four
+visual systems, Proof of Life upgraded to an explicit three-step mechanism),
+**c2 "One Expanding World -- A Corridor of Doors"**, **c3 "Documentary
+Editorial Collage"** -- all preserving V2's exact narration text/performance
+and its real locked 263.39s timing (already inside the brief's 4:15-4:30
+target with no new trim needed). A 9-entry `decision_log.json` covers render
+runtime (both runtimes presented per the HARD RULE), composition mode,
+playbook, image providers, music source, voice selection (preserving
+Chris's recording recommended; no cloning implied available), concept
+selection, a new `visual_accuracy_check` decision establishing the
+scene-by-scene semantic-alignment gate, and a $4.00 budget-cap
+recommendation. `checkpoint_proposal.json` written `awaiting_human`/
+`human_approved: false`; `backlot.state.load_board_state()` confirmed the
+`proposal` stage `awaiting_human`, every downstream stage `pending`, and all
+four artifacts readable; `get_next_stage()` still reports `proposal`.
+
 ### Next action
 
-Chris reviews the V2 proposal (three treatments, runtime correction,
-provider plan, audio plan, music options, cost estimate) and either
-approves a concept (as-is or with modifications), requests revision, or
-aborts. No script, scene plan, assets, edit, compose, or publish work is
-authorized until that approval is recorded.
+Per the continuation prompt's hard stop: this run stops here. No script,
+scene_plan, assets, edit, compose, or publish work was performed; no paid
+provider call was made; V2's narration was not rewritten; V1/V2 canonical
+artifacts were not modified. Chris reviews the V3 proposal -- three
+concepts, the corrected live capability picture, the two new evidenced
+findings behind the semantic-alignment gate, the voice/audio plan, the music
+plan, and the budget recommendation -- and either approves a concept
+(alongside render_runtime and composition_mode), requests revision, or
+aborts.
+
+**Update 2026-08-05 (proposal approved; script stage executed):** Chris
+approved the V3 proposal as written (concept c1, render_runtime=remotion,
+composition_mode=atelier, voice_selection=preserve_chris_recording,
+semantic-alignment gate, $4.00 cap); Monty independently reviewed and
+recorded verdict `pass`. A prior run had been blocked from writing the
+approval by an execution-permission issue; Monty applied it directly via
+`lib.checkpoint.write_checkpoint()` (`checkpoint_proposal.json` ->
+`completed`/`human_approved: true`, superseded version archived to
+`history/`, six re-logged decisions `d-010`-`d-015` appended without
+mutating `d-001`-`d-009`). This session independently re-verified that state
+on disk (not from the handoff prompt's claim alone) before proceeding.
+
+Entered the script stage (`in_progress` checkpoint on entry per protocol)
+and carried V2's `script.json` forward with its exact spoken text,
+263.39s timing, `delivery_cues`, `pronunciation_guides`, and
+`voice_performance` verified byte-identical field-by-field. The only
+content changes were four `enhancement_cues` adaptations for Concept C1:
+renamed two visual-family labels ("Extraction Economy" ->
+"Extraction Triptych"; "Missing Ledger" folded into "The Threshold"),
+labeled the landing-1 "Equal Circle" closing beat, and -- the one
+substantive addition -- inserted an explicit step-2-of-3 "shared-protocol
+check" diagram cue into `climax-2`, completing the Proof of Life mechanism
+as an explicit three-step diagram rather than V2's atmospheric-only
+treatment (the specific, falsifiable defect V2's own `scene_plan.json` had
+built in on purpose). Added `metadata.concept_alignment` mapping the four
+recurring visual systems and all eight locked communication moments to
+their sections, operationalizing `decision_log` `d-008`/`d-014`'s
+semantic-alignment gate. Appended `decision_log.json` `d-016` (new subject
+under `visual_accuracy_check`, `d-001`-`d-015` unmutated). `script.json`
+schema-validated cleanly; self-review against `script-director.md` Step 6
+unchanged from V2 (word count/timing unchanged). Script checkpoint written
+`awaiting_human`/`human_approved: false`; `backlot.state.load_board_state()`
+confirmed the board reads `proposal` completed, `script` awaiting_human,
+and every downstream stage pending. Full detail: `knowledge/log.md`,
+2026-08-05 "Phase 18: V3 proposal approved; script stage executed" entry.
+
+Per both governing briefs' hard stop, this run stopped here: no scene_plan,
+assets, edit, compose, or publish work performed; no paid call; no
+audio/image/music/video generated; narration verified unrewritten; V1/V2
+artifacts untouched; no publish or git remote operation performed. Chris
+and Monty review the script gate next.
 
 ## Verification Criteria for Phase 15 Start
 
