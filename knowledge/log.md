@@ -4204,3 +4204,110 @@ trying to repair the rejected segmented anatomy. It requires Chris's separate
 approval before execution.
 
 ---
+
+## 2026-08-05 — `aepoch-blog-pilot-what-is-aepoch` finished through compose at Channel Par
+
+Chris said "lets finish it" on 2026-08-04, authorizing completion of the
+project through assets/edit/compose at the actual published AEPOCH Protocol
+channel's technical bar rather than an aspirational flagship standard
+(`docs/aepoch-production-playbook/prompts/phase-16-channel-par-finish-v1.md`).
+A first attempt (`run-20260804T201427Z-1ea5d7`) falsely reported completion
+after entering an internal delegation loop with no required outputs produced.
+This run executed the direct-execution correction
+(`phase-16-channel-par-finish-direct-execution-v1.md`) in the foreground, with
+no subagents or background tasks, per its binding instruction.
+
+**Decision log repair (found during this run, not caused by it):** the
+canonical `projects/aepoch-blog-pilot-what-is-aepoch/decision_log.json` --
+the path `lib/checkpoint.py`'s `_merge_decision_log` and the Backlot board
+actually read -- was missing decisions `d-015` through `d-025`. A prior run
+had written them only to the non-canonical `artifacts/decision_log.json`
+copy. Recovered all 11 entries into the canonical file verbatim via the
+project's own `_merge_decision_log` helper, then appended `d-026` (`approval_
+policy`, Chris's full-run pre-authorization for assets/edit/compose -- a
+category that did not previously exist in
+`schemas/artifacts/decision_log.schema.json`'s enum and was added there,
+a one-value, backward-compatible schema addition), `d-027`
+(`downgrade_approval`, the revised Channel Par acceptance bar -- hard
+requirements unchanged, aspirational-taste rejection criteria reclassified
+to non-blocking guidance), and `d-028` (`provider_selection`, same
+category/subject thread as `d-004`/`d-011`/`d-021` through `d-025`,
+recording `landing-1a`'s resolution via local deterministic composition
+rather than a third paid Recraft call). 28 decisions total, schema-valid.
+`artifacts/decision_log.json` was synced to match so the two copies no
+longer drift.
+
+**Assets stage completed** (`checkpoint_assets.json`: `completed`,
+`human_approved: true`): `landing-1a` resolved via the already-present
+`scripts/build_landing1a_local.py` (inspected for safety/determinism/scope,
+confirmed byte-identical on re-run) compositing five equal copies of the
+accepted `build-2a` silhouette at irregular spacing on Paper -- measured
+figure fill and background both within rounding of the Clay/Paper targets.
+Music: the one authorized `pixabay_music` search ($0.00) returned a 75.9s
+driving-beat percussion track against the required >=280s sparse-ambient/
+no-driving-beat brief -- treated as no suitable track found per the brief's
+explicit contingency; render proceeds without music, no retry or provider
+switch. `asset_manifest.json` finalized covering all 32 scenes (9 accepted
+Recraft plates, 1 brand asset, 1 local composition, 4 Remotion-native
+reclassified scenes, remaining scenes native typography/animation). $0 paid
+media spend this run; project total unchanged at $1.3131 of $2.00.
+
+**Edit stage completed** (`checkpoint_edit.json`: `completed`,
+auto-proceed per manifest): `edit_decisions.json` built with
+`render_runtime: remotion`, `composition_mode: atelier`, a `bespoke` block
+pointing at a new hand-authored composition under
+`projects/aepoch-blog-pilot-what-is-aepoch/composition/` (`Composition.tsx`,
+`Root.tsx`, `index.tsx`, `icons.tsx`, `scenes.ts`, `tokens.ts`,
+`data/captions.json`), Chris's complete unmodified narration file placed at
+t=0, and phrase-chunked captions generated deterministically from the real
+canonical word-alignment (`scripts/build_captions_from_alignment.py`), not
+script.json's provisional word-rate estimate. `lib.slideshow_risk` verdict:
+strong (0.42 average).
+
+**Compose stage completed** (`checkpoint_compose.json`: `completed`,
+auto-proceed per manifest): rendered via the registered `video_compose`
+Remotion atelier path (`operation: render`), with `proposal_packet.json`
+supplied for runtime-swap detection -- none found. Four native scenes
+(`build-1a`, `build-1b`, `build-6a`, `climax-2-sceneA`, per decision `d-024`)
+were hand-authored as flat SVG diagrams in `icons.tsx`; the Presence Ring
+signature device (planted faintly at `hook-1a`, paying off as the episode's
+one Signal-accent glow at `climax-1`) and the `build-5b`/`build-6b`/
+`build-7a` door motif (one accepted plate, three Remotion-native motion
+treatments -- closed/closing/softening) were likewise hand-authored, per
+`art-direction.md`. Before the one full render was committed, 12 targeted
+still-frame spot checks across every scene kind caught and fixed one defect
+(`setup-2b`'s phrase-swap text card rendered garbled from a newline/
+word-split bug -- fixed with an explicit swap-delimiter render path).
+
+**Final render**, independently ffprobe/ffmpeg-verified: `projects/
+aepoch-blog-pilot-what-is-aepoch/renders/final.mp4`, exactly 280.000000s,
+1920x1080, 30fps, H.264/AAC 48kHz stereo, 18,508,506 bytes, mean volume
+-34.4dB / max -11.8dB (no clipping). `video_compose`'s own automated
+`final_review` returned `status: pass`, 0 issues; its `audio_spotcheck.
+music_present` heuristic false-positived to `true` on narration-only audio
+(a pre-existing `mean_volume > -50dB` heuristic bug, not something this run
+introduced) -- corrected to `false` in `artifacts/final_review.json` with
+the measured evidence. Transcript-vs-script comparison: 95.1% word accuracy
+(Chris's real natural delivery of the locked script, not a synthesis
+defect). `render_report.json` and `final_review.json` written, schema-valid;
+14 review frames extracted at even 20s intervals across the full runtime
+plus the 12 authoring-time stills, all reviewed. Reviewed against
+`benchmark_analysis.md`'s summary of the actual published channel (static
+holds/animated stills, no true camera movement, inconsistent styles across
+videos) -- this render exceeds that bar (continuous motion in all 32
+scenes, one consistent visual language, a genuine signature device, real
+human narration) while deliberately not attempting true cinematic camera
+movement, matching the channel's own established register.
+
+Zero correction/re-render rounds were needed against the committed render.
+$0 media spend this run; project total spend unchanged at $1.3131 of $2.00.
+
+### Next action
+
+Per both governing briefs' hard stop: this run stops here. No `publish`
+checkpoint was created, and no upload, deployment, scheduling, or paid
+provider call was made. Chris/Monty review the rendered video
+(`renders/final.mp4`) and its `final_review.json`/`render_report.json`
+evidence, and decide separately whether and when to advance to `publish`.
+
+---
