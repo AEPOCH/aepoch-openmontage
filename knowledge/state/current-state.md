@@ -1363,6 +1363,58 @@ audio/image/music/video generated; narration verified unrewritten; V1/V2
 artifacts untouched; no publish or git remote operation performed. Chris
 and Monty review the script gate next.
 
+**Update 2026-08-05 (script approved; scene_plan stage executed):** Chris
+approved the completed V3 script ("approved") per
+`docs/aepoch-production-playbook/prompts/phase-18-what-is-aepoch-v3-scene-plan.md`;
+Monty independently reviewed run `run-20260805T185916Z-d56e92` and recorded
+verdict `pass`. `checkpoint_script.json` rewritten `completed`/
+`human_approved: true`; `decision_log.json` `d-017` appended (same category/
+subject as `d-016`, re-log pattern, `d-001`-`d-016` unmutated).
+
+Produced a schema-valid `scene_plan.json`: 16 scenes (within the 14-18
+target), one per script section, full 0-263.39s coverage with zero gaps
+(each scene's end absorbs the real inter-section narration pause). All four
+Concept C1 recurring visual systems (The Feed, The Extraction Triptych, The
+Threshold, Proof of Life mechanism) plus the Equal Circle closing beat are
+used across multiple scenes each; all eight locked communication moments
+are mapped to an explicit scene. The Proof of Life mechanism
+(`scene-13-proof-of-life-mechanism`, `hero_moment: true`) stages the
+three-step walkthrough (private interaction / shared-protocol check /
+identical token returned) as an explicit, describable mechanism -- directly
+reversing V2's own `scene_plan.json` instruction against a literal
+mechanism diagram, the specific defect behind Chris's V2 rejection.
+Single-protagonist continuity (one reused silhouette, population-scale
+figures varied only by size/posture/implied age, never face/identity) is
+stated per scene and per `required_asset`, targeting V2's undocumented
+individually-faced-character drift directly. Every scene carries an
+explicit `information_role` semantic proposition and every `required_asset`
+carries a "FAIL IF" semantic-acceptance clause, operationalizing
+`decision_log` `d-008`/`d-014`'s gate at this stage. Continuity anchors and
+a sample/reference strategy (mandatory 3-scene proof: hook, Proof of Life
+mechanism/KAIROS reveal, climax Signal reveal) are recorded in
+`scene_plan.metadata`.
+
+Self-review: `lib.variation_checker` and `lib.slideshow_risk` both scored
+`strong`/0.0 after one real fix (`scene-02` retyped `generated` -> `broll`
+to remove a 3-consecutive-same-type run). Cross-checked against the V1
+postmortem, V2's render/NotebookLM-comparison evidence, and decision_log
+`d-008`/`d-014`/`d-016`/`d-017`. One disclosed pacing exception: 13 of 16
+scenes exceed the playbook's generic 12.0s max-hold guidance because each
+scene holds for its full script section (same pattern already present,
+unflagged, in V2's own accepted scene plan).
+
+Scene-plan checkpoint written `awaiting_human`/`human_approved: false`.
+`backlot.state.load_board_state()` confirmed `extraction`/`research`/
+`proposal`/`script` `completed`, `scene_plan` `awaiting_human`,
+`assets`/`edit`/`compose`/`publish` `pending`, all six artifacts readable.
+Full detail: `knowledge/log.md`, 2026-08-05 "Phase 18: V3 script approved;
+scene_plan stage executed" entry.
+
+**Next action:** Per the governing brief's hard stop, this run stopped
+here -- no assets, edit, compose, or publish work performed; no paid call;
+no media generated; V1/V2 artifacts untouched; nothing published. Chris and
+Monty review the scene plan next.
+
 ## Verification Criteria for Phase 15 Start
 
 Phase 15 may begin when:

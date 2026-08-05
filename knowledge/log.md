@@ -4658,3 +4658,99 @@ new Proof-of-Life step-2 diagram), and the `concept_alignment` mapping --
 and either approve, request revision, or abort.
 
 ---
+
+## 2026-08-05 -- Phase 18: V3 script approved; scene_plan stage executed
+
+Chris approved the completed V3 script ("approved"), per
+`docs/aepoch-production-playbook/prompts/phase-18-what-is-aepoch-v3-scene-plan.md`.
+Monty independently reviewed run `run-20260805T185916Z-d56e92` and recorded
+verdict `pass`: schema-valid, all 16 spoken sections and the 263.39-second
+timing preserved, narration unchanged, Concept C1 visual systems and eight
+locked communication moments mapped correctly.
+
+**Script approval recorded:** `checkpoint_script.json` rewritten
+`completed`/`human_approved: true` via `lib.checkpoint.write_checkpoint()`
+(superseded `awaiting_human` version archived to
+`projects/aepoch-blog-pilot-what-is-aepoch-v3/history/`). Appended
+`decision_log.json` `d-017` (category `visual_accuracy_check`, same subject
+as `d-016`, the binding re-log pattern -- `d-001`-`d-016` left unmutated).
+
+**Scene_plan stage executed per the governing brief:** Read `AGENT_GUIDE.md`,
+current durable state, the full Phase 18 prompt chain,
+`pipeline_defs/animated-explainer.yaml`, `skills/meta/checkpoint-protocol.md`,
+and `skills/pipelines/explainer/scene-director.md` before acting. Wrote an
+`in_progress` checkpoint on entering the stage. Reviewed V2's own
+`scene_plan.json` (structural precedent), `art-direction.md`,
+`brands/aepoch/VISUAL_LANGUAGE.md`, and `styles/aepoch-symbolic.yaml`
+directly before drafting.
+
+Produced a schema-valid `scene_plan.json`: 16 scenes (within the brief's
+14-18 target), one per script section, covering the full 0-263.39s duration
+with zero timeline gaps -- each scene's `end_seconds` equals the next
+scene's `start_seconds`, absorbing the real measured inter-section
+narration pauses as a held beat. All four Concept C1 recurring visual
+systems (The Feed, The Extraction Triptych, The Threshold, Proof of Life
+mechanism) plus the Equal Circle closing beat are used across multiple
+scenes each (`metadata.recurring_visual_systems`); all eight locked
+communication moments are mapped to an explicit scene
+(`metadata.locked_communication_moments_coverage`), none silently dropped.
+The Proof of Life mechanism (`scene-13-proof-of-life-mechanism`, marked
+`hero_moment: true`) stages the three-step walkthrough (private
+interaction / shared-protocol check / identical token returned) as an
+explicit, describable mechanism, directly reversing V2's own
+`scene_plan.json` instruction against any literal mechanism diagram -- the
+specific, falsifiable defect behind Chris's V2 rejection. Single-protagonist
+continuity (one reused silhouette, no wardrobe/face individuation;
+population-scale figures varied only by size/posture/implied age) is stated
+explicitly per scene and per `required_asset`, directly targeting V2's
+undocumented drift into several distinct individually-faced characters.
+Every scene carries an explicit `information_role` semantic proposition
+(what the viewer must understand from that shot without narration) and
+every `required_asset` carries an explicit "FAIL IF" semantic-acceptance
+clause, operationalizing `decision_log` `d-008`/`d-014`'s semantic-alignment
+gate at this stage. Continuity anchors (character/wardrobe, palette arc,
+recurring geometry, locations, typography, diagram grammar, transition
+family) and a sample/reference strategy (a mandatory 3-scene proof --
+hook, Proof of Life mechanism/KAIROS reveal, and the climax Signal reveal --
+gating the remaining 13 scenes' batch generation) are both recorded in
+`scene_plan.metadata`.
+
+**Self-review:** `lib.variation_checker.check_scene_variation()` and
+`lib.slideshow_risk.score_slideshow_risk()` both scored `strong`/0.0 with
+zero violations, after one real fix -- `scene-02`'s `type` was changed from
+`generated` to `broll` because scenes 1-3 were otherwise three consecutive
+same-type scenes, violating the manifest's "no 3+ consecutive scenes of
+same type" review focus; re-checked clean after the fix. Cross-checked
+explicitly against the V1 creative postmortem, V2's render/NotebookLM-
+comparison evidence, and `decision_log` `d-008`/`d-014`/`d-016`/`d-017`
+(full detail in `scene_plan.metadata.self_review`). One disclosed,
+deliberate pacing exception: 13 of 16 scenes exceed
+`styles/aepoch-symbolic.yaml`'s generic 12.0s `max_scene_hold_seconds` rule,
+because each scene holds for its full script section and expresses its
+2-3 enhancement cues as staged internal reveals rather than cutting to a
+new scene per cue -- consistent with the brief's 14-18 scene-count target
+and already present in V2 (e.g. its climax-2 scene ran 27.31s) without
+being a finding in either V2's rejection or the V1 postmortem.
+
+`scene_plan.json` validated cleanly against
+`schemas/artifacts/scene_plan.schema.json`. Scene-plan checkpoint written
+`awaiting_human`/`human_approved: false` via `write_checkpoint()`.
+`backlot.state.load_board_state()` confirmed the board reads `extraction`/
+`research`/`proposal`/`script` as `completed`, `scene_plan` as
+`awaiting_human`, and `assets`/`edit`/`compose`/`publish` all `pending`,
+with all six artifacts (`source_extraction`, `research_brief`,
+`proposal_packet`, `decision_log`, `script`, `scene_plan`) readable.
+
+### Next action
+
+Per the governing brief's hard stop: this run stops here. `scene_plan` was
+not marked human-approved; no assets, edit, compose, or publish work was
+performed; no paid provider call was made; no audio/image/music/video was
+generated; V1/V2 canonical production artifacts were not modified; no
+publish or git remote operation was performed. Chris/Monty review the scene
+plan -- the 16-scene structure, the explicit Proof of Life mechanism and
+single-protagonist continuity treatment, the semantic-acceptance criteria,
+and the disclosed pacing exception -- and either approve, request revision,
+or abort.
+
+---
