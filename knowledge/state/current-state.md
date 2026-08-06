@@ -1410,10 +1410,41 @@ Scene-plan checkpoint written `awaiting_human`/`human_approved: false`.
 Full detail: `knowledge/log.md`, 2026-08-05 "Phase 18: V3 script approved;
 scene_plan stage executed" entry.
 
-**Next action:** Per the governing brief's hard stop, this run stopped
-here -- no assets, edit, compose, or publish work performed; no paid call;
-no media generated; V1/V2 artifacts untouched; nothing published. Chris and
-Monty review the scene plan next.
+**Update 2026-08-06 (scene plan approved; canonical-consistency defect
+reconciled; assets 3-scene proof gate executed, 2 of 3 rejected):** Chris
+approved the V3 scene-plan gate. Monty found and reconciled a real
+canonical-consistency defect (an uncheckpointed 18-scene draft written after
+the approved 16-scene checkpoint; the 18-scene draft was preserved to
+`history/` and the checkpoint's 16-scene artifact confirmed canonical) --
+independently re-verified this session by direct sha256 hash comparison of
+the checkpoint's `scene_plan` against the standalone artifact file (both
+identical). Per
+`docs/aepoch-production-playbook/prompts/phase-18-what-is-aepoch-v3-assets-proof.md`,
+executed exactly 3 authorized `recraft_image` (Recraft V4) proof calls, one
+per approved proof scene, no retries: `scene-01-the-feed-cold-open` **passed
+with a disclosed concern** (single-anchor color signal diluted by 2-3
+secondary warm-toned figures, though still identifiable via unique
+solid-fill treatment); `scene-12-proof-of-life-forms` **failed** (delivered
+a jagged multi-color starburst instead of the specified single soft glow);
+`scene-13-proof-of-life-mechanism` **failed on its central hard
+requirement** (the 7 population-scale figures were individuated by distinct
+fill colors -- the same class of defect, by color instead of face, that
+this whole V3 concept exists to eliminate). Real cost $0.12 total (project
+budget $4.00), exactly matching this run's authorization cap; no further
+spend was attempted after the two failures. Assets checkpoint written
+`awaiting_human` with a schema-valid partial `asset_manifest` (full CHAI
+prompt triplets, honest per-scene verdicts, corrected-prompt directions for
+both failures) and `batch_generation_authorized: false` explicit in the
+checkpoint metadata. Full detail: `knowledge/log.md`, 2026-08-06 "Phase 18:
+scene plan approved; canonical-consistency defect reconciled; assets
+3-scene proof gate executed, 2 of 3 rejected" entry.
+
+**Next action:** Per the governing brief's hard stops, this run generated
+exactly 3 images and stopped: no remaining-13-scene batch, no music, no
+narration change, no edit/compose/publish, no assets human-approval, no
+V1/V2 artifact modification. Chris/Monty review the 3-scene proof result and
+decide the correction path (revised prompts, a different tool, or another
+approach) before any further Recraft spend.
 
 ## Verification Criteria for Phase 15 Start
 

@@ -4754,3 +4754,105 @@ and the disclosed pacing exception -- and either approve, request revision,
 or abort.
 
 ---
+
+## 2026-08-06 -- Phase 18: scene plan approved; canonical-consistency defect reconciled; assets 3-scene proof gate executed, 2 of 3 rejected
+
+Chris approved the V3 scene-plan gate ("approved"). Before any paid call,
+Monty independently checked the artifact and found a real canonical-
+consistency defect: Backlot's approved checkpoint embedded a 16-scene plan,
+while a standalone 18-scene draft (`v3-01-hook-1` ... `v3-18-landing-2`) had
+been written 65 seconds later and was never checkpointed. Monty preserved
+that draft at `history/scene_plan_uncheckpointed_18_scene_draft_20260805T214210.json`,
+restored `artifacts/scene_plan.json` to the exact 16-scene checkpoint
+artifact Chris approved, and appended `decision_log.json` `d-018` (category
+`visual_accuracy_check`, selecting the approved 16-scene checkpoint over the
+uncheckpointed draft, both preserved for audit). **This session independently
+re-verified this directly** (not from the handoff's claim alone): the
+checkpoint's `artifacts.scene_plan` and the standalone `artifacts/scene_plan.json`
+canonicalize to the identical sha256 hash (`d75cc766...`), both list the same
+16 `scene-NN-...` ids, and the archived draft is confirmed a distinct
+18-scene structure. `get_next_stage()` (called with the correct `(pipeline_dir=
+projects/, project_id)` argument order) returns `assets`.
+
+**Assets 3-scene proof gate executed per
+`docs/aepoch-production-playbook/prompts/phase-18-what-is-aepoch-v3-assets-proof.md`:**
+Read `AGENT_GUIDE.md`, current durable state, the full Phase 18 prompt chain,
+`pipeline_defs/animated-explainer.yaml`, `skills/meta/checkpoint-protocol.md`,
+`skills/pipelines/explainer/asset-director.md`, and `skills/meta/reviewer.md`
+before acting. Inspected the actual `recraft_image` tool contract directly
+(no Layer-3 skill is declared for Recraft; `agent_skills: []`) -- confirmed
+it takes `colors`/`background_color` (normalized to RGB internally) and has
+no `negative_prompt` field, consistent with this project's own documented
+finding that literal negative-exclusion-list wording can trigger moderation
+and that positive-only prompt framing is required. Wrote an `in_progress`
+checkpoint entering the assets stage, scoped explicitly to the 3-scene proof
+(`checkpoint_assets.json`, `metadata.partial_progress.scope: "assets_proof_gate"`).
+
+Ran the CHAI pre-caption / critique / post-caption loop for each of the three
+authorized proof scenes (`scene-01-the-feed-cold-open`, `scene-12-proof-of-
+life-forms`, `scene-13-proof-of-life-mechanism`) using each scene's exact
+`information_role`, `required_assets.description`, FAIL IF criteria, and the
+`styles/aepoch-symbolic.yaml` palette/prompt prefix, then made exactly three
+`recraft_image` (Recraft V4, `landscape_16_9`) calls -- one per authorized
+scene, no retries, no substitutions. All three succeeded technically (real
+cost $0.04 each, $0.12 total, exactly matching the run's authorization cap).
+
+**Honest visual review, not massaged:**
+- `scene-01-the-feed-cold-open`: **PASS with a disclosed concern.** Void
+  background, no generic-AI-explainer cliches, no text/logo, empty bottom
+  third for the stat-card overlay, and no individuated facial detail all
+  hold. The intended single protagonist anchor is identifiable as the one
+  fully solid-filled silhouette against an otherwise all-outline crowd, but
+  2-3 edge figures were also rendered with a warm-toned outline, diluting
+  (not eliminating) the single-anchor color signal -- logged as a
+  suggestion-severity finding with a concrete prompt fix for the batch stage.
+- `scene-12-proof-of-life-forms`: **FAIL.** The delivered image is a jagged
+  ~16-point multi-color starburst (black/cream/violet), not the specified
+  single soft violet-blue radial glow -- reads as a decorative graphic burst
+  or gem-cut mark, not a resolved circular threshold with one accent-color
+  reveal. Violates the one-accent-only Signal rule and the legible-
+  proposition requirement.
+- `scene-13-proof-of-life-mechanism`: **FAIL on its central hard
+  requirement.** The three-zone left-to-right structure (private gesture /
+  connecting pulse / population reveal) is roughly present, but the 7
+  population-scale figures in the right zone are each rendered in a visibly
+  different fill color (blue, sage, tan, dark green, lavender, maroon) --
+  individuating them by appearance just as V2's individually-faced
+  characters did. This is the single most important anti-pattern this whole
+  V3 concept exists to eliminate, and this proof shows Recraft V4 recreating
+  a close cousin of it despite an explicit same-style instruction.
+
+No automatic retry was made on either failure, per the handoff's explicit
+rule. Real cost stopped exactly at $0.12 (project total $0.12 of the $4.00
+cap) -- no further paid calls were attempted after the two failures.
+
+Wrote a schema-valid partial `asset_manifest` (`artifacts/asset_manifest_proof.json`,
+validated against `schemas/artifacts/asset_manifest.schema.json`) containing
+all three proof assets with exact costs, full CHAI (pre, critique, post)
+triplets, a corrected-prompt direction for each failure, and an explicit
+per-scene proof verdict. Assets checkpoint written `awaiting_human`
+(`review.decision: "PASS_WITH_WARNINGS"`, two critical findings for the
+rejected scenes, one suggestion for the passed scene, `human_approved:
+false`), with `metadata.gate_type: "assets_proof_gate_not_full_assets_stage"`
+and `batch_generation_authorized: false` explicit in the checkpoint itself so
+a future session cannot mistake this for a completed assets stage.
+`backlot.state.load_board_state()` confirms the board reads `extraction`/
+`proposal`/`script`/`scene_plan` as `completed`, `assets` as `awaiting_human`
+with the review findings and cost snapshot attached, and `edit`/`compose`/
+`publish` `pending`. `get_next_stage()` still reports `assets` (not yet
+approved), confirming the gate correctly holds.
+
+### Next action
+
+Per the governing brief's hard stops: this run generated exactly 3 images
+and no more, made no Flux Kontext or fallback-provider call, made no retry,
+did not generate the remaining 13 scenes, did not generate or search for
+music, did not alter or regenerate narration, did not enter edit/compose/
+publish, did not mark assets human-approved, spent exactly $0.12 (not more),
+and did not modify V1/V2 canonical artifacts. Chris/Monty review the 3-scene
+proof result -- one pass with a disclosed concern, two failures on
+semantic-alignment grounds -- and decide the correction path (revised
+prompts, a different tool, or another approach) before any further Recraft
+spend or the remaining batch.
+
+---
